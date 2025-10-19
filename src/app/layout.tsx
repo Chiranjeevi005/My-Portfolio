@@ -1,15 +1,21 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
-  variable: "--font-inter",
   subsets: ["latin"],
+  variable: "--font-inter",
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-poppins",
 });
 
 export const metadata: Metadata = {
-  title: "My Portfolio",
-  description: "Welcome to my professional portfolio website",
+  title: "Modern Portfolio",
+  description: "A modern, animated portfolio website",
 };
 
 export default function RootLayout({
@@ -18,10 +24,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${inter.variable} font-sans antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100`}
-      >
+    <html lang="en" className="bg-lightBg dark:bg-darkBg text-textPrimaryLight dark:text-textPrimaryDark">
+      <body className={`${inter.variable} ${poppins.variable} font-body`}>
         {children}
       </body>
     </html>
