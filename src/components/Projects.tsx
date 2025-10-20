@@ -81,14 +81,14 @@ const Projects = () => {
     <section 
       id="projects" 
       ref={projectsRef}
-      className="section bg-lightBg dark:bg-darkBg transition-colors duration-700"
+      className="section bg-light-bgPrimary dark:bg-dark-bgPrimary transition-colors duration-700"
     >
       <div className="container mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-textPrimaryLight dark:text-textPrimaryDark font-heading transition-colors duration-700">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-light-textPrimary dark:text-dark-textPrimary font-heading transition-colors duration-700">
             Featured Projects
           </h2>
-          <p className="text-xl max-w-2xl mx-auto text-textSecondaryLight dark:text-textSecondaryDark transition-colors duration-700">
+          <p className="text-xl max-w-2xl mx-auto text-light-textSecondary dark:text-dark-textSecondary transition-colors duration-700">
             Explore our latest work and see how we bring ideas to life
           </p>
         </div>
@@ -97,21 +97,21 @@ const Projects = () => {
           {projects.map((project, index) => (
             <div
               key={index}
-              className="project-card bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-accent1Light/20 dark:border-accent1Dark/20 shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out group"
+              className="project-card bg-light-bgSurface dark:bg-dark-bgSurface rounded-2xl overflow-hidden border border-light-border dark:border-dark-border shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out group"
             >
-              <div className="h-48 bg-gradient-to-r from-accent1Light to-accent2Light dark:from-accent1Dark dark:to-accent2Dark flex items-center justify-center transition-all duration-700">
-                <span className="text-textPrimaryDark dark:text-textPrimaryLight font-bold text-lg transition-colors duration-700">
+              <div className="h-48 bg-gradient-to-r from-light-buttonPrimary to-light-textAccent dark:from-dark-buttonPrimary dark:to-dark-textAccent flex items-center justify-center transition-all duration-700">
+                <span className="text-light-buttonText dark:text-dark-buttonText font-bold text-lg transition-colors duration-700">
                   Project Image
                 </span>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold mb-3 text-textPrimaryLight dark:text-textPrimaryDark transition-colors duration-700">
+                <h3 className="text-xl font-bold mb-3 text-light-textPrimary dark:text-dark-textPrimary transition-colors duration-700">
                   {project.title}
                 </h3>
-                <p className="text-textSecondaryLight dark:text-textSecondaryDark mb-4 transition-colors duration-700">
+                <p className="text-light-textSecondary dark:text-dark-textSecondary mb-4 transition-colors duration-700">
                   {project.description}
                 </p>
-                <button className="text-accent1Light dark:text-accent1Dark font-bold hover:text-accent2Light dark:hover:text-accent2Dark transition-colors duration-300">
+                <button className="text-light-textAccent dark:text-dark-textAccent font-bold hover:text-light-textHighlight dark:hover:text-dark-textHighlight transition-colors duration-300">
                   View Details →
                 </button>
               </div>

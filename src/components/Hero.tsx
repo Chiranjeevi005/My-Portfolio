@@ -122,13 +122,13 @@ const Hero = () => {
   return (
     <section 
       ref={heroRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-lightBg dark:bg-darkBg transition-colors duration-700"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-light-bgPrimary dark:bg-dark-bgPrimary transition-colors duration-700"
     >
       {/* Background particles */}
       {particleData.map((particle, i) => (
         <div
           key={i}
-          className="particle absolute rounded-full bg-accent1Light dark:bg-accent1Dark opacity-20"
+          className="particle absolute rounded-full bg-light-textAccent dark:bg-dark-textAccent opacity-20"
           style={{
             width: `${particle.width}px`,
             height: `${particle.height}px`,
@@ -139,34 +139,34 @@ const Hero = () => {
       ))}
 
       {/* Floating shapes */}
-      <div className="floating-shape absolute top-20 left-10 w-24 h-24 border-2 border-accent2Light dark:border-accent2Dark rotate-45 opacity-20 transition-colors duration-700"></div>
-      <div className="floating-shape absolute bottom-40 right-20 w-16 h-16 rounded-full bg-accent1Light dark:bg-accent1Dark opacity-20 transition-colors duration-700"></div>
-      <div className="floating-shape absolute top-1/3 right-1/4 w-20 h-20 border-2 border-accent1Light dark:border-accent1Dark opacity-20 transition-colors duration-700"></div>
+      <div className="floating-shape absolute top-20 left-10 w-24 h-24 border-2 border-light-textAccent dark:border-dark-textAccent rotate-45 opacity-20 transition-colors duration-700"></div>
+      <div className="floating-shape absolute bottom-40 right-20 w-16 h-16 rounded-full bg-light-textAccent dark:bg-dark-textAccent opacity-20 transition-colors duration-700"></div>
+      <div className="floating-shape absolute top-1/3 right-1/4 w-20 h-20 border-2 border-light-textAccent dark:border-dark-textAccent opacity-20 transition-colors duration-700"></div>
 
       <div className="container mx-auto px-4 text-center relative z-10">
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-textPrimaryLight dark:text-textPrimaryDark font-heading transition-colors duration-700">
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-light-textPrimary dark:text-dark-textPrimary font-heading transition-colors duration-700">
           {headlineLetters.map((letter, index) => (
             <span
               key={index}
               ref={(el) => {
                 if (el) lettersRef.current[index] = el;
               }}
-              className="inline-block hover:text-accent1Light dark:hover:text-accent1Dark transition-colors duration-300 cursor-default"
+              className="inline-block hover:text-light-textAccent dark:hover:text-dark-textAccent transition-colors duration-300 cursor-default"
             >
               {letter === " " ? "\u00A0" : letter}
             </span>
           ))}
         </h1>
         
-        <p className="subtitle text-xl md:text-2xl mb-10 max-w-2xl mx-auto text-textSecondaryLight dark:text-textSecondaryDark transition-colors duration-700">
+        <p className="subtitle text-xl md:text-2xl mb-10 max-w-2xl mx-auto text-light-textSecondary dark:text-dark-textSecondary transition-colors duration-700">
           Crafting immersive digital experiences with cutting-edge technology and creative design
         </p>
         
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <button className="cta-button glow-hover bg-accent1Light dark:bg-accent1Dark text-textPrimaryDark dark:text-textPrimaryLight px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 ease-in-out transform hover:scale-105">
+          <button className="cta-button glow-hover bg-light-buttonPrimary dark:bg-dark-buttonPrimary text-light-buttonText dark:text-dark-buttonText px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:bg-light-buttonHover dark:hover:bg-dark-buttonHover">
             View My Work
           </button>
-          <button className="cta-button pulse-hover border-2 border-accent1Light dark:border-accent1Dark text-accent1Light dark:text-accent1Dark px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 ease-in-out transform hover:scale-105">
+          <button className="cta-button pulse-hover border-2 border-light-buttonPrimary dark:border-dark-buttonPrimary text-light-buttonPrimary dark:text-dark-buttonPrimary px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:border-light-buttonHover dark:hover:border-dark-buttonHover hover:text-light-buttonHover dark:hover:text-dark-buttonHover">
             Get In Touch
           </button>
         </div>
@@ -174,7 +174,7 @@ const Hero = () => {
 
       {/* Scroll indicator */}
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce transition-colors duration-700">
-        <svg className="w-6 h-6 text-accent1Light dark:text-accent1Dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-light-textAccent dark:text-dark-textAccent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
         </svg>
       </div>

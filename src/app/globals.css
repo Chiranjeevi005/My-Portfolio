@@ -1,9 +1,89 @@
 @import "tailwindcss";
 
+:root {
+  /* Background colors */
+  --color-bg-primary: #FFF9F3;
+  --color-bg-secondary: #FFF3E9;
+  --color-bg-surface: #FFFFFF;
+  
+  /* Text colors */
+  --color-text-primary: #3A2D28;
+  --color-text-secondary: #6E5C55;
+  --color-text-muted: #8A6E64;
+  --color-text-accent: #E85D45;
+  --color-text-highlight: #D7745B;
+  
+  /* Border colors */
+  --color-border: #E8D5C8;
+  
+  /* Button colors */
+  --color-button-primary: #E85D45;
+  --color-button-hover: #D94A33;
+  --color-button-text: #FFFFFF;
+  
+  /* Card colors */
+  --color-card-bg: #FFFFFF;
+  --color-card-border: #F2E5D9;
+  
+  /* Link colors */
+  --color-link: #FF6F61;
+  --color-link-hover: #D94A33;
+  
+  /* Legacy variables for compatibility */
+  --bg-color: #FFF9F3;
+  --text-primary: #3A2D28;
+  --text-secondary: #6E5C55;
+  --text-accent: #E85D45;
+  --text-muted: #8A6E64;
+  --primary-color: #E85D45;
+  --secondary-color: #F4C27A;
+  --accent-color: #2A2A2A;
+}
+
+.dark {
+  /* Background colors */
+  --color-bg-primary: #181210;
+  --color-bg-secondary: #1E1614;
+  --color-bg-surface: #241A17;
+  
+  /* Text colors */
+  --color-text-primary: #F6E8D8;
+  --color-text-secondary: #DAB9A0;
+  --color-text-muted: #B8947A;
+  --color-text-accent: #FF8A5C;
+  --color-text-highlight: #FFC48A;
+  
+  /* Border colors */
+  --color-border: #3C2E2A;
+  
+  /* Button colors */
+  --color-button-primary: #FF8A5C;
+  --color-button-hover: #FF9966;
+  --color-button-text: #1E1614;
+  
+  /* Card colors */
+  --color-card-bg: #241A17;
+  --color-card-border: #3C2E2A;
+  
+  /* Link colors */
+  --color-link: #FF9D6E;
+  --color-link-hover: #FFB185;
+  
+  /* Legacy variables for compatibility */
+  --bg-color: #181210;
+  --text-primary: #F6E8D8;
+  --text-secondary: #DAB9A0;
+  --text-accent: #FF8A5C;
+  --text-muted: #B8947A;
+  --primary-color: #FF8A5C;
+  --secondary-color: #FFC107;
+  --accent-color: #F4511E;
+}
+
 body {
   transition: background-color, color 700ms ease;
   font-family: 'Inter', sans-serif;
-  background-color: var(--background);
+  background-color: var(--bg-color);
   color: var(--text-primary);
 }
 
@@ -26,6 +106,32 @@ button {
   transition: all 0.3s ease;
 }
 
+/* Placeholder styles */
+::-webkit-input-placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+
+::-moz-placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+
+:-moz-placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+
+::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+
 .section {
   position: relative;
   overflow: hidden;
@@ -42,24 +148,6 @@ button {
   .section {
     padding: 5rem 4rem;
   }
-}
-
-/* Light mode */
-:root {
-  --background: #FDF6F0;
-  --accent1: #FF6F61;
-  --accent2: #F4C27A;
-  --text-primary: #1A1A1A;
-  --text-secondary: #4A4A4A;
-}
-
-/* Dark mode */
-.dark {
-  --background: #0F0F0F;
-  --accent1: #FF8A65;
-  --accent2: #FFC107;
-  --text-primary: #F9F9F9;
-  --text-secondary: #B0B0B0;
 }
 
 /* Custom utility classes */

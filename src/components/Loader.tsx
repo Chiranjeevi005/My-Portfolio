@@ -50,11 +50,11 @@ const Loader = () => {
   if (!showLoader) return null;
 
   return (
-    <div className="loader-overlay fixed inset-0 bg-lightBg dark:bg-darkBg flex items-center justify-center z-50">
+    <div className="loader-overlay fixed inset-0 bg-light-bgPrimary dark:bg-dark-bgPrimary flex items-center justify-center z-50">
       <div className="relative w-64 h-64">
-        <div className="blob absolute top-0 left-0 w-32 h-32 bg-accent1Light dark:bg-accent1Dark rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-        <div className="blob absolute top-0 right-0 w-32 h-32 bg-accent2Light dark:bg-accent2Dark rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="blob absolute bottom-0 left-1/2 w-32 h-32 bg-accent1Light dark:bg-accent1Dark rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+        <div className="blob absolute top-0 left-0 w-32 h-32 bg-light-textAccent dark:bg-dark-textAccent rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div className="blob absolute top-0 right-0 w-32 h-32 bg-light-textHighlight dark:bg-dark-textHighlight rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="blob absolute bottom-0 left-1/2 w-32 h-32 bg-light-textAccent dark:bg-dark-textAccent rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
       </div>
     </div>
   );

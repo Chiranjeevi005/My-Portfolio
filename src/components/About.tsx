@@ -91,41 +91,41 @@ const About = () => {
     <section 
       id="about" 
       ref={aboutRef}
-      className="section bg-lightBg dark:bg-darkBg transition-colors duration-700"
+      className="section bg-light-bgPrimary dark:bg-dark-bgPrimary transition-colors duration-700"
     >
       <div className="container mx-auto">
         <div className="flex flex-col lg:flex-row gap-12 items-center">
           <div className="flex-1">
-            <h2 className="animate-element text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-textPrimaryLight dark:text-textPrimaryDark font-heading transition-colors duration-700">
+            <h2 className="animate-element text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-light-textPrimary dark:text-dark-textPrimary font-heading transition-colors duration-700">
               About Me
             </h2>
-            <p className="animate-element text-textSecondaryLight dark:text-textSecondaryDark text-lg mb-6 transition-colors duration-700">
+            <p className="animate-element text-light-textSecondary dark:text-dark-textSecondary text-lg mb-6 transition-colors duration-700">
               I'm a passionate full-stack developer with expertise in creating modern web applications. 
               With a strong foundation in both frontend and backend technologies, I bring ideas to life 
               through clean, efficient, and scalable code.
             </p>
-            <p className="animate-element text-textSecondaryLight dark:text-textSecondaryDark text-lg mb-6 transition-colors duration-700">
+            <p className="animate-element text-light-textSecondary dark:text-dark-textSecondary text-lg mb-6 transition-colors duration-700">
               My approach combines technical excellence with creative problem-solving to deliver 
               exceptional digital experiences that engage users and achieve business goals.
             </p>
-            <p className="animate-element text-textSecondaryLight dark:text-textSecondaryDark text-lg transition-colors duration-700">
+            <p className="animate-element text-light-textSecondary dark:text-dark-textSecondary text-lg transition-colors duration-700">
               When I'm not coding, you can find me exploring new technologies, contributing to 
               open-source projects, or sharing knowledge with the developer community.
             </p>
           </div>
           
           <div className="flex-1">
-            <h3 className="animate-element text-2xl font-bold mb-6 text-textPrimaryLight dark:text-textPrimaryDark font-heading transition-colors duration-700">
+            <h3 className="animate-element text-2xl font-bold mb-6 text-light-textPrimary dark:text-dark-textPrimary font-heading transition-colors duration-700">
               Skills & Technologies
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               {skills.map((skill, index) => (
                 <div
                   key={index}
-                  className="skill-badge bg-white dark:bg-gray-800 rounded-xl p-4 flex flex-col items-center justify-center border border-accent1Light/20 dark:border-accent1Dark/20 shadow transition-all duration-300 ease-in-out"
+                  className="skill-badge bg-light-bgSurface dark:bg-dark-bgSurface rounded-xl p-4 flex flex-col items-center justify-center border border-light-border dark:border-dark-border shadow transition-all duration-300 ease-in-out"
                 >
                   <span className="text-2xl mb-2">{skill.icon}</span>
-                  <span className="text-textPrimaryLight dark:text-textPrimaryDark font-medium transition-colors duration-700">
+                  <span className="text-light-textPrimary dark:text-dark-textPrimary font-medium transition-colors duration-700">
                     {skill.name}
                   </span>
                 </div>

@@ -84,14 +84,14 @@ const Features = () => {
     <section 
       id="features" 
       ref={featuresRef}
-      className="section bg-lightBg dark:bg-darkBg transition-colors duration-700"
+      className="section bg-light-bgPrimary dark:bg-dark-bgPrimary transition-colors duration-700"
     >
       <div className="container mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-textPrimaryLight dark:text-textPrimaryDark font-heading transition-colors duration-700">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-light-textPrimary dark:text-dark-textPrimary font-heading transition-colors duration-700">
             Feature Highlights
           </h2>
-          <p className="text-xl max-w-2xl mx-auto text-textSecondaryLight dark:text-textSecondaryDark transition-colors duration-700">
+          <p className="text-xl max-w-2xl mx-auto text-light-textSecondary dark:text-dark-textSecondary transition-colors duration-700">
             Discover the key elements that make our digital experiences exceptional
           </p>
         </div>
@@ -100,13 +100,13 @@ const Features = () => {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="feature-card bg-white dark:bg-gray-800 rounded-2xl p-6 border border-accent1Light/20 dark:border-accent1Dark/20 shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out"
+              className="feature-card bg-light-bgSurface dark:bg-dark-bgSurface rounded-2xl p-6 border border-light-border dark:border-dark-border shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out"
             >
               <div className="text-4xl mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-bold mb-3 text-textPrimaryLight dark:text-textPrimaryDark transition-colors duration-700">
+              <h3 className="text-xl font-bold mb-3 text-light-textPrimary dark:text-dark-textPrimary transition-colors duration-700">
                 {feature.title}
               </h3>
-              <p className="text-textSecondaryLight dark:text-textSecondaryDark transition-colors duration-700">
+              <p className="text-light-textSecondary dark:text-dark-textSecondary transition-colors duration-700">
                 {feature.description}
               </p>
             </div>

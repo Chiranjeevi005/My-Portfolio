@@ -10,20 +10,71 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        lightBg: 'var(--background)',
-        darkBg: 'var(--background)',
-        accent1Light: 'var(--accent1)',
-        accent2Light: 'var(--accent2)',
-        accent1Dark: 'var(--accent1)',
-        accent2Dark: 'var(--accent2)',
-        textPrimaryLight: 'var(--text-primary)',
-        textSecondaryLight: 'var(--text-secondary)',
-        textPrimaryDark: 'var(--text-primary)',
-        textSecondaryDark: 'var(--text-secondary)',
+        light: {
+          // Background colors
+          bgPrimary: '#FFF9F3',
+          bgSecondary: '#FFF3E9',
+          bgSurface: '#FFFFFF',
+          
+          // Text colors
+          textPrimary: '#3A2D28',
+          textSecondary: '#6E5C55',
+          textMuted: '#8A6E64',
+          textAccent: '#E85D45',
+          textHighlight: '#D7745B',
+          
+          // Border colors
+          border: '#E8D5C8',
+          
+          // Button colors
+          buttonPrimary: '#E85D45',
+          buttonHover: '#D94A33',
+          buttonText: '#FFFFFF',
+          
+          // Card colors
+          cardBg: '#FFFFFF',
+          cardBorder: '#F2E5D9',
+          
+          // Link colors
+          link: '#FF6F61',
+          linkHover: '#D94A33',
+        },
+        dark: {
+          // Background colors
+          bgPrimary: '#181210',
+          bgSecondary: '#1E1614',
+          bgSurface: '#241A17',
+          
+          // Text colors
+          textPrimary: '#F6E8D8',
+          textSecondary: '#DAB9A0',
+          textMuted: '#B8947A',
+          textAccent: '#FF8A5C',
+          textHighlight: '#FFC48A',
+          
+          // Border colors
+          border: '#3C2E2A',
+          
+          // Button colors
+          buttonPrimary: '#FF8A5C',
+          buttonHover: '#FF9966',
+          buttonText: '#1E1614',
+          
+          // Card colors
+          cardBg: '#241A17',
+          cardBorder: '#3C2E2A',
+          
+          // Link colors
+          link: '#FF9D6E',
+          linkHover: '#FFB185',
+        },
       },
       fontFamily: {
         heading: ['Poppins', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
+      },
+      transitionDuration: {
+        DEFAULT: '700ms',
       },
       borderRadius: { 
         xl: '1.25rem' 
