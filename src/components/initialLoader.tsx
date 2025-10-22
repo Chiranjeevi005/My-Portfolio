@@ -86,8 +86,9 @@ export default function InitialLoader({ onFinish, durationMs = 3000 }: Props) {
       const seed = index * 10;
       const x = (seededRandom(seed) - 0.5) * 200;
       const y = (seededRandom(seed + 1) - 0.5) * 200;
-      const size = seededRandom(seed + 2) * 15 + 5;
-      const delay = seededRandom(seed + 3) * 2;
+      // Remove unused variables
+      //_ = seededRandom(seed + 2) * 15 + 5;
+      //_ = seededRandom(seed + 3) * 2;
       
       tl.fromTo(
         particle,

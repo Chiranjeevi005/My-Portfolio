@@ -35,7 +35,6 @@ const Contact = () => {
 
   return (
     <section 
-      id="contact" 
       ref={contactRef}
       className="section bg-light-bgPrimary dark:bg-dark-bgPrimary transition-colors duration-700"
     >

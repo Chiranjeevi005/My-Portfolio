@@ -89,7 +89,6 @@ const About = () => {
 
   return (
     <section 
-      id="about" 
       ref={aboutRef}
       className="section bg-light-bgPrimary dark:bg-dark-bgPrimary transition-colors duration-700"
     >

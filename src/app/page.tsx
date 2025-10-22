@@ -10,6 +10,8 @@ import EntrepreneurialTimeline from '@/components/EntrepreneurialTimeline';
 import SkillMatrix from '@/components/SkillMatrix';
 import CallToAction from '@/components/CallToAction';
 import Footer from '@/components/Footer';
+import About from '@/components/About';
+import Contact from '@/components/Contact';
 
 export default function Home() {
   const [showLoader, setShowLoader] = useState(true);
@@ -36,13 +38,21 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-light-bgPrimary dark:bg-dark-bgPrimary text-light-textPrimary dark:text-dark-textPrimary">
       <Navbar />
-      <main className="flex-grow pt-20">
+      <main className="flex-grow pt-16 md:pt-20">
         <Hero />
-        <WhatIDo />
-        <FeaturedWork />
-        <EntrepreneurialTimeline />
-        <SkillMatrix />
-        <CallToAction />
+        <div id="about">
+          <About />
+        </div>
+        <div id="works">
+          <WhatIDo />
+          <FeaturedWork />
+          <EntrepreneurialTimeline />
+          <SkillMatrix />
+        </div>
+        <div id="contact">
+          <CallToAction />
+          <Contact />
+        </div>
       </main>
       <Footer />
     </div>
