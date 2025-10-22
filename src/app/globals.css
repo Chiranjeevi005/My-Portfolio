@@ -262,11 +262,15 @@ button {
     transform: translateY(0) translateX(0);
   }
   50% {
-    transform: translateY(-20px) translateX(10px);
+    transform: translateY(-25px) translateX(15px);
   }
   100% {
     transform: translateY(0) translateX(0);
   }
+}
+
+.float-animation {
+  animation: float 6s ease-in-out infinite;
 }
 
 /* Smooth transitions */
@@ -297,4 +301,39 @@ button {
 /* Milestone hover transition */
 .milestone-hover {
   transition: all 0.3s ease-in-out;
+}
+
+/* Sphere-specific animations */
+@keyframes sphere-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 0 50px rgba(255, 111, 97, 0.9), inset 0 0 40px rgba(255, 255, 255, 0.7), 0 0 100px rgba(255, 111, 97, 0.4);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+    box-shadow: 0 0 70px rgba(255, 111, 97, 1), inset 0 0 50px rgba(255, 255, 255, 0.9), 0 0 150px rgba(255, 111, 97, 0.6);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 0 50px rgba(255, 111, 97, 0.9), inset 0 0 40px rgba(255, 255, 255, 0.7), 0 0 100px rgba(255, 111, 97, 0.4);
+  }
+}
+
+.sphere-pulse {
+  animation: sphere-pulse 4s infinite ease-in-out;
+}
+
+/* Enhanced 3D tilt effect */
+.perspective-container {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.transform-3d {
+  transform-style: preserve-3d;
+}
+
+/* Glow effect for important elements */
+.glow-effect {
+  box-shadow: 0 0 20px rgba(255, 111, 97, 0.5);
 }

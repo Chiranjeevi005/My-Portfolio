@@ -431,7 +431,7 @@ const FeaturedWork = () => {
         <h2 className={`section-title text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-12 sm:mb-16 text-center font-heading ${
           isDarkMode ? 'text-[#F6E8D8]' : 'text-[#2A2A2A]'
         }`}>
-          Featured Work
+          Work That Matters
         </h2>
         
         <div className="space-y-12 sm:space-y-16">

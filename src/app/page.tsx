@@ -6,8 +6,7 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 
 import FeaturedWork from '@/components/FeaturedWork';
-
-import SkillMatrix from '@/components/SkillMatrix';
+import Skills from '@/components/Skills';
 import CallToAction from '@/components/CallToAction';
 import Footer from '@/components/Footer';
 import About from '@/components/About';
@@ -45,7 +44,7 @@ export default function Home() {
         </div>
         <div id="works">
           <FeaturedWork />
-          <SkillMatrix />
+          <Skills />
         </div>
         <div id="contact">
           <CallToAction />
