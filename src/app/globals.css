@@ -273,3 +273,28 @@ button {
 .smooth-transition {
   transition: all 0.5s cubic-bezier(0.76, 0, 0.24, 1);
 }
+
+/* Pulse animation */
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Milestone hover transition */
+.milestone-hover {
+  transition: all 0.3s ease-in-out;
+}

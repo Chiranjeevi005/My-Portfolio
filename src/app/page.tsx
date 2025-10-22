@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 import InitialLoader from '@/components/initialLoader';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
-import WhatIDo from '@/components/WhatIDo';
+
 import FeaturedWork from '@/components/FeaturedWork';
-import EntrepreneurialTimeline from '@/components/EntrepreneurialTimeline';
+
 import SkillMatrix from '@/components/SkillMatrix';
 import CallToAction from '@/components/CallToAction';
 import Footer from '@/components/Footer';
@@ -44,9 +44,7 @@ export default function Home() {
           <About />
         </div>
         <div id="works">
-          <WhatIDo />
           <FeaturedWork />
-          <EntrepreneurialTimeline />
           <SkillMatrix />
         </div>
         <div id="contact">
