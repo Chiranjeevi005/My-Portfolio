@@ -1,80 +1,88 @@
 @import "tailwindcss";
 
 :root {
-  /* Background colors */
+  /* 🌞 LIGHT MODE — Minimal Cream & Coral */
+  --color-bg-primary-light: #FFF9F3;
+  --color-bg-secondary-light: #FFF3E9;
+  --color-bg-surface-light: #FFFFFF;
+  --color-text-primary-light: #2D1B18;
+  --color-text-secondary-light: #5A3E36;
+  --color-text-muted-light: #9B7C72;
+  --color-text-accent-light: #E85D45;
+  --color-border-light: #E8D5C8;
+  --color-button-primary-light: #E85D45;
+  --color-button-hover-light: #D94A33;
+  --color-button-text-light: #FFFFFF;
+  --color-card-bg-light: #FFFFFF;
+  --color-card-border-light: #F2E5D9;
+  --color-link-light: #FF6F61;
+  --color-link-hover-light: #D94A33;
+
+  /* 🌙 DARK MODE — Warm Futuristic */
+  --color-bg-primary-dark: #181210;
+  --color-bg-secondary-dark: #1E1614;
+  --color-bg-surface-dark: #241A17;
+  --color-text-primary-dark: #F8E8D8;
+  --color-text-secondary-dark: #D9BFAE;
+  --color-text-muted-dark: #A07E69;
+  --color-text-accent-dark: #FF8A5C;
+  --color-border-dark: #3C2E2A;
+  --color-button-primary-dark: #FF8A5C;
+  --color-button-hover-dark: #FF9966;
+  --color-button-text-dark: #1E1614;
+  --color-card-bg-dark: #241A17;
+  --color-card-border-dark: #3C2E2A;
+  --color-link-dark: #FF9966;
+  --color-link-hover-dark: #FFB185;
+
+  /* Legacy variables for compatibility */
   --color-bg-primary: #FFF9F3;
   --color-bg-secondary: #FFF3E9;
   --color-bg-surface: #FFFFFF;
-  
-  /* Text colors */
-  --color-text-primary: #3A2D28;
-  --color-text-secondary: #6E5C55;
-  --color-text-muted: #8A6E64;
+  --color-text-primary: #2D1B18;
+  --color-text-secondary: #5A3E36;
+  --color-text-muted: #9B7C72;
   --color-text-accent: #E85D45;
-  --color-text-highlight: #D7745B;
-  
-  /* Border colors */
   --color-border: #E8D5C8;
-  
-  /* Button colors */
   --color-button-primary: #E85D45;
   --color-button-hover: #D94A33;
   --color-button-text: #FFFFFF;
-  
-  /* Card colors */
   --color-card-bg: #FFFFFF;
   --color-card-border: #F2E5D9;
-  
-  /* Link colors */
   --color-link: #FF6F61;
   --color-link-hover: #D94A33;
-  
-  /* Legacy variables for compatibility */
   --bg-color: #FFF9F3;
-  --text-primary: #3A2D28;
-  --text-secondary: #6E5C55;
+  --text-primary: #2D1B18;
+  --text-secondary: #5A3E36;
   --text-accent: #E85D45;
-  --text-muted: #8A6E64;
+  --text-muted: #9B7C72;
   --primary-color: #E85D45;
   --secondary-color: #F4C27A;
   --accent-color: #2A2A2A;
 }
 
 .dark {
-  /* Background colors */
+  /* 🌙 DARK MODE — Warm Futuristic */
   --color-bg-primary: #181210;
   --color-bg-secondary: #1E1614;
   --color-bg-surface: #241A17;
-  
-  /* Text colors */
-  --color-text-primary: #F6E8D8;
-  --color-text-secondary: #DAB9A0;
-  --color-text-muted: #B8947A;
+  --color-text-primary: #F8E8D8;
+  --color-text-secondary: #D9BFAE;
+  --color-text-muted: #A07E69;
   --color-text-accent: #FF8A5C;
-  --color-text-highlight: #FFC48A;
-  
-  /* Border colors */
   --color-border: #3C2E2A;
-  
-  /* Button colors */
   --color-button-primary: #FF8A5C;
   --color-button-hover: #FF9966;
   --color-button-text: #1E1614;
-  
-  /* Card colors */
   --color-card-bg: #241A17;
   --color-card-border: #3C2E2A;
-  
-  /* Link colors */
-  --color-link: #FF9D6E;
+  --color-link: #FF9966;
   --color-link-hover: #FFB185;
-  
-  /* Legacy variables for compatibility */
   --bg-color: #181210;
-  --text-primary: #F6E8D8;
-  --text-secondary: #DAB9A0;
+  --text-primary: #F8E8D8;
+  --text-secondary: #D9BFAE;
   --text-accent: #FF8A5C;
-  --text-muted: #B8947A;
+  --text-muted: #A07E69;
   --primary-color: #FF8A5C;
   --secondary-color: #FFC107;
   --accent-color: #F4511E;
@@ -236,4 +244,32 @@ button {
     padding-left: 4rem;
     padding-right: 4rem;
   }
+}
+
+/* Scrollbar hide utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Floating animation for particles */
+@keyframes float {
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-20px) translateX(10px);
+  }
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+}
+
+/* Smooth transitions */
+.smooth-transition {
+  transition: all 0.5s cubic-bezier(0.76, 0, 0.24, 1);
 }

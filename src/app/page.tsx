@@ -4,10 +4,11 @@ import { useState, useEffect } from 'react';
 import InitialLoader from '@/components/initialLoader';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
-import Features from '@/components/Features';
-import Projects from '@/components/Projects';
-import About from '@/components/About';
-import Contact from '@/components/Contact';
+import WhatIDo from '@/components/WhatIDo';
+import FeaturedWork from '@/components/FeaturedWork';
+import EntrepreneurialTimeline from '@/components/EntrepreneurialTimeline';
+import SkillMatrix from '@/components/SkillMatrix';
+import CallToAction from '@/components/CallToAction';
 import Footer from '@/components/Footer';
 
 export default function Home() {
@@ -28,7 +29,7 @@ export default function Home() {
 
   // Always show the loader on refresh
   if (showLoader) {
-    return <InitialLoader onFinish={handleLoaderFinish} />;
+    return <InitialLoader onFinish={handleLoaderFinish} durationMs={3000} />;
   }
 
   // Otherwise, render the main content
@@ -37,10 +38,11 @@ export default function Home() {
       <Navbar />
       <main className="flex-grow pt-20">
         <Hero />
-        <Features />
-        <Projects />
-        <About />
-        <Contact />
+        <WhatIDo />
+        <FeaturedWork />
+        <EntrepreneurialTimeline />
+        <SkillMatrix />
+        <CallToAction />
       </main>
       <Footer />
     </div>

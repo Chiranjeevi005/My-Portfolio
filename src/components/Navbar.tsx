@@ -35,17 +35,17 @@ const Navbar = () => {
             <Link href="/" className="text-light-textPrimary dark:text-dark-textPrimary hover:text-light-textAccent dark:hover:text-dark-textAccent transition-colors duration-300 font-medium">
               Home
             </Link>
-            <Link href="/#features" className="text-light-textPrimary dark:text-dark-textPrimary hover:text-light-textAccent dark:hover:text-dark-textAccent transition-colors duration-300 font-medium">
-              Features
+            <Link href="/#what-i-do" className="text-light-textPrimary dark:text-dark-textPrimary hover:text-light-textAccent dark:hover:text-dark-textAccent transition-colors duration-300 font-medium">
+              What I Do
             </Link>
-            <Link href="/#projects" className="text-light-textPrimary dark:text-dark-textPrimary hover:text-light-textAccent dark:hover:text-dark-textAccent transition-colors duration-300 font-medium">
-              Projects
+            <Link href="/#featured-work" className="text-light-textPrimary dark:text-dark-textPrimary hover:text-light-textAccent dark:hover:text-dark-textAccent transition-colors duration-300 font-medium">
+              Work
             </Link>
-            <Link href="/#about" className="text-light-textPrimary dark:text-dark-textPrimary hover:text-light-textAccent dark:hover:text-dark-textAccent transition-colors duration-300 font-medium">
-              About
+            <Link href="/#journey" className="text-light-textPrimary dark:text-dark-textPrimary hover:text-light-textAccent dark:hover:text-dark-textAccent transition-colors duration-300 font-medium">
+              Journey
             </Link>
-            <Link href="/#contact" className="text-light-textPrimary dark:text-dark-textPrimary hover:text-light-textAccent dark:hover:text-dark-textAccent transition-colors duration-300 font-medium">
-              Contact
+            <Link href="/#skills" className="text-light-textPrimary dark:text-dark-textPrimary hover:text-light-textAccent dark:hover:text-dark-textAccent transition-colors duration-300 font-medium">
+              Skills
             </Link>
             <ThemeToggle />
           </div>
@@ -75,17 +75,17 @@ const Navbar = () => {
               <Link href="/" className="text-light-textPrimary dark:text-dark-textPrimary hover:text-light-textAccent dark:hover:text-dark-textAccent transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>
                 Home
               </Link>
-              <Link href="/#features" className="text-light-textPrimary dark:text-dark-textPrimary hover:text-light-textAccent dark:hover:text-dark-textAccent transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>
-                Features
+              <Link href="/#what-i-do" className="text-light-textPrimary dark:text-dark-textPrimary hover:text-light-textAccent dark:hover:text-dark-textAccent transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>
+                What I Do
               </Link>
-              <Link href="/#projects" className="text-light-textPrimary dark:text-dark-textPrimary hover:text-light-textAccent dark:hover:text-dark-textAccent transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>
-                Projects
+              <Link href="/#featured-work" className="text-light-textPrimary dark:text-dark-textPrimary hover:text-light-textAccent dark:hover:text-dark-textAccent transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>
+                Work
               </Link>
-              <Link href="/#about" className="text-light-textPrimary dark:text-dark-textPrimary hover:text-light-textAccent dark:hover:text-dark-textAccent transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>
-                About
+              <Link href="/#journey" className="text-light-textPrimary dark:text-dark-textPrimary hover:text-light-textAccent dark:hover:text-dark-textAccent transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>
+                Journey
               </Link>
-              <Link href="/#contact" className="text-light-textPrimary dark:text-dark-textPrimary hover:text-light-textAccent dark:hover:text-dark-textAccent transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>
-                Contact
+              <Link href="/#skills" className="text-light-textPrimary dark:text-dark-textPrimary hover:text-light-textAccent dark:hover:text-dark-textAccent transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>
+                Skills
               </Link>
             </div>
           </div>

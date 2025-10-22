@@ -36,7 +36,7 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-accent1Light/10 dark:border-accent1Dark/10 transition-colors duration-700">
+        <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-light-border dark:border-dark-border transition-colors duration-700">
           <p className="text-light-textSecondary dark:text-dark-textSecondary mb-4 md:mb-0 transition-colors duration-700">
             © {new Date().getFullYear()} Portfolio. All rights reserved.
           </p>

@@ -2,10 +2,12 @@
 
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { useTheme } from 'next-themes';
 
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null);
-  const lettersRef = useRef<HTMLSpanElement[]>([]);
+  const shapeRef = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
 
   // Deterministic random number generator
   const seededRandom = (seed: number) => {
@@ -15,47 +17,11 @@ const Hero = () => {
 
   useEffect(() => {
     if (typeof window !== 'undefined' && heroRef.current) {
-      // Animate background particles
-      const particles = heroRef.current.querySelectorAll('.particle');
-      particles.forEach((particle, index) => {
+      // Animate headline entrance
+      const headline = heroRef.current.querySelector('.hero-headline');
+      if (headline) {
         gsap.fromTo(
-          particle,
-          { 
-            opacity: 0,
-            scale: 0,
-            x: (seededRandom(index * 10) * 100) - 50,
-            y: (seededRandom(index * 20) * 100) - 50,
-          },
-          {
-            opacity: 0.7,
-            scale: 1,
-            x: 0,
-            y: 0,
-            duration: 1.5,
-            delay: index * 0.1,
-            ease: 'back.out(1.7)',
-          }
-        );
-      });
-
-      // Animate floating shapes
-      const shapes = heroRef.current.querySelectorAll('.floating-shape');
-      shapes.forEach((shape, index) => {
-        gsap.to(shape, {
-          y: index % 2 === 0 ? -20 : 20,
-          rotation: index % 2 === 0 ? -10 : 10,
-          duration: 3,
-          repeat: -1,
-          yoyo: true,
-          ease: 'sine.inOut',
-          delay: index * 0.2,
-        });
-      });
-
-      // Animate headline letters
-      lettersRef.current.forEach((letter, index) => {
-        gsap.fromTo(
-          letter,
+          headline,
           { 
             opacity: 0,
             y: 50,
@@ -63,20 +29,19 @@ const Hero = () => {
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
-            delay: index * 0.05,
-            ease: 'power2.out',
+            duration: 1.2,
+            ease: 'power3.out',
           }
         );
-      });
+      }
 
       // Animate subtitle
-      const subtitle = heroRef.current.querySelector('.subtitle');
+      const subtitle = heroRef.current.querySelector('.hero-subtitle');
       if (subtitle) {
         gsap.fromTo(
           subtitle,
           { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 1, delay: 0.5, ease: 'power2.out' }
+          { opacity: 1, y: 0, duration: 1, delay: 0.3, ease: 'power2.out' }
         );
       }
 
@@ -86,14 +51,58 @@ const Hero = () => {
         gsap.fromTo(
           button,
           { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 1, delay: 0.8 + index * 0.1, ease: 'power2.out' }
+          { opacity: 1, y: 0, duration: 1, delay: 0.6 + index * 0.1, ease: 'power2.out' }
         );
       });
-    }
-  }, []);
 
-  const headline = "Building Digital Experiences";
-  const headlineLetters = headline.split("");
+      // Animate layered shapes with parallax effect
+      if (shapeRef.current) {
+        const handleMouseMove = (e: MouseEvent) => {
+          if (!shapeRef.current) return;
+          
+          const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+          const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+          
+          gsap.to(shapeRef.current, {
+            duration: 0.5,
+            x: xAxis,
+            y: yAxis,
+            ease: 'power2.out'
+          });
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+      }
+    }
+  }, [theme]);
+
+  // Handle scroll effect for hero section
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!heroRef.current || !shapeRef.current) return;
+      
+      const scrollPosition = window.scrollY;
+      const heroSection = heroRef.current;
+      
+      // Move hero content upward on scroll
+      gsap.to(heroSection, {
+        y: -scrollPosition * 0.5,
+        duration: 0.1,
+        ease: 'none'
+      });
+      
+      // Move accent shape sideways on scroll
+      gsap.to(shapeRef.current, {
+        x: scrollPosition * 0.3,
+        duration: 0.1,
+        ease: 'none'
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Predefined particle positions and sizes for consistent SSR
   const particleData = [
@@ -112,11 +121,6 @@ const Hero = () => {
     { width: 15, height: 15, top: 65, left: 35 },
     { width: 11, height: 11, top: 85, left: 90 },
     { width: 16, height: 16, top: 30, left: 5 },
-    { width: 13, height: 13, top: 50, left: 65 },
-    { width: 18, height: 18, top: 70, left: 20 },
-    { width: 10, height: 10, top: 95, left: 80 },
-    { width: 14, height: 14, top: 5, left: 45 },
-    { width: 17, height: 17, top: 35, left: 95 },
   ];
 
   return (
@@ -124,50 +128,68 @@ const Hero = () => {
       ref={heroRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-light-bgPrimary dark:bg-dark-bgPrimary transition-colors duration-700"
     >
-      {/* Background particles */}
-      {particleData.map((particle, i) => (
-        <div
-          key={i}
-          className="particle absolute rounded-full bg-light-textAccent dark:bg-dark-textAccent opacity-20"
-          style={{
-            width: `${particle.width}px`,
-            height: `${particle.height}px`,
-            top: `${particle.top}%`,
-            left: `${particle.left}%`,
-          }}
-        />
-      ))}
+      {/* Layered shapes with gradients */}
+      <div
+        ref={shapeRef}
+        className="absolute w-[600px] h-[600px] rounded-full opacity-20 pointer-events-none transition-colors duration-700"
+        style={{
+          background: theme === 'dark' 
+            ? 'radial-gradient(ellipse at center, var(--color-text-accent-dark) 0%, rgba(255,138,92,0) 70%)'
+            : 'radial-gradient(ellipse at center, var(--color-text-accent-light) 0%, rgba(232,93,69,0) 70%)',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          filter: 'blur(60px)',
+        }}
+      ></div>
+      
+      {/* Secondary shape */}
+      <div
+        className="absolute w-[400px] h-[400px] rounded-full opacity-15 pointer-events-none transition-colors duration-700"
+        style={{
+          background: theme === 'dark' 
+            ? 'radial-gradient(ellipse at center, var(--color-text-secondary-dark) 0%, rgba(217,191,174,0) 70%)'
+            : 'radial-gradient(ellipse at center, var(--color-text-secondary-light) 0%, rgba(90,62,54,0) 70%)',
+          top: '40%',
+          left: '60%',
+          transform: 'translate(-50%, -50%)',
+          filter: 'blur(50px)',
+        }}
+      ></div>
 
-      {/* Floating shapes */}
-      <div className="floating-shape absolute top-20 left-10 w-24 h-24 border-2 border-light-textAccent dark:border-dark-textAccent rotate-45 opacity-20 transition-colors duration-700"></div>
-      <div className="floating-shape absolute bottom-40 right-20 w-16 h-16 rounded-full bg-light-textAccent dark:bg-dark-textAccent opacity-20 transition-colors duration-700"></div>
-      <div className="floating-shape absolute top-1/3 right-1/4 w-20 h-20 border-2 border-light-textAccent dark:border-dark-textAccent opacity-20 transition-colors duration-700"></div>
+      {/* Floating particles for depth */}
+      <div className="absolute inset-0 overflow-hidden">
+        {particleData.map((particle, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full opacity-10"
+            style={{
+              background: theme === 'dark' 
+                ? 'var(--color-text-accent-dark)' 
+                : 'var(--color-text-accent-light)',
+              width: `${particle.width}px`,
+              height: `${particle.height}px`,
+              top: `${particle.top}%`,
+              left: `${particle.left}%`,
+              animation: `float ${seededRandom(i * 10) * 10 + 10}s infinite ease-in-out`,
+              animationDelay: `${seededRandom(i * 20) * 5}s`,
+            }}
+          />
+        ))}
+      </div>
 
       <div className="container mx-auto px-4 text-center relative z-10">
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-light-textPrimary dark:text-dark-textPrimary font-heading transition-colors duration-700">
-          {headlineLetters.map((letter, index) => (
-            <span
-              key={index}
-              ref={(el) => {
-                if (el) lettersRef.current[index] = el;
-              }}
-              className="inline-block hover:text-light-textAccent dark:hover:text-dark-textAccent transition-colors duration-300 cursor-default"
-            >
-              {letter === " " ? "\u00A0" : letter}
-            </span>
-          ))}
+        <h1 className="hero-headline text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-light-textPrimary dark:text-dark-textPrimary font-heading transition-colors duration-700">
+          I engineer digital experiences that build the future.
         </h1>
         
-        <p className="subtitle text-xl md:text-2xl mb-10 max-w-2xl mx-auto text-light-textSecondary dark:text-dark-textSecondary transition-colors duration-700">
-          Crafting immersive digital experiences with cutting-edge technology and creative design
+        <p className="hero-subtitle text-xl md:text-2xl mb-10 max-w-2xl mx-auto text-light-textSecondary dark:text-dark-textSecondary transition-colors duration-700">
+          Crafting immersive solutions with precision and creativity
         </p>
         
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <button className="cta-button glow-hover bg-light-buttonPrimary dark:bg-dark-buttonPrimary text-light-buttonText dark:text-dark-buttonText px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:bg-light-buttonHover dark:hover:bg-dark-buttonHover">
-            View My Work
-          </button>
-          <button className="cta-button pulse-hover border-2 border-light-buttonPrimary dark:border-dark-buttonPrimary text-light-buttonPrimary dark:text-dark-buttonPrimary px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:border-light-buttonHover dark:hover:border-dark-buttonHover hover:text-light-buttonHover dark:hover:text-dark-buttonHover">
-            Get In Touch
+            Explore My Work
           </button>
         </div>
       </div>
