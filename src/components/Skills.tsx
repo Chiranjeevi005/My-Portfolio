@@ -17,7 +17,26 @@ const Skills = () => {
   const rightNodesRef = useRef<HTMLDivElement[]>([]);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<HTMLDivElement[]>([]);
+  const [deviceType, setDeviceType] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
   
+  // Check device type
+  useEffect(() => {
+    const checkDeviceType = () => {
+      const width = window.innerWidth;
+      if (width < 768) {
+        setDeviceType('mobile');
+      } else if (width < 1024) {
+        setDeviceType('tablet');
+      } else {
+        setDeviceType('desktop');
+      }
+    };
+    
+    checkDeviceType();
+    window.addEventListener('resize', checkDeviceType);
+    return () => window.removeEventListener('resize', checkDeviceType);
+  }, []);
+
   // Skill data for the two hemispheres
   const businessSkills = [
     { 
@@ -372,9 +391,10 @@ const Skills = () => {
         </div>
 
         <div className="flex justify-center">
+          {/* Main sphere container with responsive sizing */}
           <div 
             ref={sphereRef}
-            className="relative w-full max-w-3xl h-[600px] rounded-full perspective-1000 flex items-center justify-center"
+            className={`relative w-full max-w-3xl ${deviceType === 'mobile' ? 'h-[400px]' : 'h-[600px]'} rounded-full perspective-1000 flex items-center justify-center`}
             style={{
               background: 'radial-gradient(circle at 30% 30%, rgba(255, 111, 97, 0.1), transparent 70%), radial-gradient(circle at 70% 70%, rgba(184, 115, 51, 0.1), transparent 70%)',
               border: '1px solid rgba(255, 111, 97, 0.3)',
@@ -433,18 +453,22 @@ const Skills = () => {
               })}
             </svg>
             
-            {/* Labels for the two hemispheres */}
-            <div className="absolute top-1/2 left-1/4 transform -translate-x-1/2 -translate-y-1/2 text-center z-10">
-              <span className="text-lg font-bold text-white bg-[#FF6F61]/80 dark:bg-[#FF9D6E]/90 px-3 py-1 rounded-full shadow-lg whitespace-nowrap">
-                Coding Skills
-              </span>
-            </div>
-            
-            <div className="absolute top-1/2 left-3/4 transform -translate-x-1/2 -translate-y-1/2 text-center z-10">
-              <span className="text-lg font-bold text-[#B87333] bg-[#FDF3E7]/80 dark:bg-[#FFFFFF]/90 px-3 py-1 rounded-full shadow-lg whitespace-nowrap">
-                Entrepreneurial Skills
-              </span>
-            </div>
+            {/* Labels for the two hemispheres - only shown on non-mobile devices */}
+            {deviceType !== 'mobile' && (
+              <>
+                <div className="absolute top-1/2 left-1/4 transform -translate-x-1/2 -translate-y-1/2 text-center z-10">
+                  <span className="text-lg font-bold text-white bg-[#FF6F61]/80 dark:bg-[#FF9D6E]/90 px-3 py-1 rounded-full shadow-lg whitespace-nowrap">
+                    Coding Skills
+                  </span>
+                </div>
+                
+                <div className="absolute top-1/2 left-3/4 transform -translate-x-1/2 -translate-y-1/2 text-center z-10">
+                  <span className="text-lg font-bold text-[#B87333] bg-[#FDF3E7]/80 dark:bg-[#FFFFFF]/90 px-3 py-1 rounded-full shadow-lg whitespace-nowrap">
+                    Entrepreneurial Skills
+                  </span>
+                </div>
+              </>
+            )}
             
             {/* Center orb - "ChiranJeevi" */}
             <div
@@ -534,6 +558,23 @@ const Skills = () => {
             />
           </div>
         </div>
+        
+        {/* Hemisphere labels for mobile view - shown below the sphere */}
+        {deviceType === 'mobile' && (
+          <div className="flex justify-between mt-8 px-4">
+            <div className="text-center">
+              <span className="text-base font-bold text-white bg-[#FF6F61]/80 dark:bg-[#FF9D6E]/90 px-3 py-1 rounded-full shadow-lg">
+                Coding Skills
+              </span>
+            </div>
+            
+            <div className="text-center">
+              <span className="text-base font-bold text-[#B87333] bg-[#FDF3E7]/80 dark:bg-[#FFFFFF]/90 px-3 py-1 rounded-full shadow-lg">
+                Entrepreneurial Skills
+              </span>
+            </div>
+          </div>
+        )}
         
         {/* Microcopy */}
         <div className="mt-16 text-center">

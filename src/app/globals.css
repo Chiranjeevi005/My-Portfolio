@@ -276,6 +276,9 @@ button {
 /* Smooth transitions */
 .smooth-transition {
   transition: all 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+  visibility: visible;
+  opacity: 1;
+  scroll-behavior: smooth;
 }
 
 /* Pulse animation */
@@ -336,4 +339,14 @@ button {
 /* Glow effect for important elements */
 .glow-effect {
   box-shadow: 0 0 20px rgba(255, 111, 97, 0.5);
+}
+
+/* Section styling for proper coordination */
+#about, #works, #skills, #contact {
+  scroll-margin-top: 4rem;
+  padding: 2rem 0;
+  min-height: 100vh;
+  display: block;
+  visibility: visible;
+  opacity: 1;
 }

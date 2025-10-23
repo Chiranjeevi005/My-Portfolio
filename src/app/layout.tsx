@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="bg-light-bgPrimary dark:bg-dark-bgPrimary text-light-textPrimary dark:text-dark-textPrimary" suppressHydrationWarning>
+    <html lang="en" className="bg-light-bgPrimary dark:bg-dark-bgPrimary text-light-textPrimary dark:text-dark-textPrimary scroll-smooth" suppressHydrationWarning>
       <body className={`${inter.variable} ${poppins.variable} font-body`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           {children}

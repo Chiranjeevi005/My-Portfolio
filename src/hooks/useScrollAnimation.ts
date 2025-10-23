@@ -143,7 +143,9 @@ export const useMultipleScrollAnimations = (
 
     // Force refresh ScrollTrigger to ensure proper initialization
     setTimeout(() => {
-      ScrollTrigger.refresh();
+      if (typeof window !== 'undefined' && ScrollTrigger) {
+        ScrollTrigger.refresh();
+      }
     }, 100);
 
     return () => {

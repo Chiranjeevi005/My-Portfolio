@@ -11,6 +11,7 @@ import CallToAction from '@/components/CallToAction';
 import Footer from '@/components/Footer';
 import About from '@/components/About';
 import Contact from '@/components/Contact';
+// Scroll coordination is now handled by useScrollAnimation hooks in individual components
 
 export default function Home() {
   const [showLoader, setShowLoader] = useState(true);
@@ -22,6 +23,8 @@ export default function Home() {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('skipIntro');
     }
+    
+    return () => {};
   }, []);
 
   const handleLoaderFinish = () => {
@@ -38,15 +41,19 @@ export default function Home() {
     <div className="min-h-screen flex flex-col bg-light-bgPrimary dark:bg-dark-bgPrimary text-light-textPrimary dark:text-dark-textPrimary">
       <Navbar />
       <main className="flex-grow pt-16 md:pt-20">
-        <Hero />
-        <div id="about">
+        <div className="smooth-transition">
+          <Hero />
+        </div>
+        <div id="about" className="scroll-mt-16 md:scroll-mt-20 smooth-transition" style={{ visibility: 'visible', opacity: 1 }}>
           <About />
         </div>
-        <div id="works">
+        <div id="works" className="scroll-mt-16 md:scroll-mt-20 smooth-transition" style={{ visibility: 'visible', opacity: 1 }}>
           <FeaturedWork />
+        </div>
+        <div id="skills" className="scroll-mt-16 md:scroll-mt-20 smooth-transition" style={{ visibility: 'visible', opacity: 1 }}>
           <Skills />
         </div>
-        <div id="contact">
+        <div id="contact" className="scroll-mt-16 md:scroll-mt-20 smooth-transition" style={{ visibility: 'visible', opacity: 1 }}>
           <CallToAction />
           <Contact />
         </div>
