@@ -366,30 +366,26 @@ const FeaturedWork = () => {
 
   // Animation configuration based on device type
   const getAnimationConfig = () => {
-    switch (deviceType) {
-      case 'mobile':
-        return {
-          duration: 0.6,
-          delayFactor: 0.1,
-          easing: 'power1.out'
-        };
-      case 'tablet':
-        return {
-          duration: 0.8,
-          delayFactor: 0.15,
-          easing: 'power2.out'
-        };
-      case 'desktop':
-      default:
-        return {
-          duration: 1,
-          delayFactor: 0.2,
-          easing: 'power2.out'
-        };
+    if (deviceType === 'mobile') {
+      return {
+        duration: 0.4,
+        delayFactor: 0.1,
+        easing: 'power1.out'
+      };
+    } else if (deviceType === 'tablet') {
+      return {
+        duration: 0.6,
+        delayFactor: 0.15,
+        easing: 'power2.out'
+      };
+    } else {
+      return {
+        duration: 0.8,
+        delayFactor: 0.2,
+        easing: 'power2.out'
+      };
     }
   };
-
-  const animationConfig = getAnimationConfig();
 
   return (
     <section 
@@ -433,6 +429,12 @@ const FeaturedWork = () => {
         }`}>
           Work That Matters
         </h2>
+        
+        <p className={`text-lg md:text-xl max-w-3xl mx-auto text-center mb-12 sm:mb-16 transition-colors duration-700 ${
+          isDarkMode ? 'text-[#DAB9A0]' : 'text-[#5A3E36]'
+        }`}>
+          Blending technical mastery with business vision — every project reflects an idea built to inspire, scale, and create real impact.
+        </p>
         
         <div className="space-y-12 sm:space-y-16">
           {/* Project 1 - Responsive grid layout (same as Projects 2 & 3) */}
@@ -570,7 +572,7 @@ const FeaturedWork = () => {
           
           {/* Projects 2 & 3 - Responsive grid layout */}
           <div className="project-card grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mt-12 sm:mt-16">
-            {projects.slice(1).map((project, index) => (
+            {projects.slice(1).map((project, _index) => (
               <div 
                 key={project.id}
                 className={`rounded-2xl p-5 sm:p-6 shadow-xl transition-all duration-700 hover:shadow-2xl backdrop-blur-md border ${
@@ -614,20 +616,20 @@ const FeaturedWork = () => {
                       <span className={`button-underline absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 ease-in-out group-hover:w-full ${
                         isDarkMode ? 'bg-[#FF8A5C]' : 'bg-[#E85D45]'
                       }`}></span>
-                  </button>
-                  <button className={`github-button px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium group relative flex items-center ${
-                    isDarkMode ? 'text-[#F6E8D8]' : 'text-[#2A2A2A]'
-                  }`}>
-                    <Github size={14} className="mr-1" />
-                    Code
-                    <span className={`button-underline absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 ease-in-out group-hover:w-full ${
-                      isDarkMode ? 'bg-[#FF8A5C]' : 'bg-[#E85D45]'
-                    }`}></span>
-                  </button>
+                    </button>
+                    <button className={`github-button px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium group relative flex items-center ${
+                      isDarkMode ? 'text-[#F6E8D8]' : 'text-[#2A2A2A]'
+                    }`}>
+                      <Github size={14} className="mr-1" />
+                      Code
+                      <span className={`button-underline absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 ease-in-out group-hover:w-full ${
+                        isDarkMode ? 'bg-[#FF8A5C]' : 'bg-[#E85D45]'
+                      }`}></span>
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
           </div>
         </div>
       </div>

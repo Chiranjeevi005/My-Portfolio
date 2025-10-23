@@ -17,6 +17,7 @@ const Skills = () => {
   const rightNodesRef = useRef<HTMLDivElement[]>([]);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<HTMLDivElement[]>([]);
+  const mobileLabelsRef = useRef<HTMLSpanElement[]>([]);
   const [deviceType, setDeviceType] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
   
   // Check device type
@@ -163,24 +164,67 @@ const Skills = () => {
   // Convert polar coordinates to cartesian
   const polarToCartesian = (angle: number, distance: number) => {
     const rad = (angle * Math.PI) / 180;
+    // Use a smaller scaling factor for mobile to keep nodes within bounds
+    const scaleFactor = deviceType === 'mobile' ? 4 : 3;
     return {
-      x: 50 + (distance * Math.cos(rad)) / 3,
-      y: 50 + (distance * Math.sin(rad)) / 3
+      x: 50 + (distance * Math.cos(rad)) / scaleFactor,
+      y: 50 + (distance * Math.sin(rad)) / scaleFactor
     };
+  };
+
+  // Adjust distance based on device type - more conservative approach
+  const getAdjustedDistance = (distance: number) => {
+    // Less aggressive scaling to avoid overlapping
+    return deviceType === 'mobile' ? distance * 0.85 : 
+           deviceType === 'tablet' ? distance * 0.95 : distance;
+  };
+
+  // Animate connection lines with a drawing effect
+  const animateLines = () => {
+    if (typeof window !== 'undefined' && sphereRef.current) {
+      const lines = sphereRef.current.querySelectorAll('line');
+      lines.forEach((line, index) => {
+        const length = line.getTotalLength();
+        gsap.set(line, {
+          strokeDasharray: length,
+          strokeDashoffset: length,
+          opacity: 0
+        });
+        
+        gsap.to(line, {
+          strokeDashoffset: 0,
+          opacity: 0.6,
+          duration: 1.5,
+          delay: 1.8 + index * 0.05,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: sphereRef.current,
+            start: 'top 90%',
+            toggleActions: 'play none none reverse',
+          }
+        });
+      });
+    }
   };
 
   useEffect(() => {
     if (typeof window !== 'undefined' && sectionRef.current) {
-      // Animate section title
+      // Animate section title with a more dynamic effect
       const title = sectionRef.current.querySelector('.section-title');
       if (title) {
         gsap.fromTo(
           title,
-          { opacity: 0, y: 30 },
+          { 
+            opacity: 0, 
+            y: 50,
+            scale: 0.9
+          },
           {
             opacity: 1,
             y: 0,
-            duration: 1,
+            scale: 1,
+            duration: 1.2,
+            ease: "back.out(1.7)",
             scrollTrigger: {
               trigger: title,
               start: 'top 85%',
@@ -190,17 +234,23 @@ const Skills = () => {
         );
       }
 
-      // Animate section subtitle
+      // Animate section subtitle with a staggered effect
       const subtitle = sectionRef.current.querySelector('.section-subtitle');
       if (subtitle) {
         gsap.fromTo(
           subtitle,
-          { opacity: 0, y: 20 },
+          { 
+            opacity: 0, 
+            y: 30,
+            skewX: -10
+          },
           {
             opacity: 1,
             y: 0,
+            skewX: 0,
             duration: 1,
-            delay: 0.2,
+            ease: "power2.out",
+            delay: 0.3,
             scrollTrigger: {
               trigger: subtitle,
               start: 'top 85%',
@@ -210,27 +260,76 @@ const Skills = () => {
         );
       }
 
-      // Animate sphere container
+      // Animate sphere container with a more complex entrance
       if (sphereRef.current) {
+        // Initial state - smaller and rotated
+        gsap.set(sphereRef.current, {
+          transformPerspective: 1000,
+          transformStyle: "preserve-3d"
+        });
+        
         gsap.fromTo(
           sphereRef.current,
-          { opacity: 0, scale: 0.8 },
+          { 
+            opacity: 0, 
+            scale: 0.5,
+            rotationX: -30,
+            rotationY: -30
+          },
           {
             opacity: 1,
             scale: 1,
-            duration: 1.2,
-            delay: 0.4,
+            rotationX: 0,
+            rotationY: 0,
+            duration: 1.5,
+            ease: "elastic.out(1, 0.7)",
+            delay: 0.5,
             scrollTrigger: {
               trigger: sphereRef.current,
               start: 'top 90%',
               toggleActions: 'play none none reverse',
             },
+            onStart: () => {
+              // Animate the connection lines after sphere appears
+              setTimeout(() => {
+                animateLines();
+              }, 1000);
+              
+              // Add a subtle continuous rotation after initial animation
+              if (sphereRef.current) {
+                gsap.to(sphereRef.current, {
+                  rotationY: 10,
+                  duration: 20,
+                  repeat: -1,
+                  yoyo: true,
+                  ease: "sine.inOut",
+                  delay: 1.5
+                });
+              }
+            }
           }
         );
       }
 
-      // Animate floating particles
+      // Animate floating particles with staggered entrance
       particlesRef.current.forEach((particle, index) => {
+        gsap.fromTo(particle, {
+          opacity: 0,
+          scale: 0
+        }, {
+          opacity: 0.2,
+          scale: 1,
+          duration: 1,
+          delay: 1 + index * 0.05,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: particle.parentElement,
+            start: 'top 95%',
+            toggleActions: 'play none none reverse',
+          }
+        });
+        
+        // Continuous floating animation
         gsap.to(particle, {
           x: `${gsap.utils.random(-20, 20)}px`,
           y: `${gsap.utils.random(-20, 20)}px`,
@@ -239,6 +338,64 @@ const Skills = () => {
           yoyo: true,
           ease: "power1.inOut",
           delay: index * 0.2
+        });
+      });
+
+      // Animate mobile labels if on mobile device
+      if (deviceType === 'mobile' && mobileLabelsRef.current.length > 0) {
+        // Set initial state
+        mobileLabelsRef.current.forEach(label => {
+          if (label) {
+            gsap.set(label, {
+              opacity: 0,
+              y: 20
+            });
+          }
+        });
+        
+        // Animate with stagger
+        mobileLabelsRef.current.forEach((label, index) => {
+          if (label) {
+            gsap.to(label, {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              delay: 1.5 + index * 0.2,
+              ease: "back.out(1.7)",
+              scrollTrigger: {
+                trigger: sphereRef.current,
+                start: 'top 90%',
+                toggleActions: 'play none none reverse',
+              }
+            });
+          }
+        });
+      }
+
+      // Animate skill nodes with a staggered radial entrance
+      const allNodes = [...leftNodesRef.current, ...rightNodesRef.current];
+      
+      // Set initial state for all nodes
+      allNodes.forEach(node => {
+        gsap.set(node, {
+          opacity: 0,
+          scale: 0
+        });
+      });
+      
+      // Animate nodes with staggered timing and bounce effect
+      allNodes.forEach((node, index) => {
+        gsap.to(node, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          delay: 1.2 + index * 0.1,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: sphereRef.current,
+            start: 'top 90%',
+            toggleActions: 'play none none reverse',
+          }
         });
       });
 
@@ -329,14 +486,24 @@ const Skills = () => {
         // Remove the click event listener to prevent modal from opening
       });
 
-      // Animate center orb pulse
+      // Animate center orb pulse with enhanced effect
       if (centerOrbRef.current) {
         gsap.to(centerOrbRef.current, {
-          scale: 1.05,
+          scale: 1.1,
           duration: 2,
           repeat: -1,
           yoyo: true,
-          ease: "power1.inOut"
+          ease: "sine.inOut"
+        });
+        
+        // Add a secondary pulse animation
+        gsap.to(centerOrbRef.current, {
+          scale: 1.05,
+          duration: 3,
+          repeat: -1,
+          yoyo: true,
+          ease: "power1.inOut",
+          delay: 0.5
         });
       }
 
@@ -394,7 +561,7 @@ const Skills = () => {
           {/* Main sphere container with responsive sizing */}
           <div 
             ref={sphereRef}
-            className={`relative w-full max-w-3xl ${deviceType === 'mobile' ? 'h-[400px]' : 'h-[600px]'} rounded-full perspective-1000 flex items-center justify-center`}
+            className={`relative w-full max-w-3xl ${deviceType === 'mobile' ? 'h-[350px]' : deviceType === 'tablet' ? 'h-[500px]' : 'h-[600px]'} rounded-full perspective-1000 flex items-center justify-center`}
             style={{
               background: 'radial-gradient(circle at 30% 30%, rgba(255, 111, 97, 0.1), transparent 70%), radial-gradient(circle at 70% 70%, rgba(184, 115, 51, 0.1), transparent 70%)',
               border: '1px solid rgba(255, 111, 97, 0.3)',
@@ -420,7 +587,8 @@ const Skills = () => {
               
               {/* Business connections */}
               {businessSkills.map((skill, index) => {
-                const pos = polarToCartesian(skill.angle, skill.distance);
+                const adjustedDistance = getAdjustedDistance(skill.distance);
+                const pos = polarToCartesian(skill.angle, adjustedDistance);
                 return (
                   <line
                     key={`business-${index}`}
@@ -437,7 +605,8 @@ const Skills = () => {
               
               {/* Technical connections */}
               {technicalSkills.map((skill, index) => {
-                const pos = polarToCartesian(skill.angle, skill.distance);
+                const adjustedDistance = getAdjustedDistance(skill.distance);
+                const pos = polarToCartesian(skill.angle, adjustedDistance);
                 return (
                   <line
                     key={`tech-${index}`}
@@ -473,14 +642,20 @@ const Skills = () => {
             {/* Center orb - "ChiranJeevi" */}
             <div
               ref={centerOrbRef}
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full flex items-center justify-center cursor-pointer z-20"
+              className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center cursor-pointer z-20 ${
+                deviceType === 'mobile' ? 'w-28 h-28' : 'w-32 h-32'
+              }`}
               style={{
                 background: 'radial-gradient(circle at 30% 30%, #FFD1C1, #FF9D6E, #FF6F61, #B87333)',
                 boxShadow: '0 0 30px rgba(255, 111, 97, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.5), 0 0 60px rgba(255, 111, 97, 0.2)',
                 border: '2px solid rgba(255, 255, 255, 0.4)'
               }}
             >
-              <span className="text-white font-bold text-center text-lg z-10 tracking-wider">
+              <span className={`font-bold text-center z-10 tracking-wider ${
+                deviceType === 'mobile' ? 'text-sm' : 'text-lg'
+              } ${
+                deviceType === 'mobile' ? 'text-white' : 'text-white'
+              }`}>
                 Skills Matrix
               </span>
               {/* Inner glow effect */}
@@ -502,12 +677,15 @@ const Skills = () => {
             
             {/* Business Skills Nodes (Left Hemisphere) */}
             {businessSkills.map((skill, index) => {
-              const pos = polarToCartesian(skill.angle, skill.distance);
+              const adjustedDistance = getAdjustedDistance(skill.distance);
+              const pos = polarToCartesian(skill.angle, adjustedDistance);
               return (
                 <div
                   key={`business-${index}`}
                   ref={(el) => { if (el) leftNodesRef.current[index] = el; }}
-                  className="absolute w-24 h-24 rounded-full flex items-center justify-center cursor-pointer transform -translate-x-1/2 -translate-y-1/2 z-10"
+                  className={`absolute rounded-full flex items-center justify-center cursor-pointer transform -translate-x-1/2 -translate-y-1/2 z-10 ${
+                    deviceType === 'mobile' ? 'w-20 h-20' : 'w-24 h-24'
+                  }`}
                   style={{
                     left: `${pos.x}%`,
                     top: `${pos.y}%`,
@@ -516,7 +694,11 @@ const Skills = () => {
                     boxShadow: '0 0 15px rgba(184, 115, 51, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.6)',
                   }}
                 >
-                  <span className="text-sm font-bold text-[#B87333] text-center px-3 leading-tight">
+                  <span className={`font-bold text-center px-2 leading-tight ${
+                    deviceType === 'mobile' ? 'text-xs' : 'text-sm'
+                  } ${
+                    deviceType === 'mobile' ? 'text-[#B87333]' : 'text-[#B87333]'
+                  }`}>
                     {skill.name}
                   </span>
                 </div>
@@ -525,12 +707,15 @@ const Skills = () => {
             
             {/* Technical Skills Nodes (Right Hemisphere) */}
             {technicalSkills.map((skill, index) => {
-              const pos = polarToCartesian(skill.angle, skill.distance);
+              const adjustedDistance = getAdjustedDistance(skill.distance);
+              const pos = polarToCartesian(skill.angle, adjustedDistance);
               return (
                 <div
                   key={`tech-${index}`}
                   ref={(el) => { if (el) rightNodesRef.current[index] = el; }}
-                  className="absolute w-24 h-24 rounded-full flex items-center justify-center cursor-pointer transform -translate-x-1/2 -translate-y-1/2 z-10"
+                  className={`absolute rounded-full flex items-center justify-center cursor-pointer transform -translate-x-1/2 -translate-y-1/2 z-10 ${
+                    deviceType === 'mobile' ? 'w-20 h-20' : 'w-24 h-24'
+                  }`}
                   style={{
                     left: `${pos.x}%`,
                     top: `${pos.y}%`,
@@ -539,7 +724,11 @@ const Skills = () => {
                     boxShadow: '0 0 15px rgba(255, 111, 97, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.6)',
                   }}
                 >
-                  <span className="text-sm font-bold text-white text-center px-3 leading-tight">
+                  <span className={`font-bold text-center px-2 leading-tight ${
+                    deviceType === 'mobile' ? 'text-xs' : 'text-sm'
+                  } ${
+                    deviceType === 'mobile' ? 'text-white' : 'text-white'
+                  }`}>
                     {skill.name}
                   </span>
                 </div>
@@ -563,13 +752,19 @@ const Skills = () => {
         {deviceType === 'mobile' && (
           <div className="flex justify-between mt-8 px-4">
             <div className="text-center">
-              <span className="text-base font-bold text-white bg-[#FF6F61]/80 dark:bg-[#FF9D6E]/90 px-3 py-1 rounded-full shadow-lg">
+              <span 
+                className="text-base font-bold text-white bg-[#FF6F61]/80 dark:bg-[#FF9D6E]/90 px-3 py-1 rounded-full shadow-lg inline-block"
+                ref={(el) => { if (el) mobileLabelsRef.current[0] = el; }}
+              >
                 Coding Skills
               </span>
             </div>
             
             <div className="text-center">
-              <span className="text-base font-bold text-[#B87333] bg-[#FDF3E7]/80 dark:bg-[#FFFFFF]/90 px-3 py-1 rounded-full shadow-lg">
+              <span 
+                className="text-base font-bold text-[#B87333] bg-[#FDF3E7]/80 dark:bg-[#FFFFFF]/90 px-3 py-1 rounded-full shadow-lg inline-block"
+                ref={(el) => { if (el) mobileLabelsRef.current[1] = el; }}
+              >
                 Entrepreneurial Skills
               </span>
             </div>

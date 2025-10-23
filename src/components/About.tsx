@@ -16,7 +16,7 @@ const About = () => {
   const subtextRef = useRef<HTMLParagraphElement>(null);
   const contentContainerRef = useRef<HTMLDivElement>(null);
   const timelineContainerRef = useRef<HTMLDivElement>(null);
-  const timelinePathRef = useRef<SVGPathElement>(null);
+  const _timelinePathRef = useRef<SVGPathElement>(null);
   const skillCardRefs = useRef<HTMLDivElement[]>([]);
   const milestoneRefs = useRef<HTMLDivElement[]>([]);
   const [isDarkMode, setIsDarkMode] = useState(false);
