@@ -15,7 +15,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Modern Portfolio - Engineering Digital Experiences",
+  title: "Chiranjeevi | Portfolio",
   description: "A futuristic, professional, and aesthetic personal portfolio showcasing innovation, precision, and creativity in digital engineering",
 };
 

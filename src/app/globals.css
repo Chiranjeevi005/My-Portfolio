@@ -301,6 +301,38 @@ button {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+/* Pulse Glow animation for timeline */
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.7;
+    box-shadow: 0 0 15px var(--tw-shadow-color);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 25px var(--tw-shadow-color);
+  }
+}
+
+.animate-pulseGlow {
+  animation: pulseGlow 2.5s infinite ease-in-out;
+}
+
+/* Glow Flow animation for connecting lines */
+@keyframes glowFlow {
+  0% {
+    opacity: 0.5;
+    box-shadow: 0 0 10px var(--tw-gradient-stops);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 25px var(--tw-gradient-stops);
+  }
+  100% {
+    opacity: 0.5;
+    box-shadow: 0 0 10px var(--tw-gradient-stops);
+  }
+}
+
 /* Milestone hover transition */
 .milestone-hover {
   transition: all 0.3s ease-in-out;
@@ -341,6 +373,26 @@ button {
   box-shadow: 0 0 20px rgba(255, 111, 97, 0.5);
 }
 
+/* Glow Flow animation for connecting lines */
+@keyframes glowFlow {
+  0% {
+    opacity: 0.5;
+    box-shadow: 0 0 10px var(--tw-gradient-stops);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 25px var(--tw-gradient-stops);
+  }
+  100% {
+    opacity: 0.5;
+    box-shadow: 0 0 10px var(--tw-gradient-stops);
+  }
+}
+
+.animate-glowFlow {
+  animation: glowFlow 3s infinite linear;
+}
+
 /* Section styling for proper coordination */
 #about, #works, #skills, #contact {
   scroll-margin-top: 4rem;
@@ -349,4 +401,242 @@ button {
   display: block;
   visibility: visible;
   opacity: 1;
+}
+
+/* Add custom animation classes */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow linear infinite;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1000ms;
+}
+
+/* =========================================
+   CTA SECTION STYLING
+   ========================================= */
+
+/* Section Background & Layout */
+.section {
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.7s ease;
+}
+
+/* Floating Background Elements */
+.floating-element {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+  pointer-events: none;
+  opacity: 0.15;
+  mix-blend-mode: screen;
+}
+
+/* =========================================
+   Timeline & Connector Glow Lines
+   ========================================= */
+
+/* Base connector style (horizontal + vertical) */
+.animate-glowFlow {
+  position: relative;
+  background: linear-gradient(
+    to right,
+    rgba(255, 204, 102, 0.7),
+    rgba(255, 255, 255, 0.9)
+  );
+  box-shadow: 0 0 20px rgba(255, 204, 102, 0.5),
+              0 0 40px rgba(255, 255, 255, 0.2);
+  animation: glowFlow 3s ease-in-out infinite alternate;
+  border-radius: 9999px;
+  z-index: 5;
+}
+
+/* Light theme glow gradient */
+:root {
+  --light-accent: rgba(255, 174, 66, 0.8);
+  --light-highlight: rgba(255, 255, 255, 0.85);
+}
+
+/* Dark theme glow gradient */
+.dark {
+  --dark-accent: rgba(91, 130, 255, 0.7);
+  --dark-highlight: rgba(163, 230, 255, 0.85);
+}
+
+/* Horizontal Connector */
+.animate-glowFlow.horizontal {
+  height: 3px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--light-accent),
+    var(--light-highlight)
+  );
+}
+
+/* Vertical Connector */
+.animate-glowFlow.vertical {
+  width: 3px;
+  height: 80px;
+  background: linear-gradient(
+    180deg,
+    var(--light-accent),
+    var(--light-highlight)
+  );
+}
+
+/* Keyframes for glowing line flow */
+@keyframes glowFlow {
+  0% {
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6));
+    opacity: 0.8;
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(255, 204, 102, 1));
+    opacity: 1;
+  }
+  100% {
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6));
+    opacity: 0.8;
+  }
+}
+
+/* =========================================
+   Timeline Nodes & Hover Effects
+   ========================================= */
+
+.timeline-node {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timeline-node .icon {
+  background: linear-gradient(
+    90deg,
+    var(--light-accent),
+    var(--light-highlight)
+  );
+  border-radius: 9999px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px rgba(255, 204, 102, 0.6);
+  transition: all 0.3s ease;
+}
+
+.dark .timeline-node .icon {
+  background: linear-gradient(
+    90deg,
+    var(--dark-accent),
+    var(--dark-highlight)
+  );
+  box-shadow: 0 0 15px rgba(163, 230, 255, 0.6);
+}
+
+.timeline-node .icon:hover {
+  transform: scale(1.25);
+  box-shadow: 0 0 25px rgba(255, 204, 102, 1);
+}
+
+/* =========================================
+   CTA Button Styles
+   ========================================= */
+
+.cta-button {
+  font-weight: 600;
+  border-radius: 9999px;
+  padding: 0.75rem 2rem;
+  color: var(--text-light);
+  background: linear-gradient(
+    90deg,
+    var(--light-accent),
+    var(--light-highlight)
+  );
+  box-shadow: 0 0 25px rgba(255, 204, 102, 0.5);
+  transition: all 0.4s ease-in-out;
+}
+
+.cta-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 35px rgba(255, 204, 102, 0.8);
+}
+
+.dark .cta-button {
+  background: linear-gradient(
+    90deg,
+    var(--dark-accent),
+    var(--dark-highlight)
+  );
+  box-shadow: 0 0 25px rgba(163, 230, 255, 0.5);
+}
+
+.dark .cta-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 35px rgba(163, 230, 255, 0.8);
+}
+
+/* =========================================
+   Contact Icons
+   ========================================= */
+
+.contact-icons a {
+  transition: all 0.3s ease;
+}
+
+.contact-icons a:hover {
+  transform: translateY(-6px) scale(1.1);
+  color: var(--light-accent);
+}
+
+.dark .contact-icons a:hover {
+  color: var(--dark-accent);
+}
+
+/* =========================================
+   Typography Adjustments
+   ========================================= */
+
+h2 {
+  font-family: var(--font-heading, 'Poppins', sans-serif);
+  letter-spacing: 0.02em;
+}
+
+p {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  line-height: 1.6;
+}
+
+/* Glow Flow animation for connecting lines */
+@keyframes glowFlow {
+  0% {
+    opacity: 0.7;
+    box-shadow: 0 0 10px rgba(255, 204, 102, 0.6);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 25px rgba(255, 204, 102, 0.9);
+  }
+  100% {
+    opacity: 0.7;
+    box-shadow: 0 0 10px rgba(255, 204, 102, 0.6);
+  }
+}
+
+.animate-glowFlow {
+  animation: glowFlow 2s ease-in-out infinite;
 }

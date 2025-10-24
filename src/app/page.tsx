@@ -8,10 +8,9 @@ import Hero from '@/components/Hero';
 import FeaturedWork from '@/components/FeaturedWork';
 import Skills from '@/components/Skills';
 import InterestsShelf from '@/components/Interests';
-import CallToAction from '@/components/CallToAction';
+import CTA from '@/components/CTA';
 import Footer from '@/components/Footer';
 import About from '@/components/About';
-import Contact from '@/components/Contact';
 // Scroll coordination is now handled by useScrollAnimation hooks in individual components
 
 export default function Home() {
@@ -58,8 +57,7 @@ export default function Home() {
           <InterestsShelf />
         </div>
         <div id="contact" className="scroll-mt-16 md:scroll-mt-20 smooth-transition" style={{ visibility: 'visible', opacity: 1 }}>
-          <CallToAction />
-          <Contact />
+          <CTA />
         </div>
       </main>
       <Footer />
