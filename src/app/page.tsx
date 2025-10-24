@@ -7,6 +7,7 @@ import Hero from '@/components/Hero';
 
 import FeaturedWork from '@/components/FeaturedWork';
 import Skills from '@/components/Skills';
+import InterestsShelf from '@/components/Interests';
 import CallToAction from '@/components/CallToAction';
 import Footer from '@/components/Footer';
 import About from '@/components/About';
@@ -52,6 +53,9 @@ export default function Home() {
         </div>
         <div id="skills" className="scroll-mt-16 md:scroll-mt-20 smooth-transition" style={{ visibility: 'visible', opacity: 1 }}>
           <Skills />
+        </div>
+        <div id="interests" className="scroll-mt-16 md:scroll-mt-20 smooth-transition" style={{ visibility: 'visible', opacity: 1 }}>
+          <InterestsShelf />
         </div>
         <div id="contact" className="scroll-mt-16 md:scroll-mt-20 smooth-transition" style={{ visibility: 'visible', opacity: 1 }}>
           <CallToAction />
