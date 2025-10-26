@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cookie&display=swap');
+
+/* Signatura Monoline font definition */
+@font-face {
+  font-family: 'Signatura Monoline';
+  src: url('/fonts/SignaturaMonoline.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}

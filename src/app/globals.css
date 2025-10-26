@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cookie&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -635,4 +636,11 @@ p {
 
 .animate-glowFlow {
   animation: glowFlow 3s ease-in-out infinite;
+}
+
+/* Signature overlay styles for About section */
+.signature-overlay {
+  position: absolute;
+  filter: drop-shadow(0 0 8px rgba(255, 138, 92, 0.4));
+  pointer-events: none;
 }

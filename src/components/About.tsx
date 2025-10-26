@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { motion } from 'framer-motion';
 import { GraduationCap, Server, Bot, Laptop, Rocket, ChevronUp, ChevronDown } from 'lucide-react';
 
 if (typeof window !== 'undefined') {
@@ -518,7 +519,7 @@ const About = () => {
         {/* Business motifs */}
         <div className="floating-element absolute top-1/5 right-1/6 w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 rounded-full border-2 border-[#FF8A5C]"></div>
         <div className="floating-element absolute top-2/5 left-1/4 w-3 h-3 sm:w-5 sm:h-5 md:w-6 md:h-6 rotate-45 border-2 border-[#FF8A5C]"></div>
-        <div className="floating-element absolute top-3/5 right-1/3 w-5 h-5 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-lg border-2 border-[#FF8A5C]"></div>
+        <div className="floating-element absolute top-1/2 right-1/3 w-5 h-5 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-lg border-2 border-[#FF8A5C]"></div>
         <div className="floating-element absolute top-3/4 left-1/6 w-4 h-4 sm:w-6 sm:h-6 md:w-7 md:h-7 rotate-12 border-2 border-[#FF8A5C]"></div>
       </div>
       
@@ -532,17 +533,137 @@ const About = () => {
             >
               The Mind Behind the Interface
             </h2>
-            
-            <p 
-              ref={subtextRef}
-              className="text-base sm:text-lg md:text-xl mb-8 sm:mb-10 md:mb-12 text-light-textSecondary dark:text-dark-textSecondary max-w-3xl mx-auto transition-colors duration-700 leading-relaxed"
-            >
-              Hi, I'm{' '}
-              <span className={`font-bold ${isDarkMode ? 'text-[#FF8A5C]' : 'text-[#E85D45]'}`}>
-                Chiran Jeevi
-              </span>
-              , a Business-minded Full-Stack Developer and AI enthusiast. I merge strategic business insight with modern technology to create scalable digital solutions that empower brands and users alike.
-            </p>
+          </div>
+          
+          {/* New "Integrated Identity" Section */}
+          <div className="w-full max-w-[1200px] mx-auto py-8 px-8 md:px-20 mb-16">
+            <div className="flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-20 items-center px-4 sm:px-6">
+              {/* Portrait Zone */}
+              <div className="relative flex-1 flex justify-center">
+                {/* Floating particles/spark effects */}
+                <div className="absolute inset-0">
+                  {[...Array(8)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute w-1 h-1 rounded-full opacity-20 mix-blend-overlay animate-pulse"
+                      style={{
+                        backgroundColor: isDarkMode ? '#FF8A5C' : '#E85D45',
+                        top: `${Math.random() * 100}%`,
+                        left: `${Math.random() * 100}%`,
+                        animationDuration: `${3 + Math.random() * 4}s`,
+                        animationDelay: `${Math.random() * 2}s`
+                      }}
+                    />
+                  ))}
+                </div>
+                
+                {/* Portrait with glow effect */}
+                <div className="relative group">
+                  {/* Glow effect */}
+                  <div className="absolute inset-0 rounded-2xl shadow-[0_0_60px_rgba(255,138,92,0.25)] opacity-70 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  {/* Portrait image */}
+                  <div 
+                    className="relative w-64 h-[455px] sm:w-80 sm:h-[569px] md:w-[400px] md:h-[711px] lg:w-[450px] lg:h-[800px] rounded-2xl overflow-hidden transform transition-all duration-600 group-hover:translate-y-[-4px] group-hover:scale-[1.02]"
+                    style={{
+                      maskImage: 'linear-gradient(to right, transparent 0%, #FF8A5C 25%, #FF8A5C 75%, transparent 100%)'
+                    }}
+                  >
+                    {/* Placeholder for portrait - in a real implementation, this would be an actual image */}
+                    <div className={`w-full h-full ${
+                      isDarkMode 
+                        ? 'bg-gradient-to-br from-[#241A17] to-[#3C2E2A]' 
+                        : 'bg-gradient-to-br from-[#FFF3E9] to-[#E8D5C8]'
+                    } flex items-center justify-center`}>
+                      <div className={`text-4xl font-bold ${
+                        isDarkMode ? 'text-[#FF8A5C]' : 'text-[#E85D45]'
+                      }`}>
+                        CJ
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Overlapping text phrases - redesigned as signature-style elements */}
+                  <div className="absolute inset-0">
+                    {/* "Think in code." - top left, overlapping the portrait */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2, duration: 0.6 }}
+                      className="absolute top-4 left-0 whitespace-nowrap z-10 transform -translate-x-1/2"
+                      style={{
+                        color: isDarkMode ? '#FFC48A' : '#D7745B',
+                        textShadow: '0 0 15px rgba(255, 138, 92, 0.6)',
+                        fontWeight: 600,
+                        letterSpacing: '0.15em',
+                        fontFamily: 'Great Vibes',
+                        fontSize: 'clamp(1rem, 4vw, 2.2rem)' // responsive font size
+                      }}
+                    >
+                      Think in code.
+                    </motion.div>
+                    
+                    {/* "Build with intent." - middle left, rotated */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4, duration: 0.6 }}
+                      className="absolute top-3/3 left-0 transform -translate-y-1/2 -translate-x-[10%] -rotate-90 origin-left whitespace-nowrap z-20 italic"
+                      style={{
+                        color: isDarkMode ? '#FF8A5C' : '#E85D45',
+                        textShadow: '0 0 15px rgba(255, 138, 92, 0.6)',
+                        fontWeight: 600,
+                        letterSpacing: '0.01em',
+                        fontFamily: 'Satoshi',
+                        fontSize: 'clamp(1.5rem, 6vw, 2.7rem)' // responsive font size
+                      }}
+                    >
+                      Build with intent.
+                    </motion.div>
+                    
+                    {/* "Create with clarity." - bottom right, overlapping the portrait */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6, duration: 0.6 }}
+                      className="absolute bottom-4 right-0 whitespace-nowrap z-10 transform translate-x-1/2"
+                      style={{
+                        color: isDarkMode ? '#FFC48A' : '#D7745B',
+                        textShadow: '0 0 15px rgba(255, 138, 92, 0.6)',
+                        fontWeight: 600,
+                        letterSpacing: '0.11em',
+                        fontFamily: 'Great Vibes',
+                        fontSize: 'clamp(1rem, 4vw, 2.1rem)' // responsive font size
+                      }}
+                    >
+                      Create with clarity.
+                    </motion.div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Text Zone */}
+              <div className="flex-1 max-w-[480px] relative">
+                {/* Vertical divider line */}
+                <div className={`absolute left-[-2rem] top-0 h-[80%] w-0.5 opacity-40 ${
+                  isDarkMode ? 'bg-[#3C2E2A]' : 'bg-[#E8D5C8]'
+                }`}></div>
+                
+                <p className="text-light-textSecondary dark:text-dark-textSecondary leading-relaxed text-base md:text-lg">
+                  👋 Namaste, I'm{' '}
+                  <span className={`font-bold underline decoration-[1.5px] ${
+                    isDarkMode ? 'text-[#FF8A5C]' : 'text-[#E85D45]'
+                  }`}>
+                    Chiran Jeevi
+                  </span>{' '}
+                  — where business strategy meets code craft. I turn complex market needs into robust, scalable digital solutions, merging analytical thinking with creative engineering to build systems that are both functional and strategic.
+                  <br /><br />
+                  A thinker who builds, a creator who analyzes, and a developer fluent in technical precision and visionary insights. I solve problems with hands-on coding expertise and data-driven decisions, ensuring every solution delivers real impact.
+                  <br /><br />
+                  I bridge boardroom logic with coding expertise, creating efficient, user-centric applications that elevate business value. Every project becomes a platform for innovation, growth, and seamless technology integration.
+                </p>
+              </div>
+            </div>
           </div>
           
           {/* Two-column layout: Stacked Cards (Left) + Timeline (Right) */}

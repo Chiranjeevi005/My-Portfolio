@@ -72,6 +72,8 @@ const config: Config = {
       fontFamily: {
         heading: ['Poppins', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
+        signature: ['var(--font-great-vibes)', 'cursive'], // Using Great Vibes as the signature font
+        cookie: ['var(--font-cookie)', 'cursive'], // Keeping Cookie for "Build with intent"
       },
       transitionDuration: {
         DEFAULT: '700ms',

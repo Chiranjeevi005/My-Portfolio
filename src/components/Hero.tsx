@@ -16,7 +16,7 @@ const Hero = () => {
   const { theme } = useTheme();
 
   const titles = [
-    "CHIRANJEEVI",
+    "CHIRANJEEVI P.K",
     "BUSINESS STRATEGIC",
     "FULL-STACK DEVELOPER",
     "AI ENTHUSIAST"
