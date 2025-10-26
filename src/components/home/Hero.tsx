@@ -12,7 +12,7 @@ const Hero = () => {
   const buttonsRef = useRef<HTMLDivElement>(null);
   const codeIconRef = useRef<HTMLDivElement>(null);
   const businessIconRef = useRef<HTMLDivElement>(null);
-  const [currentTitleIndex, setCurrentTitleIndex] = useState(0);
+  const titleIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const { theme } = useTheme();
 
   const titles = [
@@ -22,13 +22,23 @@ const Hero = () => {
     "AI ENTHUSIAST"
   ];
 
-  useEffect(() => {
-    // Rotate titles every 4 seconds for optimal rhythm
-    const titleInterval = setInterval(() => {
-      setCurrentTitleIndex((prevIndex) => (prevIndex + 1) % titles.length);
-    }, 4000);
+  const [currentTitleIndex, setCurrentTitleIndex] = useState(0);
 
-    return () => clearInterval(titleInterval);
+  useEffect(() => {
+    // Rotate titles every 2 seconds
+    if (titleIntervalRef.current) {
+      clearInterval(titleIntervalRef.current);
+    }
+    
+    titleIntervalRef.current = setInterval(() => {
+      setCurrentTitleIndex((prevIndex) => (prevIndex + 1) % titles.length);
+    }, 2000);
+
+    return () => {
+      if (titleIntervalRef.current) {
+        clearInterval(titleIntervalRef.current);
+      }
+    };
   }, []);
 
   useEffect(() => {

@@ -1,49 +1,87 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useTheme } from 'next-themes';
+import { FileText, Download, X } from 'lucide-react';
 
 const EducationSection = () => {
-  const education = [
+  const { theme } = useTheme();
+  const [flippedCards, setFlippedCards] = useState<Record<number, boolean>>({});
+  const [selectedCertificate, setSelectedCertificate] = useState<any>(null);
+
+  const educationData = [
     {
-      degree: "MSc Computer Science",
-      institution: "University of Technology",
-      period: "2018 - 2020",
-      gpa: "3.8/4.0",
-      description: "Specialized in Human-Computer Interaction and Software Engineering. Completed thesis on 'Optimizing User Experience in Enterprise Applications'."
+      id: 1,
+      title: "Full Stack Development Certification",
+      institute: "NXTWave",
+      year: "2022 - 2023",
+      marks: "95%",
+      certificateUrl: "/certificates/nxtwave.jpg",
+      description: "Completed intensive full-stack development program with focus on modern web technologies, cloud deployment, and real-world project building."
     },
     {
-      degree: "BSc Computer Engineering",
-      institution: "State University",
-      period: "2014 - 2018",
-      gpa: "3.6/4.0",
-      description: "Focused on web technologies and software development. Graduated with honors and completed multiple internships."
+      id: 2,
+      title: "Bachelor of Business Administration (BBA)",
+      institute: "University of Business Studies",
+      year: "2019 - 2022",
+      marks: "8.2/10 CGPA",
+      certificateUrl: "/certificates/bba.jpg",
+      description: "Focused on business analytics, digital marketing, and entrepreneurship. Graduated with distinction and completed multiple internships."
+    },
+    {
+      id: 3,
+      title: "Pre-University Course (PUC)",
+      institute: "State Junior College",
+      year: "2017 - 2019",
+      marks: "89%",
+      certificateUrl: "/certificates/puc.jpg",
+      description: "Completed commerce stream with specialization in mathematics and economics, laying foundation for business and technology."
+    },
+    {
+      id: 4,
+      title: "Secondary School (10th Grade)",
+      institute: "Greenwood High School",
+      year: "2015 - 2017",
+      marks: "92%",
+      certificateUrl: "/certificates/10th.jpg",
+      description: "Excelled in academics with a focus on mathematics and science, participated in national mathematics competitions."
     }
   ];
 
-  const certifications = [
-    {
-      name: "AWS Certified Solutions Architect",
-      issuer: "Amazon Web Services",
-      date: "2021",
-      description: "Validated expertise in designing distributed systems on AWS."
-    },
-    {
-      name: "Google Professional Cloud Developer",
-      issuer: "Google Cloud",
-      date: "2020",
-      description: "Demonstrated proficiency in developing, deploying, and debugging cloud applications."
-    },
-    {
-      name: "Certified ScrumMaster",
-      issuer: "Scrum Alliance",
-      date: "2019",
-      description: "Proven knowledge of Scrum framework and agile project management."
-    }
-  ];
+  // Updated to only use educationData
+  const allEducation = [...educationData];
+
+  const handleCardClick = (id: number) => {
+    setFlippedCards(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
+
+  const openCertificateModal = (item: any) => {
+    setSelectedCertificate(item);
+  };
+
+  const closeCertificateModal = () => {
+    setSelectedCertificate(null);
+  };
+
+  // Determine colors based on theme
+  const bgColor = theme === 'dark' ? 'bg-gradient-to-b from-[#0D0D0D] to-[#1A1A1A]' : 'bg-gradient-to-b from-[#FFF9F3] to-[#FFF3E9]';
+  const textColorPrimary = theme === 'dark' ? 'text-[#F8E8D8]' : 'text-[#2D1B18]';
+  const textColorSecondary = theme === 'dark' ? 'text-[#D9BFAE]' : 'text-[#5A3E36]';
+  const textColorMuted = theme === 'dark' ? 'text-[#A07E69]' : 'text-[#9B7C72]';
+  const accentColor = theme === 'dark' ? '#FF6F61' : '#E85D45';
+  const cardBg = theme === 'dark' ? 'bg-[#241A17]' : 'bg-[#FFFFFF]';
+  const cardBorder = theme === 'dark' ? 'border-[#3C2E2A]' : 'border-[#E8D5C8]';
+  const modalBg = theme === 'dark' ? 'bg-[#241A17]' : 'bg-[#FFFFFF]';
+  const modalBorder = theme === 'dark' ? 'border-[#3C2E2A]' : 'border-[#E8D5C8]';
+  const spotlightColor = theme === 'dark' ? 'rgba(255, 111, 97, 0.15)' : 'rgba(232, 93, 69, 0.15)';
 
   return (
-    <section className="py-16 sm:py-20 bg-light-bgSecondary dark:bg-dark-bgSecondary">
-      <div className="container mx-auto px-4 sm:px-6">
+    <section className={`py-16 sm:py-20 ${bgColor} relative overflow-hidden`}>
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
@@ -51,89 +89,241 @@ const EducationSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-light-textPrimary dark:text-dark-textPrimary mb-4">
-            Education & Certifications
+          <h2 className={`text-3xl sm:text-4xl font-bold ${textColorPrimary} mb-4`}>
+            Academic Journey 🎓
           </h2>
-          <div className="w-20 h-1 bg-light-textAccent dark:bg-dark-textAccent mx-auto rounded-full"></div>
+          <p className={`${textColorSecondary} max-w-2xl mx-auto`}>
+            A digital gallery of milestones, achievements, and the foundations of my expertise
+          </p>
+          <div className="w-20 h-1" style={{ backgroundColor: accentColor }}></div>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Education */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h3 className="text-2xl font-bold text-light-textPrimary dark:text-dark-textPrimary mb-8 pb-2 border-b-2 border-light-textAccent dark:border-dark-textAccent inline-block">
-              Academic Background
-            </h3>
-            
-            <div className="space-y-8">
-              {education.map((edu, index) => (
-                <div 
-                  key={index} 
-                  className="bg-light-bgSurface dark:bg-dark-bgSurface rounded-2xl p-6 shadow-lg border border-light-border dark:border-dark-border"
+        {/* Transcript Wall Grid - Remove mouse position dependency */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 place-items-center">
+          {allEducation.map((item, index) => (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="w-full max-w-[90%] sm:max-w-[80%] lg:max-w-[300px]"
+              // Remove mouse position transform
+              // style={{
+              //   transform: `perspective(1000px) rotateY(${(mousePosition.x / window.innerWidth - 0.5) * 5}deg) rotateX(${(mousePosition.y / window.innerHeight - 0.5) * -5}deg)`,
+              // }}
+            >
+              <div 
+                className="relative w-full h-[200px] cursor-pointer group"
+                onClick={() => handleCardClick(item.id)}
+              >
+                {/* Card Container with Floating Effect - Keep floating animation but remove mouse interaction */}
+                <motion.div
+                  className="absolute inset-0 w-full h-full"
+                  animate={{
+                    y: [0, -10, 0],
+                  }}
+                  transition={{
+                    duration: 3 + index,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
                 >
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4">
-                    <div>
-                      <h4 className="text-xl font-bold text-light-textPrimary dark:text-dark-textPrimary">{edu.degree}</h4>
-                      <p className="text-light-textAccent dark:text-dark-textAccent font-medium">{edu.institution}</p>
-                    </div>
-                    <span className="text-light-textMuted dark:text-dark-textMuted bg-light-bgSecondary dark:bg-dark-bgSecondary px-3 py-1 rounded-full text-sm mt-2 sm:mt-0">
-                      {edu.period}
-                    </span>
+                  {/* Spotlight effect container - Remove mouse position dependency */}
+                  <div className="relative w-full h-full rounded-2xl overflow-hidden">
+                    {/* Remove spotlight overlay that follows mouse */}
+                    {/* <div 
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"
+                      style={{
+                        background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, ${spotlightColor}, transparent 40%)`,
+                      }}
+                    /> */}
+                    
+                    {/* Card Front */}
+                    <motion.div
+                      className={`absolute inset-0 w-full h-full ${cardBg} border ${cardBorder} rounded-2xl shadow-lg p-5 flex flex-col justify-between`}
+                      animate={{ rotateY: flippedCards[item.id] ? 180 : 0 }}
+                      transition={{ duration: 0.8 }}
+                      style={{ backfaceVisibility: 'hidden' }}
+                    >
+                      {/* Certificate header with decorative elements */}
+                      <div className="flex justify-between items-start">
+                        <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${accentColor}20` }}>
+                          <FileText size={24} style={{ color: accentColor }} />
+                        </div>
+                        <span className="text-xs font-medium px-2 py-1 rounded" style={{ backgroundColor: `${accentColor}20`, color: accentColor }}>
+                          {item.year}
+                        </span>
+                      </div>
+                      
+                      <div>
+                        <h3 className={`text-lg font-bold ${textColorPrimary} line-clamp-2`}>
+                          {item.title}
+                        </h3>
+                        <p className="font-medium mt-1 text-sm" style={{ color: accentColor }}>
+                          {item.institute}
+                        </p>
+                      </div>
+                      
+                      <div className="flex justify-between items-center pt-2" style={{ borderTop: `1px solid ${theme === 'dark' ? '#3C2E2A' : '#E8D5C8'}50` }}>
+                        <span className={`text-xs ${textColorMuted}`}>
+                          Click to flip
+                        </span>
+                        <span className="text-sm font-bold" style={{ color: accentColor }}>
+                          {item.marks}
+                        </span>
+                      </div>
+                    </motion.div>
+
+                    {/* Card Back */}
+                    <motion.div
+                      className={`absolute inset-0 w-full h-full ${cardBg} border ${cardBorder} rounded-2xl shadow-lg p-5 flex flex-col justify-between`}
+                      animate={{ rotateY: flippedCards[item.id] ? 0 : 180 }}
+                      transition={{ duration: 0.8 }}
+                      style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+                    >
+                      <div>
+                        <h3 className={`text-lg font-bold ${textColorPrimary} line-clamp-1`}>
+                          {item.title}
+                        </h3>
+                        <p className={`text-xs mt-2 line-clamp-3 ${textColorSecondary}`}>
+                          {item.description}
+                        </p>
+                      </div>
+                      
+                      <div className="flex justify-between items-center pt-2" style={{ borderTop: `1px solid ${theme === 'dark' ? '#3C2E2A' : '#E8D5C8'}50` }}>
+                        <button 
+                          className="text-xs font-medium hover:underline flex items-center"
+                          style={{ color: accentColor }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openCertificateModal(item);
+                          }}
+                        >
+                          View Marksheet
+                          <FileText size={12} className="ml-1" />
+                        </button>
+                      </div>
+
+                    </motion.div>
+                    
+                    {/* Glow border effect */}
+                    <div className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 group-hover:opacity-30 transition-opacity duration-300 -z-10" style={{ border: `2px solid ${accentColor}` }}></div>
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Storytelling Caption */}
+        <motion.p 
+          className={`italic text-sm text-center mt-16 max-w-3xl mx-auto ${textColorSecondary}`}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          "From notebooks to networks — every grade was a step toward greater creation. Each certificate represents not just academic achievement, but personal growth and the foundation of my journey."
+        </motion.p>
+      </div>
+
+      {/* Certificate Modal */}
+      <AnimatePresence>
+        {selectedCertificate && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ backgroundColor: theme === 'dark' ? 'rgba(28, 28, 30, 0.95)' : 'rgba(255, 249, 243, 0.95)' }}
+            onClick={closeCertificateModal}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className={`rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto border ${modalBorder} shadow-[0_0_50px_rgba(232,93,69,0.4)]`}
+              style={{ backgroundColor: theme === 'dark' ? 'rgba(36, 26, 23, 0.98)' : 'rgba(255, 255, 255, 0.98)', zIndex: 100 }}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h3 className={`text-2xl font-bold ${textColorPrimary}`}>
+                    {selectedCertificate.title}
+                  </h3>
+                  <p className="font-medium" style={{ color: accentColor }}>
+                    {selectedCertificate.institute}
+                  </p>
+                </div>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    closeCertificateModal();
+                  }}
+                  className={`hover:transition-colors ${textColorMuted} hover:${textColorPrimary}`}
+                  style={{ zIndex: 101 }}
+                >
+                  <X size={24} />
+                </button>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="flex flex-wrap gap-4">
+                  <div className="flex-1">
+                    <p className={`text-sm ${textColorMuted}`}>
+                      Issued: {selectedCertificate.year}
+                    </p>
                   </div>
                   
-                  <p className="text-light-textSecondary dark:text-dark-textSecondary mb-3">{edu.description}</p>
-                  
-                  <div className="inline-block px-3 py-1 bg-light-buttonPrimary/10 dark:bg-dark-buttonPrimary/10 text-light-buttonPrimary dark:text-dark-buttonPrimary rounded-full font-medium">
-                    GPA: {edu.gpa}
+                  <div className="px-4 py-2 rounded-lg" style={{ backgroundColor: `${accentColor}20` }}>
+                    <p className="font-bold" style={{ color: accentColor }}>
+                      {selectedCertificate.marks}
+                    </p>
                   </div>
                 </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Certifications */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h3 className="text-2xl font-bold text-light-textPrimary dark:text-dark-textPrimary mb-8 pb-2 border-b-2 border-light-textAccent dark:border-dark-textAccent inline-block">
-              Professional Certifications
-            </h3>
-            
-            <div className="space-y-6">
-              {certifications.map((cert, index) => (
-                <div 
-                  key={index} 
-                  className="bg-light-bgSurface dark:bg-dark-bgSurface rounded-2xl p-6 shadow-lg border border-light-border dark:border-dark-border"
-                >
-                  <div className="flex justify-between items-start mb-3">
-                    <h4 className="text-xl font-bold text-light-textPrimary dark:text-dark-textPrimary">{cert.name}</h4>
-                    <span className="text-light-textMuted dark:text-dark-textMuted text-sm bg-light-bgSecondary dark:bg-dark-bgSecondary px-2 py-1 rounded">
-                      {cert.date}
-                    </span>
+                
+                <div className="mt-6">
+                  <div className={`rounded-xl w-full h-80 flex items-center justify-center border-2 border-dashed`} 
+                    style={{ 
+                      borderColor: theme === 'dark' ? '#3C2E2A' : '#E8D5C8',
+                      backgroundColor: theme === 'dark' ? '#1C1C1E' : '#FFF9F3',
+                      backgroundImage: `linear-gradient(to bottom right, ${theme === 'dark' ? '#1C1C1E' : '#FFF9F3'}, ${accentColor}20)`
+                    }}>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-center">
+                        <FileText size={64} style={{ color: `${accentColor}50` }} className="mx-auto" />
+                        <p className={`mt-2 ${textColorMuted}`}>
+                          Marksheet Preview
+                        </p>
+                        <p className={`text-sm mt-1 ${textColorSecondary}`}>
+                          Actual Marksheet would appear here
+                        </p>
+                      </div>
+                    </div>
+                    
+                    {/* Blurred overlay */}
+                    <div className="absolute inset-0 bg-[url('/placeholder-certificate.jpg')] bg-cover bg-center opacity-20 blur-sm"></div>
                   </div>
-                  
-                  <p className="text-light-textAccent dark:text-dark-textAccent font-medium mb-3">{cert.issuer}</p>
-                  <p className="text-light-textSecondary dark:text-dark-textSecondary">{cert.description}</p>
-                  
-                  <button className="mt-4 text-light-textAccent dark:text-dark-textAccent font-medium text-sm hover:underline flex items-center">
-                    View Certificate
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
+                  <p className={`text-sm mt-2 text-center ${textColorSecondary}`}>
+                    Hover to focus • Click to unlock full view
+                  </p>
+                </div>
+                
+                <div className="flex justify-center gap-4 mt-6">
+                  <button className="px-4 py-2 rounded-lg flex items-center transition-colors" style={{ backgroundColor: accentColor, color: theme === 'dark' ? '#1E1614' : '#FFFFFF' }}>
+                    <Download size={20} className="mr-2" />
+                    Download Marksheet
                   </button>
                 </div>
-              ))}
-            </div>
+
+              </div>
+            </motion.div>
           </motion.div>
-        </div>
-      </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

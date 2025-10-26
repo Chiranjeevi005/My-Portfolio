@@ -26,7 +26,6 @@ const Footer = () => {
   return (
     <section className="relative border-t border-light-border dark:border-dark-border mt-20 pt-10 pb-8 bg-light-bgSecondary dark:bg-dark-bgSecondary overflow-hidden transition-colors duration-700">
       {/* Glowing Top Divider */}
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[90%] h-[2px] bg-gradient-to-r from-light-textAccent/40 via-light-textHighlight/40 to-light-textAccent/40 dark:from-dark-textAccent/40 dark:via-dark-textHighlight/40 dark:to-dark-textAccent/40 blur-sm animate-glowFlow"></div>
 
       <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left">
 

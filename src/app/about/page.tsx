@@ -17,7 +17,7 @@ export default function AboutPage() {
   useEffect(() => {
     // Scroll to top when page loads
     window.scrollTo(0, 0);
-    
+
     // Entrance animation for the page content
     gsap.fromTo(
       '.about-section',
@@ -29,18 +29,18 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen flex flex-col bg-light-bgPrimary dark:bg-dark-bgPrimary">
       <Navbar />
-      
-      <main className="flex-grow pt-20">
+
+      <main className="flex-grow ">
         <AboutHeroSection />
+        <EducationSection />
         <JourneyTimeline />
         <SkillsMatrix />
         <AchievementsGrid />
         <ExperienceCards />
-        <EducationSection />
         <InterestsShowcase />
         <VisionSection />
       </main>
-      
+
       <Footer />
     </div>
   );
