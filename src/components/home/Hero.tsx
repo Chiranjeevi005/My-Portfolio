@@ -260,7 +260,7 @@ const Hero = () => {
   return (
     <section 
       ref={heroRef}
-      className="relative min-h-screen flex items-center justify-center bg-light-bgPrimary dark:bg-dark-bgPrimary transition-colors duration-700 overflow-hidden px-4 sm:px-6 md:px-12 lg:px-24 py-12"
+      className="relative min-h-[80vh] flex items-center justify-center bg-light-bgPrimary dark:bg-dark-bgPrimary transition-colors duration-700 overflow-hidden px-4 sm:px-6 md:px-12 lg:px-24 py-8 sm:py-10"
     >
       {/* Radial glow behind name */}
       <div className="name-glow absolute w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[600px] md:h-[600px] rounded-full opacity-40 pointer-events-none transition-colors duration-700"
@@ -358,24 +358,18 @@ const Hero = () => {
           className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mt-8 sm:mt-12"
         >
           <button 
-            className="px-6 py-3 sm:px-8 sm:py-4 bg-light-buttonPrimary dark:bg-dark-buttonPrimary text-light-buttonText dark:text-dark-buttonText rounded-xl font-bold text-base sm:text-lg transition-all duration-300 ease-in-out hover:bg-light-buttonHover dark:hover:bg-dark-buttonHover transform hover:-translate-y-1"
+            className="px-6 py-3 sm:px-8 sm:py-4 bg-light-buttonPrimary dark:bg-dark-buttonPrimary text-light-buttonText dark:text-dark-buttonText rounded-xl font-bold text-base sm:text-lg transition-all duration-300 ease-in-out hover:bg-light-buttonHover dark:hover:bg-dark-buttonHover transform hover:-translate-y-1 shadow-lg hover:shadow-xl"
           >
-            Explore My Work
+            View Resume
           </button>
           <button 
-            className="px-6 py-3 sm:px-8 sm:py-4 border-2 border-light-buttonPrimary dark:border-dark-buttonPrimary text-light-buttonPrimary dark:text-dark-buttonPrimary rounded-xl font-bold text-base sm:text-lg transition-all duration-300 ease-in-out hover:bg-light-buttonPrimary/10 dark:hover:bg-dark-buttonPrimary/10 transform hover:-translate-y-1"
+            className="px-6 py-3 sm:px-8 sm:py-4 border-2 border-light-buttonPrimary dark:border-dark-buttonPrimary text-light-buttonPrimary dark:text-dark-buttonPrimary rounded-xl font-bold text-base sm:text-lg transition-all duration-300 ease-in-out hover:bg-light-buttonPrimary/10 dark:hover:bg-dark-buttonPrimary/10 transform hover:-translate-y-1 bg-light-buttonText/10 dark:bg-dark-buttonText/10"
           >
-            Get in Touch
+            Explore My Work
           </button>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce transition-colors duration-700">
-        <svg className="w-5 h-5 sm:w-6 sm:h-6 text-light-textAccent dark:text-dark-textAccent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-        </svg>
-      </div>
     </section>
   );
 };

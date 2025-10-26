@@ -1,16 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import InitialLoader from '@/components/initialLoader';
-import Navbar from '@/components/Navbar';
-import Hero from '@/components/Hero';
+import InitialLoader from '@/components/home/initialLoader';
+import Navbar from '@/components/common/Navbar';
+import Hero from '@/components/home/Hero';
 
-import FeaturedWork from '@/components/FeaturedWork';
-import Skills from '@/components/Skills';
-import InterestsShelf from '@/components/Interests';
-import CTA from '@/components/CTA';
-import Footer from '@/components/Footer';
-import About from '@/components/About';
+import FeaturedWork from '@/components/home/FeaturedWork';
+import Skills from '@/components/home/Skills';
+import InterestsShelf from '@/components/home/Interests';
+import CTA from '@/components/home/CTA';
+import Footer from '@/components/common/Footer';
+import About from '@/components/home/About';
 // Scroll coordination is now handled by useScrollAnimation hooks in individual components
 
 export default function Home() {

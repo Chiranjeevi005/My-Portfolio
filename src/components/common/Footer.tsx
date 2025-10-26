@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import ThemeToggle from '@/components/ThemeToggle';
+import ThemeToggle from '@/components/home/ThemeToggle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLinkedin, faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';

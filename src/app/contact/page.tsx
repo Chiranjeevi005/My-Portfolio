@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import gsap from 'gsap';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import Navbar from '@/components/common/Navbar';
+import Footer from '@/components/common/Footer';
 
 export default function Contact() {
   const [formData, setFormData] = useState({

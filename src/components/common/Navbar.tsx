@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { Briefcase, Mail, Info } from 'lucide-react';
-import ThemeToggle from '@/components/ThemeToggle';
+import ThemeToggle from '@/components/home/ThemeToggle';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -19,7 +19,7 @@ const Navbar = () => {
   }, []);
 
   const navItems = [
-    { name: 'About', href: '/#about', icon: Info },
+    { name: 'About', href: '/about', icon: Info },
     { name: 'Works', href: '/#works', icon: Briefcase },
     { name: 'Contact', href: '/#contact', icon: Mail },
   ];
