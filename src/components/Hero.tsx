@@ -23,49 +23,79 @@ const Hero = () => {
   ];
 
   useEffect(() => {
-    // Rotate titles every 3 seconds
+    // Rotate titles every 4 seconds for optimal rhythm
     const titleInterval = setInterval(() => {
       setCurrentTitleIndex((prevIndex) => (prevIndex + 1) % titles.length);
-    }, 3000);
+    }, 4000);
 
     return () => clearInterval(titleInterval);
   }, []);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && titleRef.current) {
-      // Animate title change
-      gsap.fromTo(
-        titleRef.current,
-        { 
+      // Create an even smoother crossfade transition
+      const tl = gsap.timeline({
+        defaults: { 
+          ease: "power2.out",
+          duration: 0.4
+        }
+      });
+      
+      // Crossfade transition for maximum smoothness
+      tl.to(titleRef.current, {
+        opacity: 0,
+        y: -15,
+        duration: 0.3
+      })
+      .call(() => {
+        // Instantly update the text
+        if (titleRef.current) {
+          titleRef.current.textContent = titles[currentTitleIndex];
+        }
+      })
+      .fromTo(titleRef.current,
+        {
           opacity: 0,
-          y: 20,
+          y: 15
         },
         {
           opacity: 1,
           y: 0,
-          duration: 0.8,
-          ease: 'power2.out'
+          duration: 0.4
         }
       );
     }
     
-    // Animate icons based on current title
+    // Extremely subtle icon animations for better performance
     if (codeIconRef.current && businessIconRef.current) {
       if (currentTitleIndex === 2) { // FULL-STACK DEVELOPER
         gsap.to(codeIconRef.current, {
-          y: -10,
+          y: -12,
           duration: 0.5,
-          yoyo: true,
-          repeat: 1,
-          ease: 'power1.inOut'
+          ease: "power2.out"
+        });
+        gsap.to(businessIconRef.current, {
+          y: 0,
+          duration: 0.5,
+          ease: "power2.out"
         });
       } else if (currentTitleIndex === 1 || currentTitleIndex === 3) { // BUSINESS STRATEGIC or AI ENTHUSIAST
         gsap.to(businessIconRef.current, {
-          y: -10,
+          y: -12,
           duration: 0.5,
-          yoyo: true,
-          repeat: 1,
-          ease: 'power1.inOut'
+          ease: "power2.out"
+        });
+        gsap.to(codeIconRef.current, {
+          y: 0,
+          duration: 0.5,
+          ease: "power2.out"
+        });
+      } else {
+        // Reset both icons for "CHIRANJEEVI P.K"
+        gsap.to([codeIconRef.current, businessIconRef.current], {
+          y: 0,
+          duration: 0.5,
+          ease: "power2.out"
         });
       }
     }
@@ -73,21 +103,24 @@ const Hero = () => {
 
   useEffect(() => {
     if (typeof window !== 'undefined' && heroRef.current) {
+      // Create a master timeline for all initial animations
+      const masterTl = gsap.timeline({ defaults: { ease: "power2.out" } });
+      
       // Animate background
-      gsap.fromTo(
+      masterTl.fromTo(
         heroRef.current,
         { opacity: 0 },
         {
           opacity: 1,
-          duration: 1,
-          ease: 'power2.out'
-        }
+          duration: 1
+        },
+        0
       );
 
       // Animate welcome line
       const welcomeLine = heroRef.current.querySelector('.welcome-line');
       if (welcomeLine) {
-        gsap.fromTo(
+        masterTl.fromTo(
           welcomeLine,
           { 
             opacity: 0,
@@ -96,28 +129,26 @@ const Hero = () => {
           {
             opacity: 1,
             y: 0,
-            duration: 1,
-            delay: 0.3,
-            ease: 'power2.out'
-          }
+            duration: 0.8
+          },
+          0.3
         );
       }
 
-      // Animate tagline
-      if (taglineRef.current) {
-        gsap.fromTo(
-          taglineRef.current,
+      // Animate the title
+      if (titleRef.current) {
+        masterTl.fromTo(
+          titleRef.current,
           { 
             opacity: 0,
-            y: 20,
+            y: 30,
           },
           {
             opacity: 1,
             y: 0,
-            duration: 1,
-            delay: 0.8,
-            ease: 'power2.out'
-          }
+            duration: 0.8
+          },
+          0.5
         );
       }
 
@@ -131,19 +162,34 @@ const Hero = () => {
             strokeDashoffset: length,
           });
           
-          gsap.to(path, {
+          masterTl.to(path, {
             strokeDashoffset: 0,
-            duration: 1.5,
-            delay: 1,
-            ease: 'power2.out'
-          });
+            duration: 1,
+          }, 0.8);
         }
+      }
+
+      // Animate tagline
+      if (taglineRef.current) {
+        masterTl.fromTo(
+          taglineRef.current,
+          { 
+            opacity: 0,
+            y: 20,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8
+          },
+          1
+        );
       }
 
       // Animate buttons
       if (buttonsRef.current) {
         const buttons = buttonsRef.current.querySelectorAll('button');
-        gsap.fromTo(
+        masterTl.fromTo(
           buttons,
           { 
             opacity: 0,
@@ -152,11 +198,10 @@ const Hero = () => {
           {
             opacity: 1,
             y: 0,
-            duration: 1,
-            delay: 1.5,
-            stagger: 0.1,
-            ease: 'power2.out'
-          }
+            duration: 0.6,
+            stagger: 0.1
+          },
+          1.2
         );
       }
 
@@ -172,7 +217,7 @@ const Hero = () => {
         });
       }
 
-      // Animate interactive icons with same animation
+      // Animate interactive icons with subtle continuous animation
       if (codeIconRef.current) {
         gsap.to(codeIconRef.current, {
           y: -10,
@@ -186,7 +231,7 @@ const Hero = () => {
       if (businessIconRef.current) {
         gsap.to(businessIconRef.current, {
           y: -10,
-          duration: 2,
+          duration: 2.2,
           repeat: -1,
           yoyo: true,
           ease: 'power1.inOut'
@@ -199,11 +244,11 @@ const Hero = () => {
         
         const scrollPosition = window.scrollY;
         
-        // Move hero content upward on scroll
+        // Move hero content upward on scroll with smoother transition
         gsap.to(heroRef.current, {
           y: -scrollPosition * 0.5,
-          duration: 0.1,
-          ease: 'none'
+          duration: 0.3,
+          ease: 'power1.out'
         });
       };
 
@@ -260,16 +305,18 @@ const Hero = () => {
         {/* Rotating title */}
         <h1 
           ref={titleRef}
-          className="font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-light-textPrimary dark:text-dark-textPrimary font-heading transition-colors duration-700 mb-6 sm:mb-8 tracking-tight"
+          className="font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-light-textPrimary dark:text-dark-textPrimary font-heading transition-colors duration-700 mb-6 sm:mb-8 tracking-tight title-element"
           style={{ 
             fontFamily: "'Poppins', 'Clash Display', 'Playfair Display', sans-serif",
             minHeight: '2.5rem',
             textShadow: theme === 'dark' 
               ? '0 0 15px rgba(232, 93, 69, 0.5)' 
-              : '0 0 15px rgba(232, 93, 69, 0.3)'
+              : '0 0 15px rgba(232, 93, 69, 0.3)',
+            transformStyle: 'preserve-3d',
+            transformOrigin: 'center'
           }}
         >
-          {titles[currentTitleIndex]}
+          {titles[0]}
         </h1>
 
         {/* Signature line */}

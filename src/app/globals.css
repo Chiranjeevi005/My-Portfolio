@@ -644,3 +644,20 @@ p {
   filter: drop-shadow(0 0 8px rgba(255, 138, 92, 0.4));
   pointer-events: none;
 }
+
+/* Enhanced title rotation animation - simplified for better performance */
+.title-element {
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Remove the complex keyframe animation that was causing performance issues */
+
+/* Glow effect for title during animation */
+.title-element.glow {
+  text-shadow: 0 0 20px rgba(255, 138, 92, 0.7);
+}
+
+/* Dark mode glow effect */
+.dark .title-element.glow {
+  text-shadow: 0 0 20px rgba(255, 138, 92, 0.7);
+}
