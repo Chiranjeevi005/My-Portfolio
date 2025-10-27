@@ -5,7 +5,6 @@ import gsap from 'gsap';
 import Navbar from '@/components/common/Navbar';
 import Footer from '@/components/common/Footer';
 import AboutHeroSection from '../../components/about/AboutHeroSection';
-import JourneyTimeline from '../../components/about/JourneyTimeline';
 import SkillsMatrix from '../../components/about/SkillsMatrix';
 import AchievementsGrid from '../../components/about/AchievementsGrid';
 import ExperienceCards from '../../components/about/ExperienceCards';
@@ -33,7 +32,6 @@ export default function AboutPage() {
       <main className="flex-grow ">
         <AboutHeroSection />
         <EducationSection />
-        <JourneyTimeline />
         <SkillsMatrix />
         <AchievementsGrid />
         <ExperienceCards />

@@ -98,8 +98,8 @@ const EducationSection = () => {
           <div className="w-20 h-1" style={{ backgroundColor: accentColor }}></div>
         </motion.div>
 
-        {/* Transcript Wall Grid - Remove mouse position dependency */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 place-items-center">
+        {/* Transcript Wall Grid - Consistent 4-card layout across all screen sizes */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-8 place-items-center">
           {allEducation.map((item, index) => (
             <motion.div
               key={item.id}
@@ -107,110 +107,96 @@ const EducationSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="w-full max-w-[90%] sm:max-w-[80%] lg:max-w-[300px]"
-              // Remove mouse position transform
-              // style={{
-              //   transform: `perspective(1000px) rotateY(${(mousePosition.x / window.innerWidth - 0.5) * 5}deg) rotateX(${(mousePosition.y / window.innerHeight - 0.5) * -5}deg)`,
-              // }}
+              className="w-full max-w-[280px]"
             >
+              {/* Simplified card container without complex absolute positioning */}
               <div 
-                className="relative w-full h-[200px] cursor-pointer group"
+                className="relative w-full cursor-pointer group"
                 onClick={() => handleCardClick(item.id)}
               >
-                {/* Card Container with Floating Effect - Keep floating animation but remove mouse interaction */}
-                <motion.div
-                  className="absolute inset-0 w-full h-full"
-                  animate={{
-                    y: [0, -10, 0],
-                  }}
-                  transition={{
-                    duration: 3 + index,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                >
-                  {/* Spotlight effect container - Remove mouse position dependency */}
-                  <div className="relative w-full h-full rounded-2xl overflow-hidden">
-                    {/* Remove spotlight overlay that follows mouse */}
-                    {/* <div 
-                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"
-                      style={{
-                        background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, ${spotlightColor}, transparent 40%)`,
-                      }}
-                    /> */}
+                {/* Card with consistent height across all devices */}
+                <div className="relative w-full rounded-2xl overflow-hidden" style={{ height: '380px' }}>
+                  {/* Card Front */}
+                  <motion.div
+                    className={`absolute inset-0 w-full ${cardBg} border ${cardBorder} rounded-2xl shadow-lg p-6 flex flex-col justify-between`}
+                    animate={{ rotateY: flippedCards[item.id] ? 180 : 0 }}
+                    transition={{ duration: 0.8 }}
+                    style={{ backfaceVisibility: 'hidden' }}
+                  >
+                    {/* Certificate header with decorative elements */}
+                    <div className="flex justify-between items-start">
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: `${accentColor}20` }}>
+                        <FileText size={28} style={{ color: accentColor }} />
+                      </div>
+                      <span className="text-sm font-medium px-3 py-1 rounded-lg" style={{ backgroundColor: `${accentColor}20`, color: accentColor }}>
+                        {item.year}
+                      </span>
+                    </div>
                     
-                    {/* Card Front */}
-                    <motion.div
-                      className={`absolute inset-0 w-full h-full ${cardBg} border ${cardBorder} rounded-2xl shadow-lg p-5 flex flex-col justify-between`}
-                      animate={{ rotateY: flippedCards[item.id] ? 180 : 0 }}
-                      transition={{ duration: 0.8 }}
-                      style={{ backfaceVisibility: 'hidden' }}
-                    >
-                      {/* Certificate header with decorative elements */}
-                      <div className="flex justify-between items-start">
-                        <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${accentColor}20` }}>
-                          <FileText size={24} style={{ color: accentColor }} />
-                        </div>
-                        <span className="text-xs font-medium px-2 py-1 rounded" style={{ backgroundColor: `${accentColor}20`, color: accentColor }}>
-                          {item.year}
-                        </span>
-                      </div>
-                      
-                      <div>
-                        <h3 className={`text-lg font-bold ${textColorPrimary} line-clamp-2`}>
-                          {item.title}
-                        </h3>
-                        <p className="font-medium mt-1 text-sm" style={{ color: accentColor }}>
-                          {item.institute}
-                        </p>
-                      </div>
-                      
-                      <div className="flex justify-between items-center pt-2" style={{ borderTop: `1px solid ${theme === 'dark' ? '#3C2E2A' : '#E8D5C8'}50` }}>
-                        <span className={`text-xs ${textColorMuted}`}>
-                          Click to flip
-                        </span>
-                        <span className="text-sm font-bold" style={{ color: accentColor }}>
-                          {item.marks}
-                        </span>
-                      </div>
-                    </motion.div>
-
-                    {/* Card Back */}
-                    <motion.div
-                      className={`absolute inset-0 w-full h-full ${cardBg} border ${cardBorder} rounded-2xl shadow-lg p-5 flex flex-col justify-between`}
-                      animate={{ rotateY: flippedCards[item.id] ? 0 : 180 }}
-                      transition={{ duration: 0.8 }}
-                      style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-                    >
-                      <div>
-                        <h3 className={`text-lg font-bold ${textColorPrimary} line-clamp-1`}>
-                          {item.title}
-                        </h3>
-                        <p className={`text-xs mt-2 line-clamp-3 ${textColorSecondary}`}>
-                          {item.description}
-                        </p>
-                      </div>
-                      
-                      <div className="flex justify-between items-center pt-2" style={{ borderTop: `1px solid ${theme === 'dark' ? '#3C2E2A' : '#E8D5C8'}50` }}>
-                        <button 
-                          className="text-xs font-medium hover:underline flex items-center"
-                          style={{ color: accentColor }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            openCertificateModal(item);
-                          }}
-                        >
-                          View Marksheet
-                          <FileText size={12} className="ml-1" />
-                        </button>
-                      </div>
-
-                    </motion.div>
+                    <div>
+                      <h3 className={`text-xl font-bold ${textColorPrimary} line-clamp-2`}>
+                        {item.title}
+                      </h3>
+                      <p className="font-medium mt-2 text-base" style={{ color: accentColor }}>
+                        {item.institute}
+                      </p>
+                    </div>
                     
-                    {/* Glow border effect */}
-                    <div className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 group-hover:opacity-30 transition-opacity duration-300 -z-10" style={{ border: `2px solid ${accentColor}` }}></div>
-                  </div>
-                </motion.div>
+                    <div className="flex justify-between items-center pt-4" style={{ borderTop: `1px solid ${theme === 'dark' ? '#3C2E2A' : '#E8D5C8'}50` }}>
+                      <span className={`text-sm ${textColorMuted}`}>
+                        Click to flip
+                      </span>
+                      <span className="text-lg font-bold" style={{ color: accentColor }}>
+                        {item.marks}
+                      </span>
+                    </div>
+                  </motion.div>
+
+                  {/* Card Back */}
+                  <motion.div
+                    className={`absolute inset-0 w-full ${cardBg} border ${cardBorder} rounded-2xl shadow-lg p-6 flex flex-col justify-between`}
+                    animate={{ rotateY: flippedCards[item.id] ? 0 : 180 }}
+                    transition={{ duration: 0.8 }}
+                    style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+                  >
+                    <div>
+                      <h3 className={`text-xl font-bold ${textColorPrimary} line-clamp-1`}>
+                        {item.title}
+                      </h3>
+                      <p className={`text-sm mt-3 line-clamp-6 ${textColorSecondary}`}>
+                        {item.description}
+                      </p>
+                    </div>
+                    
+                    <div className="flex justify-between items-center pt-4" style={{ borderTop: `1px solid ${theme === 'dark' ? '#3C2E2A' : '#E8D5C8'}50` }}>
+                      <button 
+                        className="text-sm font-medium hover:underline flex items-center"
+                        style={{ color: accentColor }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openCertificateModal(item);
+                        }}
+                      >
+                        View Marksheet
+                        <FileText size={14} className="ml-1" />
+                      </button>
+                      <button 
+                        className="text-sm font-medium hover:underline flex items-center"
+                        style={{ color: accentColor }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleCardClick(item.id);
+                        }}
+                      >
+                        Close
+                        <X size={14} className="ml-1" />
+                      </button>
+                    </div>
+                  </motion.div>
+                  
+                  {/* Glow border effect */}
+                  <div className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 group-hover:opacity-30 transition-opacity duration-300 -z-10" style={{ border: `2px solid ${accentColor}` }}></div>
+                </div>
               </div>
             </motion.div>
           ))}
