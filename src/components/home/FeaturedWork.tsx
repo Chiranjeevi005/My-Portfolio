@@ -392,12 +392,8 @@ const FeaturedWork = () => {
       ref={containerRef}
       className="py-16 sm:py-20 relative overflow-hidden"
     >
-      {/* Background with theme support */}
-      <div className={`absolute inset-0 ${
-        isDarkMode 
-          ? 'bg-gradient-to-b from-[#1E1614] to-[#241A17]' 
-          : 'bg-gradient-to-b from-[#FFF9F5] to-[#FFF1EB]'
-      }`}></div>
+      {/* Background with theme support - removed to use global floating wall design */}
+      <div className={`absolute inset-0`}></div>
       
       {/* Interactive background elements with parallax */}
       <div 

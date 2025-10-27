@@ -68,7 +68,7 @@ const EducationSection = () => {
   };
 
   // Determine colors based on theme
-  const bgColor = theme === 'dark' ? 'bg-gradient-to-b from-[#0D0D0D] to-[#1A1A1A]' : 'bg-gradient-to-b from-[#FFF9F3] to-[#FFF3E9]';
+  const bgColor = theme === 'dark' ? 'bg-dark-bgPrimary' : 'bg-light-bgPrimary';
   const textColorPrimary = theme === 'dark' ? 'text-[#F8E8D8]' : 'text-[#2D1B18]';
   const textColorSecondary = theme === 'dark' ? 'text-[#D9BFAE]' : 'text-[#5A3E36]';
   const textColorMuted = theme === 'dark' ? 'text-[#A07E69]' : 'text-[#9B7C72]';

@@ -17,7 +17,6 @@ const About = () => {
   const subtextRef = useRef<HTMLParagraphElement>(null);
   const contentContainerRef = useRef<HTMLDivElement>(null);
   const timelineContainerRef = useRef<HTMLDivElement>(null);
-  const _timelinePathRef = useRef<SVGPathElement>(null);
   const skillCardRefs = useRef<HTMLDivElement[]>([]);
   const milestoneRefs = useRef<HTMLDivElement[]>([]);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -487,12 +486,8 @@ const About = () => {
       ref={sectionRef}
       className="relative section min-h-screen flex items-center overflow-hidden py-12 sm:py-16 md:py-20"
     >
-      {/* Background gradient */}
-      <div className={`absolute inset-0 ${
-        isDarkMode 
-          ? 'bg-gradient-to-br from-[#181210] via-[#1E1614] to-[#241A17]' 
-          : 'bg-gradient-to-br from-[#FFF9F3] via-[#FFF3E9] to-[#FFFFFF]'
-      }`} />
+      {/* Background gradient - removed to use global floating wall design */}
+      <div className={`absolute inset-0`}></div>
       
       {/* Floating background elements */}
       <div 

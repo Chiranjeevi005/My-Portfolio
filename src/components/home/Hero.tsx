@@ -270,7 +270,7 @@ const Hero = () => {
   return (
     <section 
       ref={heroRef}
-      className="relative min-h-[80vh] flex items-center justify-center bg-light-bgPrimary dark:bg-dark-bgPrimary transition-colors duration-700 overflow-hidden px-4 sm:px-6 md:px-12 lg:px-24 py-8 sm:py-10"
+      className="relative min-h-[80vh] flex items-center justify-center transition-colors duration-700 px-0 sm:px-0 md:px-0 lg:px-0 py-0"
     >
       {/* Radial glow behind name */}
       <div className="name-glow absolute w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[600px] md:h-[600px] rounded-full opacity-40 pointer-events-none transition-colors duration-700"

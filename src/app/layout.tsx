@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
+import FloatingWallBackground from "@/components/common/FloatingWallBackground";
 
 // Import Google Fonts
 import { Great_Vibes, Cookie } from "next/font/google";
@@ -44,6 +45,7 @@ export default function RootLayout({
     <html lang="en" className="bg-light-bgPrimary dark:bg-dark-bgPrimary text-light-textPrimary dark:text-dark-textPrimary scroll-smooth" suppressHydrationWarning>
       <body className={`${inter.variable} ${poppins.variable} ${greatVibes.variable} ${cookie.variable} font-body`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+          <FloatingWallBackground />
           {children}
         </ThemeProvider>
       </body>

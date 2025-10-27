@@ -8,43 +8,6 @@ const AboutHeroSection = () => {
   
   return (
     <section className="relative py-16 sm:py-20 md:py-24 overflow-hidden">
-      {/* Background gradient - Same as EducationSection */}
-      <div className={`absolute inset-0 ${theme === 'dark' 
-        ? 'bg-gradient-to-b from-[#0D0D0D] to-[#1A1A1A]' 
-        : 'bg-gradient-to-b from-[#FFF9F3] to-[#FFF3E9]'}`}></div>
-      
-      {/* Floating Wall Design Elements - Exact same as EducationSection */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Floating geometric shapes */}
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-lg opacity-10"
-            style={{
-              width: Math.random() * 60 + 20,
-              height: Math.random() * 60 + 20,
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              backgroundColor: i % 3 === 0 
-                ? (theme === 'dark' ? '#FF6F61' : '#E85D45') 
-                : i % 3 === 1 
-                  ? (theme === 'dark' ? '#FF8A5C' : '#D94A33') 
-                  : (theme === 'dark' ? '#A07E69' : '#9B7C72'),
-            }}
-            animate={{
-              x: [0, Math.random() * 100 - 50],
-              y: [0, Math.random() * 100 - 50],
-              rotate: [0, Math.random() * 90],
-            }}
-            transition={{
-              duration: Math.random() * 20 + 20,
-              repeat: Infinity,
-              repeatType: "reverse",
-            }}
-          />
-        ))}
-      </div>
-
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 xl:gap-16">
           {/* Portrait - Left Column with enhanced design */}
