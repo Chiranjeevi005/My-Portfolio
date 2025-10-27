@@ -71,41 +71,46 @@ const Navbar = () => {
     </nav>
   );
 
-  // Mobile Navigation (Full Width Bottom Bar)
+  // Mobile Navigation (Glassmorphic Capsule Bar)
   const MobileNav = () => (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-30 will-change-transform">
-      <div className="bg-light-bgPrimary/80 dark:bg-dark-bgPrimary/80 backdrop-blur-md border-t border-light-border dark:border-dark-border">
-        <div className="flex justify-around items-center py-2">
-          {navItems.map((item) => {
-            const isActive = pathname === item.href || (item.href.includes('#') && pathname === '/');
-            const Icon = item.icon;
-            
-            return (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`flex flex-col items-center justify-center p-2 rounded-md transition-all duration-300 ease-in-out flex-1 ${
-                  isActive 
-                    ? 'text-light-textAccent dark:text-dark-textAccent' 
-                    : 'text-light-textPrimary dark:text-dark-textPrimary hover:text-light-textAccent dark:hover:text-dark-textAccent'
-                }`}
-                scroll={false}
-              >
-                <div className="flex flex-col items-center">
-                  <Icon size={18} />
-                  <span className="text-[0.65rem] mt-1">{item.name}</span>
-                  {isActive && (
-                    <div className="mt-0.5 w-1 h-1 rounded-full bg-light-textAccent dark:bg-dark-textAccent" />
-                  )}
-                </div>
-              </Link>
-            );
-          })}
-          <div 
-            className="flex flex-col items-center justify-center p-2 rounded-md transition-all duration-300 ease-in-out flex-1"
-          >
-            <ThemeToggle />
-            <span className="text-[0.65rem] mt-1">Theme</span>
+    <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[90vw]">
+      <div 
+        className="flex justify-around items-center h-[70px] rounded-full p-4 backdrop-blur-md border"
+        style={{ 
+          backgroundColor: 'rgba(var(--color-bg-primary), 0.7)',
+          borderColor: 'rgba(var(--color-border), 0.5)',
+          boxShadow: '4px 4px 12px rgba(0,0,0,0.1), -4px -4px 10px rgba(255,255,255,0.6)'
+        }}
+      >
+        {navItems.map((item) => {
+          const isActive = pathname === item.href || (item.href.includes('#') && pathname === '/');
+          const Icon = item.icon;
+          
+          return (
+            <Link
+              key={item.name}
+              href={item.href}
+              className={`flex flex-col items-center justify-center rounded-full transition-all duration-300 ease-in-out flex-1 h-full max-w-[60px] ${
+                isActive 
+                  ? 'text-light-textAccent dark:text-dark-textAccent scale-105' 
+                  : 'text-light-textPrimary dark:text-dark-textPrimary hover:text-light-textAccent dark:hover:text-dark-textAccent'
+              }`}
+              scroll={false}
+            >
+              <div className="flex flex-col items-center">
+                <Icon size={24} />
+                <span className="text-xs mt-1 font-medium">{item.name}</span>
+              </div>
+            </Link>
+          );
+        })}
+        <div 
+          className="flex flex-col items-center justify-center rounded-full transition-all duration-300 ease-in-out flex-1 h-full max-w-[60px] hover:text-light-textAccent dark:hover:text-dark-textAccent"
+        >
+          <div className="flex flex-col items-center">
+            <div className="w-6 h-6 flex items-center justify-center">
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </div>
