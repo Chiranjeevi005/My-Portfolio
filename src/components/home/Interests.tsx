@@ -170,9 +170,37 @@ const InterestsShelf = () => {
   return (
     <section 
       ref={sectionRef}
-      className="py-20 bg-light-bgPrimary dark:bg-dark-bgPrimary text-light-textPrimary dark:text-dark-textPrimary transition-colors duration-700"
+      className="py-20 bg-light-bgPrimary dark:bg-dark-bgPrimary text-light-textPrimary dark:text-dark-textPrimary transition-colors duration-700 relative overflow-hidden"
     >
-      <div className="container mx-auto px-8 md:px-16">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-gradient-to-r from-[#FF8A5C]/10 to-[#FFA88C]/10 blur-3xl"
+          animate={{
+            x: [0, 100, 0],
+            y: [0, -100, 0],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div
+          className="absolute bottom-1/3 right-1/4 w-48 h-48 rounded-full bg-gradient-to-r from-[#E85D45]/10 to-[#FF8A5C]/10 blur-3xl"
+          animate={{
+            x: [0, -100, 0],
+            y: [0, 100, 0],
+          }}
+          transition={{
+            duration: 25,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+      </div>
+
+      <div className="container mx-auto px-8 md:px-16 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -220,19 +248,72 @@ const InterestsShelf = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{
+                  y: -10,
+                  transition: { duration: 0.3, ease: "easeOut" }
+                }}
                 className="snap-start flex-shrink-0 w-72 md:w-80"
               >
-                <div className="group h-full bg-light-cardBg dark:bg-dark-cardBg border border-light-cardBorder dark:border-dark-cardBorder rounded-2xl p-6 transition-all duration-500 hover:shadow-[0_0_15px_var(--light-textAccent)] dark:hover:shadow-[0_0_15px_var(--dark-textAccent)] hover:-translate-y-1 flex flex-col">
-                  <div className="mb-4 text-light-textAccent dark:text-dark-textAccent group-hover:text-light-textHighlight dark:group-hover:text-dark-textHighlight transition-colors duration-300">
-                    <interest.icon size={32} />
+                <motion.div 
+                  className="group h-full bg-light-cardBg dark:bg-dark-cardBg border border-light-cardBorder dark:border-dark-cardBorder rounded-2xl p-6 transition-all duration-500 hover:shadow-[0_0_25px_var(--light-textAccent)] dark:hover:shadow-[0_0_25px_var(--dark-textAccent)] flex flex-col relative overflow-hidden"
+                  whileHover={{
+                    scale: 1.02,
+                    transition: { duration: 0.3 }
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {/* Animated border glow effect */}
+                  <div className="absolute inset-0 rounded-2xl overflow-hidden">
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-[#E85D45] to-[#FF8A5C] opacity-0 group-hover:opacity-20 transition-opacity duration-300"
+                      style={{
+                        background: `linear-gradient(45deg, #E85D45, #FF8A5C, #FFA88C, #E85D45)`,
+                        backgroundSize: "300% 300%",
+                      }}
+                      animate={{
+                        backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    />
                   </div>
-                  <h3 className="text-xl font-semibold mb-3 text-light-textPrimary dark:text-dark-textPrimary group-hover:text-light-textAccent dark:group-hover:text-dark-textAccent transition-colors duration-300 font-heading">
-                    {interest.title}
-                  </h3>
-                  <p className="text-light-textSecondary dark:text-dark-textSecondary text-sm font-body leading-relaxed flex-grow">
-                    {interest.narrative}
-                  </p>
-                </div>
+                  
+                  {/* Content */}
+                  <div className="relative z-10">
+                    <motion.div 
+                      className="mb-4 text-light-textAccent dark:text-dark-textAccent group-hover:text-light-textHighlight dark:group-hover:text-dark-textHighlight transition-colors duration-300"
+                      whileHover={{ 
+                        scale: 1.2,
+                        rotate: 5,
+                        transition: { duration: 0.3 }
+                      }}
+                    >
+                      <interest.icon size={32} />
+                    </motion.div>
+                    <motion.h3 
+                      className="text-xl font-semibold mb-3 text-light-textPrimary dark:text-dark-textPrimary group-hover:text-light-textAccent dark:group-hover:text-dark-textAccent transition-colors duration-300 font-heading"
+                      whileHover={{ 
+                        x: 5,
+                        transition: { duration: 0.2 }
+                      }}
+                    >
+                      {interest.title}
+                    </motion.h3>
+                    <motion.p 
+                      className="text-light-textSecondary dark:text-dark-textSecondary text-sm font-body leading-relaxed flex-grow"
+                      initial={{ opacity: 0.7 }}
+                      whileHover={{ 
+                        opacity: 1,
+                        transition: { duration: 0.3 }
+                      }}
+                    >
+                      {interest.narrative}
+                    </motion.p>
+                  </div>
+                </motion.div>
               </motion.div>
             ))}
           </div>
@@ -240,7 +321,7 @@ const InterestsShelf = () => {
           {/* Scroll Progress Indicator */}
           <div className="mt-2 h-1 bg-light-bgSecondary dark:bg-dark-bgSecondary rounded-full overflow-hidden">
             <motion.div 
-              className="h-full bg-light-textAccent dark:bg-dark-textAccent"
+              className="h-full bg-gradient-to-r from-[#E85D45] to-[#FF8A5C]"
               style={{ width: `${scrollProgress}%` }}
               initial={{ width: 0 }}
               animate={{ width: `${scrollProgress}%` }}

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ExternalLink, Github } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -392,6 +393,34 @@ const FeaturedWork = () => {
       ref={containerRef}
       className="py-16 sm:py-20 relative overflow-hidden"
     >
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-gradient-to-r from-[#FF8A5C]/5 to-[#FFA88C]/5 blur-3xl"
+          animate={{
+            x: [0, 50, 0],
+            y: [0, -50, 0],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div
+          className="absolute bottom-1/3 right-1/4 w-48 h-48 rounded-full bg-gradient-to-r from-[#E85D45]/5 to-[#FF8A5C]/5 blur-3xl"
+          animate={{
+            x: [0, -50, 0],
+            y: [0, 50, 0],
+          }}
+          transition={{
+            duration: 18,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+      </div>
+      
       {/* Background with theme support - removed to use global floating wall design */}
       <div className={`absolute inset-0`}></div>
       
@@ -434,87 +463,193 @@ const FeaturedWork = () => {
         
         <div className="space-y-12 sm:space-y-16">
           {/* Project 1 - Responsive grid layout (same as Projects 2 & 3) */}
-          <div 
+          <motion.div 
             key={projects[0].id}
             className="project-card rounded-2xl p-5 sm:p-6 shadow-xl transition-all duration-700 hover:shadow-2xl backdrop-blur-md border sm:hidden"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            whileHover={{
+              y: -10,
+              transition: { duration: 0.3, ease: "easeOut" }
+            }}
           >
-            <div className={`rounded-2xl p-5 sm:p-6 shadow-xl transition-all duration-700 hover:shadow-2xl backdrop-blur-md border ${
-              isDarkMode 
-                ? 'bg-[#241A17]/70 border-[#3C2E2A]' 
-                : 'bg-white/70 border-white/50'
-            }`}>
-              <div className="project-image h-32 sm:h-40 md:h-48 rounded-xl sm:rounded-2xl overflow-hidden mb-4 sm:mb-6 transform transition-transform duration-500 hover:scale-105">
-                <div className="w-full h-full bg-gradient-to-r from-[#FF8A5C] to-[#FFA88C] flex items-center justify-center">
-                  <span className="text-white font-bold text-sm sm:text-base">
-                    {projects[0].title} Preview
-                  </span>
+            <motion.div 
+              className={`rounded-2xl p-5 sm:p-6 shadow-xl transition-all duration-700 hover:shadow-2xl backdrop-blur-md border ${
+                isDarkMode 
+                  ? 'bg-[#241A17]/70 border-[#3C2E2A]' 
+                  : 'bg-white/70 border-white/50'
+              }`}
+              whileHover={{
+                scale: 1.02,
+                transition: { duration: 0.3 }
+              }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <div className="relative overflow-hidden rounded-xl sm:rounded-2xl mb-4 sm:mb-6">
+                {/* Animated border glow effect */}
+                <div className="absolute inset-0 rounded-xl sm:rounded-2xl overflow-hidden">
+                  <motion.div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300"
+                    style={{
+                      background: `linear-gradient(45deg, #E85D45, #FF8A5C, #FFA88C, #E85D45)`,
+                      backgroundSize: "300% 300%",
+                    }}
+                    animate={{
+                      backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  />
                 </div>
+                
+                <motion.div 
+                  className="project-image h-48 sm:h-56 md:h-64 rounded-xl sm:rounded-2xl overflow-hidden transform transition-transform duration-500"
+                  whileHover={{ 
+                    scale: 1.05,
+                    transition: { duration: 0.3 }
+                  }}
+                >
+                  <div className="w-full h-full bg-gradient-to-r from-[#FF8A5C] to-[#FFA88C] flex items-center justify-center">
+                    <span className="text-white font-bold text-sm sm:text-base">
+                      {projects[0].title} Preview
+                    </span>
+                  </div>
+                </motion.div>
               </div>
               
               <div className="project-text">
-                <span className={`inline-block px-2 py-1 sm:px-3 sm:py-1 text-xs sm:text-sm font-semibold rounded-full mb-2 sm:mb-3 ${
-                  isDarkMode 
-                    ? 'bg-[#FF8A5C]/10 text-[#FF8A5C]' 
-                    : 'bg-[#FFA88C]/10 text-[#E85D45]'
-                }`}>
+                <motion.span 
+                  className={`inline-block px-2 py-1 sm:px-3 sm:py-1 text-xs sm:text-sm font-semibold rounded-full mb-2 sm:mb-3 ${
+                    isDarkMode 
+                      ? 'bg-[#FF8A5C]/10 text-[#FF8A5C]' 
+                      : 'bg-[#FFA88C]/10 text-[#E85D45]'
+                  }`}
+                  whileHover={{ 
+                    scale: 1.05,
+                    transition: { duration: 0.2 }
+                  }}
+                >
                   {projects[0].role}
-                </span>
-                <h3 className={`text-lg sm:text-xl font-bold mb-2 sm:mb-3 ${
-                  isDarkMode ? 'text-[#F6E8D8]' : 'text-[#2A2A2A]'
-                }`}>
-                  {projects[0].title}
-                </h3>
-                <p className={`text-xs sm:text-sm mb-4 ${
-                  isDarkMode ? 'text-[#DAB9A0]' : 'text-[#2A2A2A]/80'
-                }`}>
-                  {projects[0].description}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <button className={`view-button px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium group relative flex items-center ${
+                </motion.span>
+                <motion.h3 
+                  className={`text-lg sm:text-xl font-bold mb-2 sm:mb-3 ${
                     isDarkMode ? 'text-[#F6E8D8]' : 'text-[#2A2A2A]'
-                  }`}>
+                  }`}
+                  whileHover={{ 
+                    x: 5,
+                    transition: { duration: 0.2 }
+                  }}
+                >
+                  {projects[0].title}
+                </motion.h3>
+                <motion.p 
+                  className={`text-xs sm:text-sm mb-4 ${
+                    isDarkMode ? 'text-[#DAB9A0]' : 'text-[#2A2A2A]/80'
+                  }`}
+                  initial={{ opacity: 0.7 }}
+                  whileHover={{ 
+                    opacity: 1,
+                    transition: { duration: 0.3 }
+                  }}
+                >
+                  {projects[0].description}
+                </motion.p>
+                <div className="flex flex-wrap gap-2">
+                  <motion.button 
+                    className={`view-button px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium group relative flex items-center ${
+                      isDarkMode ? 'text-[#F6E8D8]' : 'text-[#2A2A2A]'
+                    }`}
+                    whileHover={{ 
+                      scale: 1.05,
+                      transition: { duration: 0.2 }
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     <ExternalLink size={14} className="mr-1" />
                     View
                     <span className={`button-underline absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 ease-in-out group-hover:w-full ${
                       isDarkMode ? 'bg-[#FF8A5C]' : 'bg-[#E85D45]'
                     }`}></span>
-                  </button>
-                  <button className={`github-button px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium group relative flex items-center ${
-                    isDarkMode ? 'text-[#F6E8D8]' : 'text-[#2A2A2A]'
-                  }`}>
+                  </motion.button>
+                  <motion.button 
+                    className={`github-button px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium group relative flex items-center ${
+                      isDarkMode ? 'text-[#F6E8D8]' : 'text-[#2A2A2A]'
+                    }`}
+                    whileHover={{ 
+                      scale: 1.05,
+                      transition: { duration: 0.2 }
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     <Github size={14} className="mr-1" />
                     Code
                     <span className={`button-underline absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 ease-in-out group-hover:w-full ${
                       isDarkMode ? 'bg-[#FF8A5C]' : 'bg-[#E85D45]'
                     }`}></span>
-                  </button>
+                  </motion.button>
                 </div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
           
           {/* Project 1 - Full width with responsive layout (desktop/tablet view) */}
-          <div 
+          <motion.div 
             key={`${projects[0].id}-desktop`}
             className="project-card relative min-h-[400px] sm:min-h-[500px] md:min-h-[600px] hidden sm:block"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            whileHover={{
+              y: -10,
+              transition: { duration: 0.3, ease: "easeOut" }
+            }}
           >
             {/* Project image with responsive positioning */}
-            <div 
+            <motion.div 
               className={`project-image absolute w-full sm:w-3/4 h-[300px] sm:h-[400px] md:h-[450px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl transition-all duration-700 left-0`}
               style={{
                 top: '0',
                 clipPath: 'none',
               }}
+              whileHover={{ 
+                scale: 1.02,
+                transition: { duration: 0.3 }
+              }}
             >
+              {/* Animated border glow effect */}
+              <div className="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden">
+                <motion.div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300"
+                  style={{
+                    background: `linear-gradient(45deg, #E85D45, #FF8A5C, #FFA88C, #E85D45)`,
+                    backgroundSize: "300% 300%",
+                  }}
+                  animate={{
+                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
+              </div>
+              
               <div className="w-full h-full bg-gradient-to-r from-[#FF8A5C] to-[#FFA88C] flex items-center justify-center transform transition-transform duration-500 hover:scale-105">
                 <span className="text-white font-bold text-lg sm:text-xl md:text-2xl">
                   {projects[0].title} Preview
                 </span>
               </div>
-            </div>
+            </motion.div>
             
             {/* Project information panel with responsive positioning */}
-            <div 
+            <motion.div 
               className={`project-text absolute w-full sm:w-2/5 p-6 sm:p-8 rounded-2xl border shadow-xl transition-all duration-700 right-0 sm:right-4 md:right-10 backdrop-blur-md ${
                 isDarkMode 
                   ? 'bg-[#241A17]/70 border-[#3C2E2A]' 
@@ -523,108 +658,223 @@ const FeaturedWork = () => {
               style={{
                 top: '200px',
               }}
+              whileHover={{
+                scale: 1.02,
+                transition: { duration: 0.3 }
+              }}
+              whileTap={{ scale: 0.98 }}
             >
               <div className="max-w-md">
-                <span className={`inline-block px-2 py-1 sm:px-3 sm:py-1 text-xs sm:text-sm font-semibold rounded-full mb-3 sm:mb-4 ${
-                  isDarkMode 
-                    ? 'bg-[#FF8A5C]/10 text-[#FF8A5C]' 
-                    : 'bg-[#FFA88C]/10 text-[#E85D45]'
-                }`}>
+                <motion.span 
+                  className={`inline-block px-2 py-1 sm:px-3 sm:py-1 text-xs sm:text-sm font-semibold rounded-full mb-3 sm:mb-4 ${
+                    isDarkMode 
+                      ? 'bg-[#FF8A5C]/10 text-[#FF8A5C]' 
+                      : 'bg-[#FFA88C]/10 text-[#E85D45]'
+                  }`}
+                  whileHover={{ 
+                    scale: 1.05,
+                    transition: { duration: 0.2 }
+                  }}
+                >
                   {projects[0].role}
-                </span>
-                <h3 className={`text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 ${
-                  isDarkMode ? 'text-[#F6E8D8]' : 'text-[#2A2A2A]'
-                }`}>
-                  {projects[0].title}
-                </h3>
-                <p className={`text-sm sm:text-base mb-4 sm:mb-6 ${
-                  isDarkMode ? 'text-[#DAB9A0]' : 'text-[#2A2A2A]/80'
-                }`}>
-                  {projects[0].description}
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  <button className={`view-button px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base font-medium group relative flex items-center ${
+                </motion.span>
+                <motion.h3 
+                  className={`text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 ${
                     isDarkMode ? 'text-[#F6E8D8]' : 'text-[#2A2A2A]'
-                  }`}>
+                  }`}
+                  whileHover={{ 
+                    x: 5,
+                    transition: { duration: 0.2 }
+                  }}
+                >
+                  {projects[0].title}
+                </motion.h3>
+                <motion.p 
+                  className={`text-sm sm:text-base mb-4 sm:mb-6 ${
+                    isDarkMode ? 'text-[#DAB9A0]' : 'text-[#2A2A2A]/80'
+                  }`}
+                  initial={{ opacity: 0.7 }}
+                  whileHover={{ 
+                    opacity: 1,
+                    transition: { duration: 0.3 }
+                  }}
+                >
+                  {projects[0].description}
+                </motion.p>
+                <div className="flex flex-wrap gap-3">
+                  <motion.button 
+                    className={`view-button px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base font-medium group relative flex items-center ${
+                      isDarkMode ? 'text-[#F6E8D8]' : 'text-[#2A2A2A]'
+                    }`}
+                    whileHover={{ 
+                      scale: 1.05,
+                      transition: { duration: 0.2 }
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     <ExternalLink size={16} className="mr-2" />
                     View Project
                     <span className={`button-underline absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 ease-in-out group-hover:w-full ${
                       isDarkMode ? 'bg-[#FF8A5C]' : 'bg-[#E85D45]'
                     }`}></span>
-                  </button>
-                  <button className={`github-button px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base font-medium group relative flex items-center ${
-                    isDarkMode ? 'text-[#F6E8D8]' : 'text-[#2A2A2A]'
-                  }`}>
+                  </motion.button>
+                  <motion.button 
+                    className={`github-button px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base font-medium group relative flex items-center ${
+                      isDarkMode ? 'text-[#F6E8D8]' : 'text-[#2A2A2A]'
+                    }`}
+                    whileHover={{ 
+                      scale: 1.05,
+                      transition: { duration: 0.2 }
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     <Github size={16} className="mr-2" />
                     GitHub
                     <span className={`button-underline absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 ease-in-out group-hover:w-full ${
                       isDarkMode ? 'bg-[#FF8A5C]' : 'bg-[#E85D45]'
                     }`}></span>
-                  </button>
+                  </motion.button>
                 </div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
           
           {/* Projects 2 & 3 - Responsive grid layout */}
           <div className="project-card grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mt-12 sm:mt-16">
-            {projects.slice(1).map((project, _index) => (
-              <div 
+            {projects.slice(1).map((project, index) => (
+              <motion.div 
                 key={project.id}
-                className={`rounded-2xl p-5 sm:p-6 shadow-xl transition-all duration-700 hover:shadow-2xl backdrop-blur-md border ${
-                  isDarkMode 
-                    ? 'bg-[#241A17]/70 border-[#3C2E2A]' 
-                    : 'bg-white/70 border-white/50'
-                }`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{
+                  y: -10,
+                  transition: { duration: 0.3, ease: "easeOut" }
+                }}
+                className="snap-start"
               >
-                <div className="project-image h-32 sm:h-40 md:h-48 rounded-xl sm:rounded-2xl overflow-hidden mb-4 sm:mb-6 transform transition-transform duration-500 hover:scale-105">
-                  <div className="w-full h-full bg-gradient-to-r from-[#FF8A5C] to-[#FFA88C] flex items-center justify-center">
-                    <span className="text-white font-bold text-sm sm:text-base">
-                      {project.title} Preview
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="project-text">
-                  <span className={`inline-block px-2 py-1 sm:px-3 sm:py-1 text-xs sm:text-sm font-semibold rounded-full mb-2 sm:mb-3 ${
+                <motion.div 
+                  className={`rounded-2xl p-5 sm:p-6 shadow-xl transition-all duration-700 hover:shadow-2xl backdrop-blur-md border ${
                     isDarkMode 
-                      ? 'bg-[#FF8A5C]/10 text-[#FF8A5C]' 
-                      : 'bg-[#FFA88C]/10 text-[#E85D45]'
-                  }`}>
-                    {project.role}
-                  </span>
-                  <h3 className={`text-lg sm:text-xl font-bold mb-2 sm:mb-3 ${
-                    isDarkMode ? 'text-[#F6E8D8]' : 'text-[#2A2A2A]'
-                  }`}>
-                    {project.title}
-                  </h3>
-                  <p className={`text-xs sm:text-sm mb-4 ${
-                    isDarkMode ? 'text-[#DAB9A0]' : 'text-[#2A2A2A]/80'
-                  }`}>
-                    {project.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <button className={`view-button px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium group relative flex items-center ${
-                      isDarkMode ? 'text-[#F6E8D8]' : 'text-[#2A2A2A]'
-                    }`}>
-                      <ExternalLink size={14} className="mr-1" />
-                      View
-                      <span className={`button-underline absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 ease-in-out group-hover:w-full ${
-                        isDarkMode ? 'bg-[#FF8A5C]' : 'bg-[#E85D45]'
-                      }`}></span>
-                    </button>
-                    <button className={`github-button px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium group relative flex items-center ${
-                      isDarkMode ? 'text-[#F6E8D8]' : 'text-[#2A2A2A]'
-                    }`}>
-                      <Github size={14} className="mr-1" />
-                      Code
-                      <span className={`button-underline absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 ease-in-out group-hover:w-full ${
-                        isDarkMode ? 'bg-[#FF8A5C]' : 'bg-[#E85D45]'
-                      }`}></span>
-                    </button>
+                      ? 'bg-[#241A17]/70 border-[#3C2E2A]' 
+                      : 'bg-white/70 border-white/50'
+                  } h-full`}
+                  whileHover={{
+                    scale: 1.02,
+                    transition: { duration: 0.3 }
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="relative overflow-hidden rounded-xl sm:rounded-2xl mb-4 sm:mb-6">
+                    {/* Animated border glow effect */}
+                    <div className="absolute inset-0 rounded-xl sm:rounded-2xl overflow-hidden">
+                      <motion.div
+                        className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300"
+                        style={{
+                          background: `linear-gradient(45deg, #E85D45, #FF8A5C, #FFA88C, #E85D45)`,
+                          backgroundSize: "300% 300%",
+                        }}
+                        animate={{
+                          backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                        }}
+                        transition={{
+                          duration: 3,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                      />
+                    </div>
+                    
+                    <motion.div 
+                      className="project-image h-64 sm:h-72 md:h-80 rounded-xl sm:rounded-2xl overflow-hidden transform transition-transform duration-500"
+                      whileHover={{ 
+                        scale: 1.05,
+                        transition: { duration: 0.3 }
+                      }}
+                    >
+                      <div className="w-full h-full bg-gradient-to-r from-[#FF8A5C] to-[#FFA88C] flex items-center justify-center">
+                        <span className="text-white font-bold text-sm sm:text-base">
+                          {project.title} Preview
+                        </span>
+                      </div>
+                    </motion.div>
                   </div>
-                </div>
-              </div>
+                  
+                  <div className="project-text">
+                    <motion.span 
+                      className={`inline-block px-2 py-1 sm:px-3 sm:py-1 text-xs sm:text-sm font-semibold rounded-full mb-2 sm:mb-3 ${
+                        isDarkMode 
+                          ? 'bg-[#FF8A5C]/10 text-[#FF8A5C]' 
+                          : 'bg-[#FFA88C]/10 text-[#E85D45]'
+                      }`}
+                      whileHover={{ 
+                        scale: 1.05,
+                        transition: { duration: 0.2 }
+                      }}
+                    >
+                      {project.role}
+                    </motion.span>
+                    <motion.h3 
+                      className={`text-lg sm:text-xl font-bold mb-2 sm:mb-3 ${
+                        isDarkMode ? 'text-[#F6E8D8]' : 'text-[#2A2A2A]'
+                      }`}
+                      whileHover={{ 
+                        x: 5,
+                        transition: { duration: 0.2 }
+                      }}
+                    >
+                      {project.title}
+                    </motion.h3>
+                    <motion.p 
+                      className={`text-xs sm:text-sm mb-4 ${
+                        isDarkMode ? 'text-[#DAB9A0]' : 'text-[#2A2A2A]/80'
+                      }`}
+                      initial={{ opacity: 0.7 }}
+                      whileHover={{ 
+                        opacity: 1,
+                        transition: { duration: 0.3 }
+                      }}
+                    >
+                      {project.description}
+                    </motion.p>
+                    <div className="flex flex-wrap gap-2">
+                      <motion.button 
+                        className={`view-button px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium group relative flex items-center ${
+                          isDarkMode ? 'text-[#F6E8D8]' : 'text-[#2A2A2A]'
+                        }`}
+                        whileHover={{ 
+                          scale: 1.05,
+                          transition: { duration: 0.2 }
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <ExternalLink size={14} className="mr-1" />
+                        View
+                        <span className={`button-underline absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 ease-in-out group-hover:w-full ${
+                          isDarkMode ? 'bg-[#FF8A5C]' : 'bg-[#E85D45]'
+                        }`}></span>
+                      </motion.button>
+                      <motion.button 
+                        className={`github-button px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium group relative flex items-center ${
+                          isDarkMode ? 'text-[#F6E8D8]' : 'text-[#2A2A2A]'
+                        }`}
+                        whileHover={{ 
+                          scale: 1.05,
+                          transition: { duration: 0.2 }
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Github size={14} className="mr-1" />
+                        Code
+                        <span className={`button-underline absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 ease-in-out group-hover:w-full ${
+                          isDarkMode ? 'bg-[#FF8A5C]' : 'bg-[#E85D45]'
+                        }`}></span>
+                      </motion.button>
+                    </div>
+                  </div>
+                </motion.div>
+              </motion.div>
             ))}
           </div>
         </div>

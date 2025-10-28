@@ -775,15 +775,6 @@ const About = () => {
                   ))}
                 </div>
               </div>
-              
-              {/* Subtle decorative element matching journey timeline */}
-              <div className="mt-8 sm:mt-10 flex justify-center">
-                <div className="flex items-center space-x-1 sm:space-x-2">
-                  <div className={`w-2 h-0.5 sm:w-3 ${isDarkMode ? 'bg-[#3C2E2A]' : 'bg-[#E8D5C8]'}`}></div>
-                  <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${isDarkMode ? 'bg-[#FF8A5C]/50' : 'bg-[#E85D45]/50'}`}></div>
-                  <div className={`w-2 h-0.5 sm:w-3 ${isDarkMode ? 'bg-[#3C2E2A]' : 'bg-[#E8D5C8]'}`}></div>
-                </div>
-              </div>
             </div>
             
             {/* Right Column - My Journey Timeline */}
