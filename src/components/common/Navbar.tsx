@@ -20,8 +20,8 @@ const Navbar = () => {
 
   const navItems = [
     { name: 'About', href: '/about', icon: Info },
-    { name: 'Works', href: '/#works', icon: Briefcase },
-    { name: 'Contact', href: '/#contact', icon: Mail },
+    { name: 'Works', href: '/works', icon: Briefcase },
+    { name: 'Contact', href: '/contact', icon: Mail },
   ];
 
   // Desktop Navigation
