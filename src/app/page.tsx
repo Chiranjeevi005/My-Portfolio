@@ -33,7 +33,7 @@ export default function Home() {
 
   // Always show the loader on refresh
   if (showLoader) {
-    return <InitialLoader onFinish={handleLoaderFinish} durationMs={3000} />;
+    return <InitialLoader onFinish={handleLoaderFinish} durationMs={5600} />;
   }
 
   // Otherwise, render the main content
