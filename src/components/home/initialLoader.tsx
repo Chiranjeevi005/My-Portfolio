@@ -82,10 +82,6 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
       gsap.set(lineRef.current, { opacity: 0 });
     }
     
-    if (orbitRef.current) {
-      gsap.set(orbitRef.current, { opacity: 0, scale: 0 });
-    }
-    
     if (beamRef.current) {
       gsap.set(beamRef.current, { opacity: 0 });
     }
@@ -140,6 +136,38 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
       );
     }
 
+    // Scene 2: "Code the Passion" Reveal (1.2-2.7s) - Enhanced with staggered letters
+    // Show coding element at the start of this scene
+    if (codeElementRef.current) {
+      tl.to(codeElementRef.current,
+        { opacity: 1, scale: 1.2, duration: 0.1, ease: "none" },
+        1.0
+      );
+      
+      tl.fromTo(codeElementRef.current,
+        { scale: 0, opacity: 0, y: 50 },
+        {
+          scale: 1.2,
+          opacity: 0.3,
+          y: 0,
+          duration: 0.5,
+          ease: "elastic.out(1, 0.7)"
+        },
+        1.0
+      );
+      
+      // Make coding element disappear after "Code the Passion" text is displayed (at 2.3s)
+      tl.to(codeElementRef.current,
+        {
+          opacity: 0,
+          scale: 0,
+          duration: 0.5,
+          ease: "back.in(1.5)"
+        },
+        2.3
+      );
+    }
+
     if (!isDarkMode && lineRef.current) {
       // Light mode - enhanced line drawing with glow
       const length = lineRef.current.getTotalLength();
@@ -152,13 +180,13 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
         opacity: 1,
         duration: 0.1,
         ease: "none"
-      }, 0.5);
+      }, 1.0);
       
       tl.to(lineRef.current, {
         strokeDashoffset: 0,
-        duration: 1.2,
+        duration: 1.0,
         ease: "power2.out"
-      }, 0.5);
+      }, 1.0);
       
       // Enhanced particle effects with staggered animation
       const particles = particlesRef.current?.querySelectorAll('.spark');
@@ -170,10 +198,10 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
               opacity: 0.9,
               scale: 1,
               y: 0,
-              duration: 0.8,
+              duration: 0.6,
               ease: "elastic.out(1, 0.5)"
             },
-            0.8 + i * 0.08
+            1.3 + i * 0.05
           );
         });
       }
@@ -189,13 +217,13 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
         opacity: 1,
         duration: 0.1,
         ease: "none"
-      }, 0.5);
+      }, 1.0);
       
       tl.to(beamRef.current, {
         strokeDashoffset: 0,
-        duration: 1.2,
+        duration: 1.0,
         ease: "power2.out"
-      }, 0.5);
+      }, 1.0);
       
       // Enhanced ember particles with floating effect
       const embers = particlesRef.current?.querySelectorAll('.ember');
@@ -207,10 +235,10 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
               opacity: 0.9,
               scale: 1,
               y: 0,
-              duration: 0.8,
+              duration: 0.6,
               ease: "elastic.out(1, 0.5)"
             },
-            0.8 + i * 0.08
+            1.3 + i * 0.05
           );
           
           // Add floating animation
@@ -220,12 +248,11 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
             repeat: -1,
             yoyo: true,
             ease: "sine.inOut"
-          }, 1.5);
+          }, 1.8);
         });
       }
     }
 
-    // Scene 2: "Code the Passion" Reveal (1.2-2.7s) - Enhanced with staggered letters
     if (codeTextRef.current) {
       // Set up text for animation
       const text = "Code the Passion";
@@ -239,7 +266,7 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
           opacity: 1,
           duration: 0.1,
           ease: "none"
-        }, 1.2);
+        }, 1.0);
         
         tl.fromTo(letters,
           { opacity: 0, y: 50, rotateX: -90, scale: 0.8 },
@@ -248,11 +275,11 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
             y: 0,
             rotateX: 0,
             scale: 1,
-            duration: 1.0,
-            stagger: 0.05,
+            duration: 0.8,
+            stagger: 0.04,
             ease: "elastic.out(1, 0.5)"
           },
-          1.2
+          1.0
         );
         
         // Hold text for 1 second
@@ -261,10 +288,10 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
           y: -50,
           rotateX: 90,
           scale: 0.8,
-          duration: 0.8,
-          stagger: 0.03,
+          duration: 0.7,
+          stagger: 0.02,
           ease: "back.in(1.5)"
-        }, 2.5);
+        }, 2.3);
       }
     }
 
@@ -280,19 +307,19 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
         opacity: 1,
         duration: 0.1,
         ease: "none"
-      }, 1.2);
+      }, 1.0);
       
       tl.to(codeLinePathRef.current, {
         strokeDashoffset: 0,
-        duration: 1.0,
+        duration: 0.8,
         ease: "power2.out"
-      }, 1.2);
+      }, 1.0);
       
       tl.to(codeLinePathRef.current, {
         opacity: 0,
-        duration: 0.6,
+        duration: 0.5,
         ease: "power2.in"
-      }, 2.5);
+      }, 2.3);
     }
 
     // Scene 3: Transition Element (2.7-3.6s) - Enhanced with smoother transitions
@@ -304,32 +331,6 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
           duration: 0.6,
           ease: "power2.in"
         }, 2.7);
-      }
-      
-      // Orbit formation with enhanced animation
-      if (orbitRef.current) {
-        tl.to(orbitRef.current,
-          { opacity: 1, scale: 1.5, duration: 0.1, ease: "none" },
-          2.9
-        );
-        
-        tl.fromTo(orbitRef.current,
-          { scale: 0, opacity: 0 },
-          {
-            scale: 1.5,
-            opacity: 0.8,
-            duration: 0.8,
-            ease: "elastic.out(1, 0.7)"
-          },
-          2.9
-        );
-        
-        // Enhanced continuous rotation with easing
-        tl.to(orbitRef.current, {
-          rotation: 360,
-          duration: 1.5,
-          ease: "none"
-        }, 3.2);
       }
     } else {
       // Dark mode - beam transformation with pulse
@@ -516,7 +517,7 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
       >
         {/* Pre-render compatible loader elements - hidden by default */}
         <div 
-          className="absolute w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 z-20"
+          className="absolute w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 z-20"
           style={{
             top: "40%",
             left: "30%",
@@ -525,14 +526,14 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
           }}
         >
           <div className="w-full h-full rounded-full border-2 border-dashed border-current flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 sm:h-8 sm:w-8 md:h-10 md:w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
             </svg>
           </div>
         </div>
         
         <div
-          className="absolute w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 z-20"
+          className="absolute w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 z-20"
           style={{
             top: "40%",
             left: "70%",
@@ -541,7 +542,7 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
           }}
         >
           <div className="w-full h-full rounded-full border-2 border-dotted border-current flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 sm:h-8 sm:w-8 md:h-10 md:w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
             </svg>
           </div>
@@ -672,28 +673,6 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
                 />
               ))}
             </div>
-            
-            {/* Orbit circle */}
-            <svg 
-              className="absolute inset-0 w-full h-full"
-              style={{ zIndex: 15 }}
-            >
-              <circle
-                ref={orbitRef}
-                cx="200"
-                cy="250"
-                r="100"
-                stroke="#E85D45"
-                strokeWidth="3"
-                fill="none"
-                strokeDasharray="8,8"
-                style={{
-                  transformOrigin: "200px 250px",
-                  opacity: 0,
-                  filter: "drop-shadow(0 0 6px rgba(232, 93, 69, 0.8))",
-                }}
-              />
-            </svg>
           </>
         )}
 
@@ -741,7 +720,7 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
         {/* Code Element (using same visual style as Hero section) */}
         <div 
           ref={codeElementRef}
-          className="absolute w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 z-20 transition-all duration-700"
+          className="absolute w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 z-20 transition-all duration-700"
           style={{
             top: "40%",
             left: "30%",
@@ -754,16 +733,16 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
             style={{
               borderColor: isDarkMode ? "#FF8A5C" : "#E85D45",
               boxShadow: isDarkMode 
-                ? "0 0 20px rgba(255, 138, 92, 0.6)" 
-                : "0 0 15px rgba(232, 93, 69, 0.4)",
+                ? "0 0 25px rgba(255, 138, 92, 0.8)" 
+                : "0 0 20px rgba(232, 93, 69, 0.6)",
             }}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 sm:h-12 sm:w-12 md:h-16 md:w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor"
               style={{
                 color: isDarkMode ? "#FF8A5C" : "#E85D45",
               }}
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
             </svg>
           </div>
         </div>
@@ -771,7 +750,7 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
         {/* Business Element (using same visual style as Hero section) */}
         <div
           ref={businessElementRef}
-          className="absolute w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 z-20 transition-all duration-700"
+          className="absolute w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 z-20 transition-all duration-700"
           style={{
             top: "40%",
             left: "70%",
@@ -784,16 +763,16 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
             style={{
               borderColor: isDarkMode ? "#FF8A5C" : "#E85D45",
               boxShadow: isDarkMode 
-                ? "0 0 20px rgba(255, 138, 92, 0.6)" 
-                : "0 0 15px rgba(232, 93, 69, 0.4)",
+                ? "0 0 25px rgba(255, 138, 92, 0.8)" 
+                : "0 0 20px rgba(232, 93, 69, 0.6)",
             }}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 sm:h-12 sm:w-12 md:h-16 md:w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor"
               style={{
                 color: isDarkMode ? "#FF8A5C" : "#E85D45",
               }}
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
             </svg>
           </div>
         </div>
@@ -802,23 +781,9 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
         <div className="relative z-30 text-center flex flex-col items-center">
           {/* Code the Passion with line animation */}
           <div className="mb-8">
-            <svg
-              className="w-72 h-1.5 mx-auto mb-4"
-              style={{ zIndex: 25 }}
-            >
-              <path
-                ref={codeLinePathRef}
-                d="M 0 0 L 288 0"
-                stroke={isDarkMode ? "#FF8A5C" : "#E85D45"}
-                strokeWidth="3"
-                fill="none"
-                strokeLinecap="round"
-                style={{ opacity: 0 }}
-              />
-            </svg>
             <h2 
               ref={codeTextRef}
-              className="text-4xl md:text-5xl font-bold transition-colors duration-700"
+              className="text-4xl md:text-5xl font-bold transition-colors duration-700 mb-4"
               style={{ 
                 color: isDarkMode ? "#F6E8D8" : "#3A2D28",
                 fontFamily: "'Poppins', 'Clash Display', 'Playfair Display', sans-serif",
@@ -831,10 +796,24 @@ export default function InitialLoader({ onFinish, durationMs = 5600 }: Props) {
             >
               Code the Passion
             </h2>
+            <svg
+              className="w-72 h-1.5 mx-auto"
+              style={{ zIndex: 25 }}
+            >
+              <path
+                ref={codeLinePathRef}
+                d="M 0 0 L 288 0"
+                stroke={isDarkMode ? "#FF8A5C" : "#E85D45"}
+                strokeWidth="3"
+                fill="none"
+                strokeLinecap="round"
+                style={{ opacity: 0 }}
+              />
+            </svg>
           </div>
           
           {/* Build the Future with opposite line animation */}
-          <div>
+          <div className="mt-8">
             <svg
               className="w-72 h-1.5 mx-auto mb-4"
               style={{ zIndex: 25 }}
