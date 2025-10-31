@@ -7,7 +7,6 @@ import Footer from '@/components/common/Footer';
 import AboutHeroSection from '../../components/about/AboutHeroSection';
 import SkillsMatrix from '../../components/about/SkillsMatrix';
 import AchievementsGrid from '../../components/about/AchievementsGrid';
-import ExperienceCards from '../../components/about/ExperienceCards';
 import EducationSection from '../../components/about/EducationSection';
 import InterestsShowcase from '../../components/about/InterestsShowcase';
 import VisionSection from '../../components/about/VisionSection';
@@ -34,7 +33,6 @@ export default function AboutPage() {
         <EducationSection />
         <SkillsMatrix />
         <AchievementsGrid />
-        <ExperienceCards />
         <InterestsShowcase />
         <VisionSection />
       </main>

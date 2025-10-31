@@ -6,6 +6,7 @@ import Navbar from '@/components/common/Navbar';
 import Footer from '@/components/common/Footer';
 import WorksHeroSection from '@/components/works/WorksHeroSection';
 import WorksGrid from '@/components/works/Projects';
+import ExperienceSection from '@/components/works/ExperienceSection';
 
 export default function Works() {
   useEffect(() => {
@@ -23,6 +24,7 @@ export default function Works() {
       
       <main className="flex-grow">
         <WorksHeroSection />
+        <ExperienceSection />
         <WorksGrid />
       </main>
       

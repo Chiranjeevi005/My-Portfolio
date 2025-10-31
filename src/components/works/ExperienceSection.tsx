@@ -84,7 +84,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-const ExperienceCards = () => {
+const ExperienceSection = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -286,4 +286,4 @@ const ExperienceCards = () => {
   );
 };
 
-export default ExperienceCards;
+export default ExperienceSection;

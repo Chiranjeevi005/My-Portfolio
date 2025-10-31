@@ -3,6 +3,52 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useTheme } from 'next-themes';
+import { motion } from 'framer-motion';
+
+// Floating Paths Component - EXACT COPY from WorksHeroSection
+function FloatingPaths({ position, isDarkMode }: { position: number; isDarkMode: boolean }) {
+    const paths = Array.from({ length: 36 }, (_, i) => ({
+        id: i,
+        d: `M-${380 - i * 5 * position} -${189 + i * 6}C-${
+            380 - i * 5 * position
+        } -${189 + i * 6} -${312 - i * 5 * position} ${216 - i * 6} ${
+            152 - i * 5 * position
+        } ${343 - i * 6}C${616 - i * 5 * position} ${470 - i * 6} ${
+            684 - i * 5 * position
+        } ${875 - i * 6} ${684 - i * 5 * position} ${875 - i * 6}`,
+        width: 0.5 + i * 0.03,
+    }));
+
+    return (
+        <svg
+            className="absolute inset-0 w-full h-full"
+            viewBox="0 0 696 316"
+            fill="none"
+        >
+            <title>Background Paths</title>
+            {paths.map((path) => (
+                <motion.path
+                    key={path.id}
+                    d={path.d}
+                    // Using direct RGBA values for stroke colors based on theme
+                    stroke={isDarkMode ? `rgba(255, 138, 92, ${0.1 + path.id * 0.03})` : `rgba(232, 93, 69, ${0.1 + path.id * 0.03})`}
+                    strokeWidth={path.width}
+                    initial={{ pathLength: 0.3, opacity: 0.6 }}
+                    animate={{
+                        pathLength: 1,
+                        opacity: [0.3, 0.6, 0.3],
+                        pathOffset: [0, 1, 0],
+                    }}
+                    transition={{
+                        duration: 20 + Math.random() * 10,
+                        repeat: Number.POSITIVE_INFINITY,
+                        ease: "linear",
+                    }}
+                />
+            ))}
+        </svg>
+    );
+}
 
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -14,6 +60,7 @@ const Hero = () => {
   const businessIconRef = useRef<HTMLDivElement>(null);
   const titleIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const { theme } = useTheme();
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const titles = [
     "CHIRANJEEVI P.K",
@@ -23,6 +70,29 @@ const Hero = () => {
   ];
 
   const [currentTitleIndex, setCurrentTitleIndex] = useState(0);
+
+  useEffect(() => {
+    // Check for dark mode
+    if (typeof window !== 'undefined') {
+      setIsDarkMode(document.documentElement.classList.contains('dark'));
+      
+      // Listen for theme changes
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+            setIsDarkMode(document.documentElement.classList.contains('dark'));
+          }
+        });
+      });
+      
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class']
+      });
+      
+      return () => observer.disconnect();
+    }
+  }, []);
 
   useEffect(() => {
     // Rotate titles every 2 seconds
@@ -272,6 +342,12 @@ const Hero = () => {
       ref={heroRef}
       className="relative min-h-[80vh] flex items-center justify-center transition-colors duration-700 px-0 sm:px-0 md:px-0 lg:px-0 py-0"
     >
+      {/* Floating Background Paths - EXACT COPY from WorksHeroSection */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-30">
+        <FloatingPaths position={1} isDarkMode={isDarkMode} />
+        <FloatingPaths position={-1} isDarkMode={isDarkMode} />
+      </div>
+
       {/* Radial glow behind name */}
       <div className="name-glow absolute w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[600px] md:h-[600px] rounded-full opacity-40 pointer-events-none transition-colors duration-700"
         style={{
