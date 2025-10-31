@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { 
   Code, 
@@ -12,64 +12,27 @@ import {
   Smartphone,
   Globe
 } from 'lucide-react';
+import { usePortfolio } from '@/context/PortfolioContext';
 
-// Experience data structure personalized for Chiran Jeevi
-const experienceData = [
-  {
-    id: 1,
-    role: "Frontend Developer Intern",
-    company: "Unified Mentor",
-    duration: "May 2024 - Aug 2024",
-    description: "Contributed to production-grade web apps, optimized UI performance, and crafted reusable components using React & Tailwind CSS.",
-    skills: [
-      { name: "React.js", growth: 90, icon: <Code size={16} /> },
-      { name: "Tailwind CSS", growth: 85, icon: <Palette size={16} /> },
-      { name: "Problem Solving", growth: 80, icon: <Zap size={16} /> },
-      { name: "API Integration", growth: 75, icon: <Globe size={16} /> },
-    ],
-    takeaways: [
-      "Built confidence in real-world project delivery",
-      "Enhanced system thinking & debugging",
-      "Improved collaboration in agile environment"
-    ]
-  },
-  {
-    id: 2,
-    role: "Freelance UI Engineer",
-    company: "Self-Driven Projects",
-    duration: "2023 - Present",
-    description: "Designed and deployed responsive portfolios, dashboards, and apps integrating AI, authentication, and analytics.",
-    skills: [
-      { name: "Next.js", growth: 95, icon: <Globe size={16} /> },
-      { name: "UX Design", growth: 88, icon: <Palette size={16} /> },
-      { name: "AI Integration", growth: 70, icon: <Zap size={16} /> },
-      { name: "Performance Tuning", growth: 82, icon: <Server size={16} /> },
-    ],
-    takeaways: [
-      "Balanced design and logic thinking",
-      "Refined clean code discipline",
-      "Developed business-client communication"
-    ]
-  },
-  {
-    id: 3,
-    role: "Full Stack Developer",
-    company: "Personal Projects",
-    duration: "2022 - Present",
-    description: "Developed full-stack applications with modern technologies, focusing on clean architecture and user experience.",
-    skills: [
-      { name: "Node.js", growth: 85, icon: <Server size={16} /> },
-      { name: "MongoDB", growth: 80, icon: <Database size={16} /> },
-      { name: "TypeScript", growth: 90, icon: <Code size={16} /> },
-      { name: "Responsive Design", growth: 95, icon: <Smartphone size={16} /> },
-    ],
-    takeaways: [
-      "Mastered end-to-end development workflow",
-      "Learned system architecture principles",
-      "Improved testing and debugging skills"
-    ]
-  }
-];
+// Map skill names to icons
+const getSkillIcon = (skillName: string): ReactNode => {
+  const skillIcons: Record<string, ReactNode> = {
+    "React.js": <Code size={16} />,
+    "Tailwind CSS": <Palette size={16} />,
+    "Problem Solving": <Zap size={16} />,
+    "API Integration": <Globe size={16} />,
+    "Next.js": <Globe size={16} />,
+    "UX Design": <Palette size={16} />,
+    "AI Integration": <Zap size={16} />,
+    "Performance Tuning": <Server size={16} />,
+    "Node.js": <Server size={16} />,
+    "MongoDB": <Database size={16} />,
+    "TypeScript": <Code size={16} />,
+    "Responsive Design": <Smartphone size={16} />,
+  };
+  
+  return skillIcons[skillName] || <Code size={16} />;
+};
 
 // Custom tooltip for the bar chart
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -85,6 +48,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 const ExperienceSection = () => {
+  const { portfolioData } = usePortfolio();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -152,7 +116,7 @@ const ExperienceSection = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {experienceData.map((exp, index) => (
+          {portfolioData.experiences.map((exp, index) => (
             <motion.div
               key={exp.id}
               className="relative rounded-2xl p-6 border transition-all duration-300 overflow-hidden
@@ -256,7 +220,7 @@ const ExperienceSection = () => {
                       bg-light-buttonPrimary/10 dark:bg-dark-buttonPrimary/10 
                       text-light-buttonPrimary dark:text-dark-buttonPrimary"
                   >
-                    <span className="mr-1">{skill.icon}</span>
+                    <span className="mr-1">{getSkillIcon(skill.name)}</span>
                     {skill.name}
                   </span>
                 ))}

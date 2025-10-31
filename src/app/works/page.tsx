@@ -7,6 +7,9 @@ import Footer from '@/components/common/Footer';
 import WorksHeroSection from '@/components/works/WorksHeroSection';
 import WorksGrid from '@/components/works/Projects';
 import ExperienceSection from '@/components/works/ExperienceSection';
+import ImpactNote from '@/components/works/ImpactNote';
+import { PortfolioProvider } from '@/context/PortfolioContext';
+
 
 export default function Works() {
   useEffect(() => {
@@ -19,16 +22,19 @@ export default function Works() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      
-      <main className="flex-grow">
-        <WorksHeroSection />
-        <ExperienceSection />
-        <WorksGrid />
-      </main>
-      
-      <Footer />
-    </div>
+    <PortfolioProvider>
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        
+        <main className="flex-grow">
+          <WorksHeroSection />
+          <ExperienceSection />
+          <WorksGrid />
+          <ImpactNote />
+        </main>
+        
+        <Footer />
+      </div>
+    </PortfolioProvider>
   );
 }
