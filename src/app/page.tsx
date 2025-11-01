@@ -40,7 +40,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-light-bgPrimary dark:bg-dark-bgPrimary text-light-textPrimary dark:text-dark-textPrimary">
       <Navbar />
-      <main className="flex-grow pt-16 md:pt-20">
+      <main className="flex-grow pt-4 pb-24">
         <div className="smooth-transition">
           <Hero />
         </div>

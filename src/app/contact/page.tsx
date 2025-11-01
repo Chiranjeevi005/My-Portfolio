@@ -19,11 +19,11 @@ export default function Contact() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-light-bgPrimary dark:bg-dark-bgPrimary text-light-textPrimary dark:text-dark-textPrimary">
       <Navbar />
       {/* Remove the duplicate FloatingWallBackground since it's already in the layout */}
       <ContactHero />  
-      <main className="flex-grow">
+      <main className="flex-grow pt-4 pb-24">
         <GetInTouch />
       </main>
       

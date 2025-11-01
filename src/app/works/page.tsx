@@ -23,10 +23,10 @@ export default function Works() {
 
   return (
     <PortfolioProvider>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-light-bgPrimary dark:bg-dark-bgPrimary text-light-textPrimary dark:text-dark-textPrimary">
         <Navbar />
         
-        <main className="flex-grow">
+        <main className="flex-grow pt-4 pb-24">
           <WorksHeroSection />
           <ExperienceSection />
           <WorksGrid />

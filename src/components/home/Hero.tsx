@@ -340,7 +340,7 @@ const Hero = () => {
   return (
     <section 
       ref={heroRef}
-      className="relative min-h-[80vh] flex items-center justify-center transition-colors duration-700 px-0 sm:px-0 md:px-0 lg:px-0 py-0"
+      className="relative min-h-screen flex items-center justify-center transition-colors duration-700 px-0 sm:px-0 md:px-0 lg:px-0 py-0"
     >
       {/* Floating Background Paths - EXACT COPY from WorksHeroSection */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-30">

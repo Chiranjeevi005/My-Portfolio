@@ -28,7 +28,7 @@ export default function AboutPage() {
     <div className="min-h-screen flex flex-col bg-light-bgPrimary dark:bg-dark-bgPrimary">
       <Navbar />
 
-      <main className="flex-grow ">
+      <main className="flex-grow pt-4 pb-24">
         <AboutHeroSection />
         <EducationSection />
         <SkillsMatrix />

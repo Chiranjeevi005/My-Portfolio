@@ -3,19 +3,17 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { Briefcase, Mail, Info } from 'lucide-react';
-import ThemeToggle from '@/components/home/ThemeToggle';
+import { Briefcase, Mail, Info, Home, Sun, Moon } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { Dock, DockIcon, DockItem, DockLabel } from '@/components/ui/dock';
 
 const Navbar = () => {
-  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    setMounted(true);
   }, []);
 
   const navItems = [
@@ -24,104 +22,80 @@ const Navbar = () => {
     { name: 'Contact', href: '/contact', icon: Mail },
   ];
 
-  // Desktop Navigation
-  const DesktopNav = () => (
-    <nav
-      className={`fixed w-full z-50 transition-all duration-300 ease-in-out ${
-        scrolled 
-          ? 'py-2 bg-light-bgPrimary/80 dark:bg-dark-bgPrimary/80 backdrop-blur-lg border-b border-light-border dark:border-dark-border shadow-sm' 
-          : 'py-4 bg-transparent'
-      }`}
-    >
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center">
-          <Link 
-            href="/" 
-            className="text-2xl font-bold text-light-textAccent dark:text-dark-textAccent font-heading transition-colors duration-300"
-          >
-            PORTFOLIO
-          </Link>
-
-          {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => {
-              const isActive = pathname === item.href || (item.href.includes('#') && pathname === '/');
-              return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={`relative text-light-textPrimary dark:text-dark-textPrimary font-medium transition-all duration-300 ease-in-out hover:text-light-textAccent dark:hover:text-dark-textAccent ${
-                    isActive ? 'text-light-textAccent dark:text-dark-textAccent' : ''
-                  }`}
-                >
-                  {item.name}
-                  <span className="absolute bottom-[-3px] left-0 w-0 h-0.5 bg-light-textAccent dark:bg-dark-textAccent transition-all duration-300 ease-in-out group-hover:w-full" />
-                  {isActive && (
-                    <span className="absolute bottom-[-3px] left-0 w-full h-0.5 bg-light-textAccent dark:bg-dark-textAccent" />
-                  )}
-                </Link>
-              );
-            })}
-            <ThemeToggle />
-          </div>
-
-          {/* Remove mobile menu button */}
-        </div>
-      </div>
-    </nav>
-  );
-
-  // Mobile Navigation (Glassmorphic Capsule Bar)
-  const MobileNav = () => (
-    <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[90vw]">
-      <div 
-        className="flex justify-around items-center h-[70px] rounded-full p-4 backdrop-blur-md border"
-        style={{ 
-          backgroundColor: 'rgba(var(--color-bg-primary), 0.7)',
-          borderColor: 'rgba(var(--color-border), 0.5)',
-          boxShadow: '4px 4px 12px rgba(0,0,0,0.1), -4px -4px 10px rgba(255,255,255,0.6)'
-        }}
-      >
-        {navItems.map((item) => {
-          const isActive = pathname === item.href || (item.href.includes('#') && pathname === '/');
-          const Icon = item.icon;
-          
-          return (
-            <Link
-              key={item.name}
-              href={item.href}
-              className={`flex flex-col items-center justify-center rounded-full transition-all duration-300 ease-in-out flex-1 h-full max-w-[60px] ${
-                isActive 
-                  ? 'text-light-textAccent dark:text-dark-textAccent scale-105' 
-                  : 'text-light-textPrimary dark:text-dark-textPrimary hover:text-light-textAccent dark:hover:text-dark-textAccent'
-              }`}
-              scroll={false}
-            >
-              <div className="flex flex-col items-center">
-                <Icon size={24} />
-                <span className="text-xs mt-1 font-medium">{item.name}</span>
-              </div>
-            </Link>
-          );
-        })}
-        <div 
-          className="flex flex-col items-center justify-center rounded-full transition-all duration-300 ease-in-out flex-1 h-full max-w-[60px] hover:text-light-textAccent dark:hover:text-dark-textAccent"
-        >
-          <div className="flex flex-col items-center">
-            <div className="w-6 h-6 flex items-center justify-center">
-              <ThemeToggle />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
+  // Simplified version without conditional rendering
   return (
-    <>
-      <DesktopNav />
-      <MobileNav />
-    </>
+    <header className="fixed w-full z-50 bottom-6 left-0 right-0">
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-full px-4 md:px-12 lg:px-24 xl:px-48">
+        <Dock className="items-end pb-3 mx-auto backdrop-blur-md bg-light-bgSurface/30 dark:bg-dark-bgSurface/30 border border-light-border/50 dark:border-dark-border/50">
+          <DockItem className="aspect-square bg-light-bgSurface/80 dark:bg-dark-bgSurface/80">
+            <DockLabel className="md:top-[-20px] lg:top-[-15px] top-[-30px]">Home</DockLabel>
+            <DockIcon>
+              <Link 
+                href="/" 
+                className="text-2xl font-bold text-light-textAccent dark:text-dark-textAccent font-heading flex items-center justify-center w-full h-full active:opacity-80 transition-all duration-200"
+              >
+                <Home size={24} />
+              </Link>
+            </DockIcon>
+          </DockItem>
+          
+          {navItems.map((item, index) => {
+            const Icon = item.icon;
+            const isActive = pathname === item.href || (item.href.includes('#') && pathname === '/');
+            
+            return (
+              <DockItem 
+                key={index}
+                className="aspect-square bg-light-bgSurface/80 dark:bg-dark-bgSurface/80"
+              >
+                <DockLabel className="md:top-[-20px] lg:top-[-15px] top-[-30px]">{item.name}</DockLabel>
+                <DockIcon>
+                  <Link
+                    href={item.href}
+                    className={`flex items-center justify-center w-full h-full ${
+                      isActive 
+                        ? 'text-light-textAccent dark:text-dark-textAccent' 
+                        : 'text-light-textPrimary dark:text-dark-textPrimary'
+                    } active:opacity-80 transition-all duration-200`}
+                  >
+                    <Icon size={24} />
+                  </Link>
+                </DockIcon>
+              </DockItem>
+            );
+          })}
+          
+          <DockItem 
+            className="aspect-square bg-light-buttonPrimary/20 dark:bg-dark-buttonPrimary/20"
+          >
+            <DockLabel className="md:top-[-20px] lg:top-[-15px] top-[-30px]">Theme</DockLabel>
+            <DockIcon>
+              <button 
+                className="flex items-center justify-center w-full h-full active:opacity-80 transition-all duration-200 cursor-pointer"
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                aria-label="Toggle theme"
+              >
+                {/* Always render both icons, hide one with CSS based on theme */}
+                <div className="relative w-6 h-6">
+                  <Sun 
+                    size={24} 
+                    className={`absolute inset-0 text-light-textPrimary dark:text-dark-textPrimary transition-opacity duration-200 ${
+                      theme === 'dark' ? 'opacity-100' : 'opacity-0'
+                    }`} 
+                  />
+                  <Moon 
+                    size={24} 
+                    className={`absolute inset-0 text-light-textPrimary dark:text-dark-textPrimary transition-opacity duration-200 ${
+                      theme === 'light' ? 'opacity-100' : 'opacity-0'
+                    }`} 
+                  />
+                </div>
+              </button>
+            </DockIcon>
+          </DockItem>
+        </Dock>
+      </div>
+    </header>
   );
 };
 
