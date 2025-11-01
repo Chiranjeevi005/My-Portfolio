@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import InitialLoader from '@/components/home/initialLoader';
 import Navbar from '@/components/common/Navbar';
 import Hero from '@/components/home/Hero';
@@ -15,23 +16,37 @@ import About from '@/components/home/About';
 
 export default function Home() {
   const [showLoader, setShowLoader] = useState(true);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    // Reset loader state on component mount to ensure it shows on refresh
-    setShowLoader(true);
-    // Remove skip flag on page load to ensure loader always shows
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('skipIntro');
+    // Check if navigation is from navbar (using query parameter)
+    const isFromNavbar = searchParams.get('nav') === '1';
+    
+    // Check if this is a full page refresh
+    const navigationEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+    const isReload = navigationEntry?.type === 'reload';
+    const isNavigate = navigationEntry?.type === 'navigate';
+    
+    // Show loader only on direct access or refresh, not on navbar navigation
+    if (isFromNavbar) {
+      // This is navigation from navbar - hide loader immediately
+      setShowLoader(false);
+    } else if (isReload || isNavigate) {
+      // This is a direct access or refresh - show loader
+      setShowLoader(true);
+    } else {
+      // Default case - for safety, show loader on first visit
+      setShowLoader(true);
     }
     
     return () => {};
-  }, []);
+  }, [searchParams]);
 
   const handleLoaderFinish = () => {
     setShowLoader(false);
   };
 
-  // Always show the loader on refresh
+  // Show the loader when state is true
   if (showLoader) {
     return <InitialLoader onFinish={handleLoaderFinish} durationMs={5600} />;
   }

@@ -31,7 +31,7 @@ const Navbar = () => {
             <DockLabel className="md:top-[-20px] lg:top-[-15px] top-[-30px]">Home</DockLabel>
             <DockIcon>
               <Link 
-                href="/" 
+                href="/?nav=1" 
                 className="text-2xl font-bold text-light-textAccent dark:text-dark-textAccent font-heading flex items-center justify-center w-full h-full active:opacity-80 transition-all duration-200"
               >
                 <Home size={24} />
