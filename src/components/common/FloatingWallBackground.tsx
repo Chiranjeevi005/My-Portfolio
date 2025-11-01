@@ -99,7 +99,7 @@ const FloatingWallBackground = () => {
     { type: 'devops', path: 'M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z' },
     { type: 'responsive', path: 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4' },
     { type: 'security', path: 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z' },
-    { type: 'testing', path: 'M9 9h6m-6 3h6m-6 3h6M5 5h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z' },
+    { type: 'testing', path: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z' },
     { type: 'performance', path: 'M13 10V3L4 14h7v7l9-11h-7z' },
     // Entrepreneurship icons
     { type: 'business', path: 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' },
@@ -120,7 +120,7 @@ const FloatingWallBackground = () => {
     { type: 'customer', path: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' },
   ];
 
-  // Generate elements from predefined positions
+  // Deterministic element generation to avoid hydration issues
   const generateElementsFromPositions = () => {
     const newElements: FloatingElement[] = [];
     predefinedPositions.forEach((position, index) => {
@@ -131,10 +131,10 @@ const FloatingWallBackground = () => {
         left: position.left,
         size: position.size,
         type: index % 3 === 0 ? 'icon' : 'shape', // More icons for variety
-        shapeType: Math.floor(Math.random() * 4),
-        iconType: Math.floor(Math.random() * iconElements.length),
-        colorIndex: Math.floor(Math.random() * 5),
-        speed: 0.05 + Math.random() * 0.15,
+        shapeType: index % 4, // Deterministic shape type
+        iconType: index % iconElements.length, // Deterministic icon type
+        colorIndex: index % 5, // Deterministic color index
+        speed: 0.05 + (index % 10) * 0.015, // Deterministic speed
       });
     });
     return newElements;
@@ -204,7 +204,79 @@ const FloatingWallBackground = () => {
   }, [isMounted]);
 
   if (!isMounted) {
-    return null;
+    // Render deterministic elements during SSR to avoid hydration mismatch
+    const ssrElements = generateElementsFromPositions().slice(0, 20); // Limit for SSR
+    return (
+      <div ref={containerRef} className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+        {ssrElements.map((element) => {
+          if (element.type === 'icon') {
+            const iconData = iconElements[element.iconType || 0];
+            return (
+              <div
+                key={element.id}
+                className="absolute opacity-10"
+                style={{
+                  top: `${element.top}%`,
+                  left: `${element.left}%`,
+                  width: element.size,
+                  height: element.size,
+                }}
+              >
+                <svg 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  className="w-full h-full"
+                  style={{
+                    color: element.colorIndex === 0 
+                      ? '#E85D45' // light-textAccent
+                      : element.colorIndex === 1 
+                        ? '#D94A33' // light-buttonHover
+                        : element.colorIndex === 2 
+                          ? '#9B7C72' // light-textMuted
+                          : element.colorIndex === 3 
+                            ? '#FDF3E7' // light variant
+                            : '#3C2E2A', // light-border
+                  }}
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={1.5} 
+                    d={iconData.path} 
+                  />
+                </svg>
+              </div>
+            );
+          } else {
+            return (
+              <div
+                key={element.id}
+                className={`absolute opacity-10 ${
+                  element.shapeType === 0 ? 'rounded-lg' : 
+                  element.shapeType === 1 ? 'rounded-full' : 
+                  element.shapeType === 2 ? 'rounded-sm' : ''}`}
+                style={{
+                  width: element.size,
+                  height: element.size,
+                  top: `${element.top}%`,
+                  left: `${element.left}%`,
+                  backgroundColor: element.colorIndex === 0 
+                    ? '#E85D45' // light-textAccent
+                    : element.colorIndex === 1 
+                      ? '#D94A33' // light-buttonHover
+                      : element.colorIndex === 2 
+                        ? '#9B7C72' // light-textMuted
+                        : element.colorIndex === 3 
+                          ? '#FDF3E7' // light variant
+                          : '#3C2E2A', // light-border
+                }}
+              />
+            );
+          }
+        })}
+      </div>
+    );
   }
 
   return (

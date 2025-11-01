@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import gsap from 'gsap';
+import { useLoaderStore } from '@/store/useLoaderStore';
 import Navbar from '@/components/common/Navbar';
 import Footer from '@/components/common/Footer';
 import AboutHeroSection from '../../components/about/AboutHeroSection';
@@ -12,7 +13,12 @@ import InterestsShowcase from '../../components/about/InterestsShowcase';
 import VisionSection from '../../components/about/VisionSection';
 
 export default function AboutPage() {
+  const { stopLoading } = useLoaderStore();
+
   useEffect(() => {
+    // Stop the global loader
+    stopLoading();
+
     // Scroll to top when page loads
     window.scrollTo(0, 0);
 
@@ -22,7 +28,7 @@ export default function AboutPage() {
       { opacity: 0, y: 30 },
       { opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: 'power2.out' }
     );
-  }, []);
+  }, [stopLoading]);
 
   return (
     <div className="min-h-screen flex flex-col bg-light-bgPrimary dark:bg-dark-bgPrimary">
