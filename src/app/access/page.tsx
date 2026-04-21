@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import MorphLoading from "@/components/ui/morph-loading";
 
-// Demo allowed identity
-const ALLOWED_IDENTITY = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+// Use server-only env to prevent bundling into client JS. 
+// Will be undefined on client, effectively failing closed for UI-level recognition.
+const ALLOWED_IDENTITY = process.env.ADMIN_EMAIL;
 
 export default function AccessGatewayPage() {
   const [identity, setIdentity] = useState("");
@@ -14,14 +15,29 @@ export default function AccessGatewayPage() {
   const [isVerifying, setIsVerifying] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [authResponse, setAuthResponse] = useState<string | null>(null);
+  
+  const mountedRef = useRef(true);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   // Recognition Logic
   useEffect(() => {
-    const isMatch = identity.trim().toLowerCase() === ALLOWED_IDENTITY;
-    setIsRecognized(isMatch);
+    // If ALLOWED_IDENTITY is missing (standard client state), always deny recognition.
+    if (!ALLOWED_IDENTITY) {
+      setIsRecognized(false);
+    } else {
+      const isMatch = identity.trim().toLowerCase() === ALLOWED_IDENTITY.toLowerCase();
+      setIsRecognized(isMatch);
+    }
 
     // Typing state logic for intelligent pulse
-    if (identity.length > 0 && !isMatch) {
+    if (identity.length > 0) {
       setIsTyping(true);
     } else {
       setIsTyping(false);
@@ -30,22 +46,40 @@ export default function AccessGatewayPage() {
 
   const handleProceed = async () => {
     setIsVerifying(true);
+    setAuthResponse(null);
 
     try {
-      await fetch('/api/auth/request-link', {
+      const response = await fetch('/api/auth/request-link', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: identity }),
       });
-    } catch (err) {
-      // Intentionally swallow errors to prevent infrastructure leakage
-    }
 
-    // Minimum perceived security hold time before resolving UI
-    setTimeout(() => {
-      setIsVerifying(false);
-      setAuthResponse("If authorized, access link has been sent.");
-    }, 1500);
+      const text = await response.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        data = {};
+      }
+      
+      // Artificial delay for UX
+      timeoutRef.current = setTimeout(() => {
+        if (!mountedRef.current) return;
+        setIsVerifying(false);
+        if (response.status === 429) {
+          setAuthResponse(data.message || "Too many requests. Please wait.");
+        } else {
+          setAuthResponse("If authorized, access link has been sent.");
+        }
+      }, 1000);
+    } catch (err) {
+      timeoutRef.current = setTimeout(() => {
+        if (!mountedRef.current) return;
+        setIsVerifying(false);
+        setAuthResponse("If authorized, access link has been sent.");
+      }, 1000);
+    }
   };
 
   // Determine indicator state classes
@@ -150,6 +184,16 @@ export default function AccessGatewayPage() {
                   <p className="text-xs text-light-textSecondary dark:text-dark-textSecondary mt-4 opacity-70">
                     The window can now be closed safely.
                   </p>
+                  
+                  <button
+                    onClick={() => {
+                      setAuthResponse(null);
+                      setIdentity("");
+                    }}
+                    className="mt-8 text-xs font-medium text-light-textAccent dark:text-dark-textAccent hover:underline underline-offset-4 opacity-80 hover:opacity-100 transition-all"
+                  >
+                    ← Add New Email
+                  </button>
                 </motion.div>
               ) : (
                 <motion.div
@@ -212,7 +256,7 @@ export default function AccessGatewayPage() {
                           transition-all duration-500 ease-out
                           hover:shadow-[0_0_20px_rgba(232,93,69,0.3)] dark:hover:shadow-[0_0_20px_rgba(255,138,92,0.3)]
                           focus:outline-none 
-                          ${isRecognized
+                          ${identity.trim().length > 0
                           ? "opacity-100 translate-y-0 pointer-events-auto"
                           : "opacity-0 translate-y-2 pointer-events-none"
                         }

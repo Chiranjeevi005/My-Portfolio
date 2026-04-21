@@ -3,9 +3,16 @@ import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
 
 // Essential to extract the identical secret used during token minting
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'super-secret-fallback-for-local-dev-only'
-);
+const JWT_SECRET = (() => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+      return new TextEncoder().encode('super-secret-fallback-for-local-dev-only');
+    }
+    throw new Error('FATAL: JWT_SECRET environment variable is missing.');
+  }
+  return new TextEncoder().encode(secret);
+})();
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

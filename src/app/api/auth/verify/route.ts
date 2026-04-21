@@ -1,45 +1,52 @@
 import { NextResponse } from 'next/server';
-import { verifyToken, createSessionToken } from '@/lib/auth';
-import { usedNonces } from '@/lib/auth-store';
+import { AuthService } from '@/lib/AuthService';
 import { cookies } from 'next/headers';
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const token = searchParams.get('token');
+  try {
+    const { searchParams } = new URL(request.url);
+    const sid = searchParams.get('sid');
 
-  if (!token) {
-    return NextResponse.json({ error: 'Invalid link' }, { status: 400 });
+    if (!sid) {
+      return NextResponse.json({ ok: false }, { status: 400 });
+    }
+
+    const forwarded = request.headers.get('x-forwarded-for');
+    const ip = forwarded ? forwarded.split(',')[0].trim() : '127.0.0.1';
+    const ua = request.headers.get('user-agent') || 'unknown';
+
+    const result = await AuthService.verifyMagicLink(sid, ip, ua);
+
+    let maskedIp = ip;
+    if (ip.includes(':')) {
+      // IPv6 masking: keep first 3 hextets
+      const parts = ip.split(':');
+      maskedIp = parts.slice(0, 3).concat(['*', '*', '*']).join(':');
+    } else {
+      // IPv4 masking: keep first 2 octets
+      maskedIp = ip.split('.').slice(0, 2).concat(['*', '*']).join('.');
+    }
+    
+    if (result.status === 'success') {
+      console.log(`[AUTH LOG] ${new Date().toISOString()} | IP:${maskedIp} | UA:${AuthService.getContextHash(ip, ua).substring(0, 8)}... | outcome: success`);
+      
+      const cookieStore = await cookies();
+      cookieStore.set('admin_session', result.token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 15 * 60, // 15 minutes
+        path: '/',
+      });
+
+      return NextResponse.json({ ok: true });
+    } else {
+      console.log(`[AUTH LOG] ${new Date().toISOString()} | IP:${maskedIp} | UA:${AuthService.getContextHash(ip, ua).substring(0, 8)}... | outcome: ${result.reason}`);
+      return NextResponse.json({ ok: false }, { status: 400 }); // Generic fail
+    }
+
+  } catch (error) {
+    console.error('[AUTH SERVICE - VERIFY ERROR]:', error);
+    return NextResponse.json({ ok: false }, { status: 500 });
   }
-
-  // 1. JWT verification resolves expiration and cryptographic signature
-  const payload = await verifyToken(token);
-
-  if (!payload || payload.purpose !== 'magic_link') {
-    return NextResponse.json({ error: 'Expired or invalid link' }, { status: 401 });
-  }
-
-  // 2. Strict One-Time Use Protection via Nonce Cache
-  const nonce = payload.nonce as string;
-  if (!nonce || usedNonces.has(nonce)) {
-    return NextResponse.json({ error: 'Link already used. Request a new one.' }, { status: 401 });
-  }
-
-  // Record nonce entirely invalidating future replay attacks
-  usedNonces.add(nonce);
-
-  // 3. Issue Temporary Backend-Only Admin Session
-  const sessionToken = await createSessionToken();
-
-  // 4. Secure HttpOnly Cookie Attachment
-  const cookieStore = await cookies();
-  cookieStore.set('admin_session', sessionToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
-    maxAge: 30 * 60, // 30 minutes session
-    path: '/',
-  });
-
-  // Redirect the authorized user strictly to the admin portal or subsequent dual factor endpoint
-  return NextResponse.redirect(new URL('/admin', request.url));
 }
