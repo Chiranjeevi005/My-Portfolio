@@ -4,57 +4,42 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import MorphLoading from "@/components/ui/morph-loading";
 
-// Use server-only env to prevent bundling into client JS. 
-// Will be undefined on client, effectively failing closed for UI-level recognition.
-const ALLOWED_IDENTITY = process.env.ADMIN_EMAIL;
-
 export default function AccessGatewayPage() {
   const [identity, setIdentity] = useState("");
-  const [isRecognized, setIsRecognized] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [authResponse, setAuthResponse] = useState<string | null>(null);
   
   const mountedRef = useRef(true);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+    mountedRef.current = true;
     return () => {
       mountedRef.current = false;
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
   }, []);
 
-  // Recognition Logic
   useEffect(() => {
-    // If ALLOWED_IDENTITY is missing (standard client state), always deny recognition.
-    if (!ALLOWED_IDENTITY) {
-      setIsRecognized(false);
-    } else {
-      const isMatch = identity.trim().toLowerCase() === ALLOWED_IDENTITY.toLowerCase();
-      setIsRecognized(isMatch);
-    }
-
-    // Typing state logic for intelligent pulse
-    if (identity.length > 0) {
-      setIsTyping(true);
-    } else {
-      setIsTyping(false);
-    }
+    setIsTyping(identity.length > 0);
   }, [identity]);
 
   const handleProceed = async () => {
     setIsVerifying(true);
     setAuthResponse(null);
+    let timeoutId: NodeJS.Timeout | null = null;
 
     try {
+      const controller = new AbortController();
+      timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+
       const response = await fetch('/api/auth/request-link', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: identity }),
+        signal: controller.signal,
       });
-
+      
       const text = await response.text();
       let data;
       try {
@@ -63,46 +48,47 @@ export default function AccessGatewayPage() {
         data = {};
       }
       
-      // Artificial delay for UX
-      timeoutRef.current = setTimeout(() => {
-        if (!mountedRef.current) return;
-        setIsVerifying(false);
-        if (response.status === 429) {
-          setAuthResponse(data.message || "Too many requests. Please wait.");
-        } else {
-          setAuthResponse("If authorized, access link has been sent.");
-        }
-      }, 1000);
-    } catch (err) {
-      timeoutRef.current = setTimeout(() => {
-        if (!mountedRef.current) return;
-        setIsVerifying(false);
+      if (!mountedRef.current) return;
+
+      if (response.status === 429) {
+        setAuthResponse(data.message || "Too many requests. Please wait.");
+      } else {
+        // Enforce generic response for enumeration safety
         setAuthResponse("If authorized, access link has been sent.");
-      }, 1000);
+      }
+    } catch (err: any) {
+      if (!mountedRef.current) return;
+      
+      if (err.name === 'AbortError') {
+        setAuthResponse("Request timed out. Please try again.");
+      } else {
+        setAuthResponse("If authorized, access link has been sent.");
+      }
+    } finally {
+      if (timeoutId) clearTimeout(timeoutId);
+      if (mountedRef.current) {
+        setIsVerifying(false);
+      }
     }
   };
 
-  // Determine indicator state classes
+  // Indicator classes based on input state (removed isRecognized)
   let indicatorStateClasses = "h-5 bg-light-textMuted dark:bg-dark-textMuted";
-  if (isRecognized) {
-    indicatorStateClasses = "h-7 bg-gradient-to-b from-[#E85D45] to-[#D7745B] shadow-[0_0_8px_rgba(232,93,69,0.5)]";
-  } else if (isFocused) {
+  if (isFocused) {
     indicatorStateClasses = "h-6 bg-light-textAccent dark:bg-dark-textAccent";
   }
 
-  // Determine feedback text
+  // Feedback text logic
   let feedbackText = "";
   if (isVerifying) {
     feedbackText = "Generating secure access link...";
-  } else if (isRecognized) {
-    feedbackText = "Identity confirmed";
   } else if (identity.length > 0) {
     feedbackText = "Awaiting verification...";
   }
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-light-bgPrimary dark:bg-dark-bgPrimary transition-colors duration-700 overflow-hidden font-body">
-      {/* Background Floating Gradient Blobs (NO CHANGE) */}
+      {/* Background Floating Gradient Blobs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none flex items-center justify-center">
         <motion.div
           animate={{
@@ -133,16 +119,13 @@ export default function AccessGatewayPage() {
         />
       </div>
 
-      {/* Main Access Card Container */}
       <div className="relative z-10 w-full max-w-md px-4 perspective-1000">
-
-        {/* Glow behind the card when typing (Micro interaction intelligence layer) */}
         <div
-          className={`absolute inset-4 rounded-[2rem] bg-light-textAccent dark:bg-dark-textAccent blur-2xl transition-all duration-1000 z-0 ${isTyping ? "opacity-[0.03] animate-[pulse_2s_ease-in-out_infinite]" : "opacity-0"
-            }`}
+          className={`absolute inset-4 rounded-[2rem] bg-light-textAccent dark:bg-dark-textAccent blur-2xl transition-all duration-1000 z-0 ${
+            isTyping ? "opacity-[0.03] animate-[pulse_2s_ease-in-out_infinite]" : "opacity-0"
+          }`}
         />
 
-        {/* 1. Enhanced Card Presence (ring, shadow, inner depth) */}
         <div className="relative z-10 bg-light-cardBg/80 dark:bg-dark-cardBg/70 backdrop-blur-md 
                         border border-light-cardBorder/50 dark:border-dark-cardBorder/50 
                         rounded-2xl px-6 py-10 md:px-8 
@@ -150,15 +133,11 @@ export default function AccessGatewayPage() {
                         shadow-[0_20px_60px_-15px_rgba(0,0,0,0.25)]
                         before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-br before:from-white/10 before:to-transparent before:pointer-events-none">
 
-          {/* Main content wrapped to handle Blur in transition state */}
           <div className={`relative z-10 transition-all duration-700 ${isVerifying ? "opacity-30 blur-[2px] pointer-events-none" : ""}`}>
-
-            {/* System Label */}
             <h3 className="text-xs tracking-[0.3em] text-light-textMuted dark:text-dark-textMuted uppercase mb-6 text-center">
               Private Access
             </h3>
 
-            {/* 2. Upgraded Heading */}
             <div className="mb-8 text-center">
               <h1 className="text-2xl md:text-3xl font-semibold font-heading text-light-textPrimary dark:text-dark-textPrimary">
                 Secure Gateway
@@ -168,7 +147,6 @@ export default function AccessGatewayPage() {
               </p>
             </div>
 
-            {/* 3. Dynamic Interactive Area */}
             <AnimatePresence mode="wait">
               {authResponse ? (
                 <motion.div
@@ -178,7 +156,7 @@ export default function AccessGatewayPage() {
                   transition={{ duration: 0.5 }}
                   className="py-10 text-center"
                 >
-                  <p className="text-sm font-medium text-light-textPrimary dark:text-dark-textPrimary">
+                  <p className="text-sm font-medium text-light-textPrimary dark:text-dark-textPrimary text-pretty">
                     {authResponse}
                   </p>
                   <p className="text-xs text-light-textSecondary dark:text-dark-textSecondary mt-4 opacity-70">
@@ -202,7 +180,6 @@ export default function AccessGatewayPage() {
                   exit={{ opacity: 0 }}
                   className="relative group mx-auto"
                 >
-                  {/* Left-side Intelligent Indicator */}
                   <div
                     className={`absolute left-4 top-1/2 -translate-y-1/2 w-[2px] rounded-full transition-all duration-500 z-10 pointer-events-none ${indicatorStateClasses}`}
                   />
@@ -217,30 +194,16 @@ export default function AccessGatewayPage() {
                     disabled={isVerifying}
                     spellCheck={false}
                     autoComplete="off"
-                    className={`
-                      w-full pl-[2.25rem] pr-4 py-3 rounded-lg
-                      bg-light-bgSurface dark:bg-dark-bgSurface
-                      border border-light-border dark:border-dark-border
-                      text-light-textPrimary dark:text-dark-textPrimary
-                      placeholder:text-light-textMuted/70 dark:placeholder:text-dark-textMuted/70
-                      focus:outline-none focus:border-light-textAccent dark:focus:border-dark-textAccent
-                      transition-all duration-700 ease-in-out caret-light-textAccent dark:caret-dark-textAccent
-                      ${isRecognized
-                        ? "shadow-[0_0_15px_rgba(232,93,69,0.25)] dark:shadow-[0_0_20px_rgba(255,138,92,0.25)] ring-1 ring-light-textAccent/30 dark:ring-dark-textAccent/30"
-                        : ""
-                      }
-                    `}
+                    className="w-full pl-[2.25rem] pr-4 py-3 rounded-lg bg-light-bgSurface dark:bg-dark-bgSurface border border-light-border dark:border-dark-border text-light-textPrimary dark:text-dark-textPrimary placeholder:text-light-textMuted/70 dark:placeholder:text-dark-textMuted/70 focus:outline-none focus:border-light-textAccent dark:focus:border-dark-textAccent transition-all duration-700 ease-in-out caret-light-textAccent dark:caret-dark-textAccent"
                     style={{ caretColor: "currentColor" }}
                   />
 
-                  {/* 4. Real System Feedback */}
                   <div className="h-5 mt-3 flex items-center justify-center">
                     <span className={`text-xs text-light-textMuted dark:text-dark-textMuted tracking-wide transition-opacity duration-500 ease-out ${feedbackText ? "opacity-100" : "opacity-0"}`}>
                       {feedbackText}
                     </span>
                   </div>
 
-                  {/* 5. Progressive Reveal CTA Button */}
                   <div className="mt-4 h-12 relative w-full overflow-hidden rounded-lg">
                     <button
                       onClick={handleProceed}
@@ -270,7 +233,6 @@ export default function AccessGatewayPage() {
             </AnimatePresence>
           </div>
 
-          {/* 7. Transition State Lock + Overlay */}
           <AnimatePresence>
             {isVerifying && (
               <motion.div
@@ -289,7 +251,6 @@ export default function AccessGatewayPage() {
               </motion.div>
             )}
           </AnimatePresence>
-
         </div>
       </div>
     </div>

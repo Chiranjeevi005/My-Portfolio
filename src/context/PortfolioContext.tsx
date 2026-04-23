@@ -29,9 +29,15 @@ interface Experience {
   takeaways: string[];
 }
 
+interface SkillCategory {
+  title: string;
+  skills: { name: string; description: string }[];
+}
+
 interface PortfolioData {
   projects: Project[];
   experiences: Experience[];
+  skills: SkillCategory[];
 }
 
 // Define the context
@@ -40,7 +46,7 @@ interface PortfolioContextType {
 }
 
 // Create the context with default values
-const PortfolioContext = createContext<PortfolioContextType | undefined>(undefined);
+export const PortfolioContext = createContext<PortfolioContextType | undefined>(undefined);
 
 // Provider component
 export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
@@ -186,9 +192,65 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
     }
   ];
 
+  const skills: SkillCategory[] = [
+    {
+      title: "Programming & Web Development",
+      skills: [
+        { name: "HTML5", description: "Semantic and responsive markup." },
+        { name: "CSS3", description: "Modern layouts, animations, and responsive design." },
+        { name: "React.js", description: "Component-driven UI architecture with hooks and routing." },
+        { name: "Next.js", description: "Server-side rendering and static site generation." },
+        { name: "Tailwind CSS", description: "Utility-first responsive styling system." },
+        { name: "Supabase", description: "Realtime database and auth integration." },
+        { name: "Vercel / Netlify", description: "Modern deployment platforms for JAMStack." },
+      ],
+    },
+    {
+      title: "AI & Automation",
+      skills: [
+        { name: "ChatGPT / Cursor AI", description: "AI-assisted code generation and debugging." },
+        { name: "Prompt Engineering", description: "Designing effective prompts for productivity." },
+        { name: "AI Workflows", description: "Automation through AI-based task enhancement." },
+        { name: "Notion AI / Copilot", description: "Productivity enhancement with intelligent tools." },
+        { name: "Canva / Figma AI", description: "AI-driven design automation and ideation." },
+      ],
+    },
+    {
+      title: "Business & Analytics",
+      skills: [
+        { name: "Strategic Thinking", description: "Connecting market insights to opportunities." },
+        { name: "Power BI", description: "Data visualization and analytics dashboards." },
+        { name: "Product Management", description: "Feature planning and MVP thinking." },
+        { name: "Entrepreneurship", description: "Transforming ideas into viable ventures." },
+        { name: "Process Optimization", description: "Leveraging AI for business efficiency." },
+      ],
+    },
+    {
+      title: "Soft & Professional Skills",
+      skills: [
+        { name: "Leadership", description: "Inspiring teams with purpose and vision." },
+        { name: "Communication", description: "Conveying complex ideas simply and clearly." },
+        { name: "Creativity", description: "Innovative thinking across design and code." },
+        { name: "Adaptability", description: "Learning and applying new tech quickly." },
+        { name: "Storytelling", description: "Crafting narratives that connect emotionally." },
+      ],
+    },
+    {
+      title: "Expertise Overview",
+      skills: [
+        { name: "Full-Stack Development", description: "End-to-end web application development." },
+        { name: "UI/UX Design", description: "User-centered design principles and implementation." },
+        { name: "Cloud Architecture", description: "Scalable and secure cloud solutions." },
+        { name: "Data Visualization", description: "Transforming complex data into clear insights." },
+        { name: "Project Management", description: "Agile methodologies and team coordination." },
+      ],
+    },
+  ];
+
   const portfolioData: PortfolioData = {
     projects,
-    experiences
+    experiences,
+    skills
   };
 
   return (

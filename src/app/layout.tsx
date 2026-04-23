@@ -3,6 +3,7 @@ import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import ClientLayoutWrapper from "@/components/layout/ClientLayoutWrapper";
+import { PortfolioProvider } from "@/context/PortfolioContext";
 
 // Import Google Fonts
 import { Great_Vibes, Cookie } from "next/font/google";
@@ -45,9 +46,11 @@ export default function RootLayout({
     <html lang="en" className="bg-light-bgPrimary dark:bg-dark-bgPrimary text-light-textPrimary dark:text-dark-textPrimary scroll-smooth" suppressHydrationWarning>
       <body className={`${inter.variable} ${poppins.variable} ${greatVibes.variable} ${cookie.variable} font-body`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
-          <ClientLayoutWrapper>
-            {children}
-          </ClientLayoutWrapper>
+          <PortfolioProvider>
+            <ClientLayoutWrapper>
+              {children}
+            </ClientLayoutWrapper>
+          </PortfolioProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -97,16 +97,29 @@ export async function POST(request: Request) {
 
     if (process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== 'default') {
       const resend = new Resend(process.env.RESEND_API_KEY);
+      
       try {
-        await resend.emails.send({
-          from: 'onboarding@resend.dev',
-          to: email,
-          subject: 'Action Required: Secure Gateway Access',
-          html: htmlContent,
-          text: `Verify your identity at: ${verifyUrl}`,
-        });
-      } catch (err) {
-        console.error('[AUTH SERVICE - EMAIL ERROR]:', err);
+        // Await the send with a bounded timeout to detect delivery failures
+        await Promise.race([
+          resend.emails.send({
+            from: 'onboarding@resend.dev',
+            to: email,
+            subject: 'Action Required: Secure Gateway Access',
+            html: htmlContent,
+            text: `Verify your identity at: ${verifyUrl}`,
+          }),
+          new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('TIMEOUT')), 5000)
+          )
+        ]);
+      } catch (err: any) {
+        console.error('[AUTH SERVICE - DELIVERY ERROR]:', err);
+        // Invalidate the issued link if delivery failed (optional but safer)
+        // For now, we return a 500 to let the client know something went wrong
+        return NextResponse.json(
+          { ok: false, message: 'Failed to deliver access link. Please try again.' },
+          { status: 500 }
+        );
       }
     } else {
       console.log(`[AUTH SERVICE - MAGIC LINK (LOCAL LOG)]: \n${verifyUrl}`);

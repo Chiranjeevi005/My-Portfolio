@@ -15,13 +15,16 @@ const JWT_SECRET = (() => {
 })();
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const pathname = request.nextUrl.pathname.toLowerCase();
 
   // Protect Admin dashboard and GitHub proxy backends
-  if (pathname.startsWith('/admin') || pathname.startsWith('/api/github-proxy')) {
+  if (pathname.startsWith('/admin') || pathname.startsWith('/api/github-proxy') || pathname.startsWith('/api/content')) {
     const token = request.cookies.get('admin_session')?.value;
 
     if (!token) {
+      if (pathname.startsWith('/api/')) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
       // Unauthenticated -> Kick to gateway
       return NextResponse.redirect(new URL('/access', request.url));
     }
@@ -38,6 +41,11 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     } catch (err) {
       // Invalid/expired token -> Purge potential stale tokens safely & kick to gateway
+      if (pathname.startsWith('/api/')) {
+        const response = NextResponse.json({ error: 'Unauthorized Expired Token' }, { status: 401 });
+        response.cookies.delete('admin_session');
+        return response;
+      }
       const response = NextResponse.redirect(new URL('/access', request.url));
       response.cookies.delete('admin_session');
       return response;
@@ -50,5 +58,5 @@ export async function middleware(request: NextRequest) {
 
 // Optimization strategy: Only run middleware locally on target paths
 export const config = {
-  matcher: ['/admin/:path*', '/api/github-proxy/:path*'],
+  matcher: ['/admin/:path*', '/api/github-proxy/:path*', '/api/content/:path*'],
 };
