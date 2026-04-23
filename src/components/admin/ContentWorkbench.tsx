@@ -8,7 +8,8 @@ import ChangeReviewModal from "./ChangeReviewModal";
 import { useDraftManager } from "./DraftManager";
 import { ContentEngine } from "@/lib/content-engine";
 import { usePortfolio } from "@/context/PortfolioContext";
-import { Rocket, Save, RotateCcw } from "lucide-react";
+import { Rocket, Save, RotateCcw, RefreshCw, CheckCircle } from "lucide-react";
+
 
 interface ContentWorkbenchProps {
   type: "projects" | "experience" | "skills";
@@ -26,7 +27,16 @@ export default function ContentWorkbench({ type, selectedId }: ContentWorkbenchP
     return null;
   }, [type, selectedId, portfolioData]);
 
-  const { draft, updateDraft, resetDraft, clearDraft, isInitialized } = useDraftManager(
+  const {
+    draft,
+    updateDraft,
+    resetDraft,
+    clearDraft,
+    isInitialized,
+    restoreDraft,
+    discardDraft,
+    hasStoredDraft
+  } = useDraftManager(
     `workbench_${type}_${selectedId}`,
     originalData || {}
   );
@@ -101,19 +111,17 @@ export default function ContentWorkbench({ type, selectedId }: ContentWorkbenchP
         throw new Error(data.error || "Publishing failed");
       }
 
-      console.log("PUBLISHED TO GITHUB:", data);
       clearDraft();
       setIsReviewOpen(false);
       alert("Changes published successfully! The site will update in a few minutes.");
-
       window.location.reload();
-
     } catch (err: any) {
       alert(err.message || "Unable to publish changes. Please try again.");
     } finally {
       setIsPublishing(false);
     }
   };
+
 
   if (!isInitialized || !originalData) {
     return (
@@ -124,64 +132,105 @@ export default function ContentWorkbench({ type, selectedId }: ContentWorkbenchP
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1fr,1.5fr] gap-8 animate-in fade-in duration-500">
-      {/* Left: Editor Panel */}
-      <div className="space-y-6">
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-light-textAccent dark:bg-dark-textAccent animate-pulse"></div>
-            <h2 className="text-sm font-bold uppercase tracking-widest text-light-textMuted dark:text-dark-textMuted">Editing {type}</h2>
-          </div>
-          {changes.length > 0 && (
-            <button
-              onClick={() => resetDraft(originalData)}
-              className="text-[10px] uppercase font-bold text-light-textMuted hover:text-red-500 transition-colors flex items-center gap-1"
-            >
-              <RotateCcw size={10} /> Discard Edits
-            </button>
-          )}
-        </div>
-
-        <ContentEditor
-          type={type}
-          data={draft}
-          originalData={originalData}
-          onChange={(newData, valid) => {
-            updateDraft(newData);
-            setIsValid(valid);
-          }}
-        />
-
-        <div className="pt-6 border-t border-light-border dark:border-dark-border">
-          <button
-            disabled={!isValid || changes.length === 0 || isPublishing}
-            onClick={() => setIsReviewOpen(true)}
-            className="w-full py-4 bg-light-textAccent dark:bg-dark-textAccent text-white rounded-2xl font-bold hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-3 group"
+    <div className="space-y-8 animate-in fade-in duration-500">
+      {/* 7. RECOVERY PROMPT SYSTEM */}
+      <AnimatePresence>
+        {hasStoredDraft && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="overflow-hidden"
           >
-            {isPublishing ? (
-              <RotateCcw size={20} className="animate-spin" />
-            ) : (
-              <Rocket size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+            <div className="bg-light-textAccent/10 border border-light-textAccent/20 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-light-textAccent/20 flex items-center justify-center flex-shrink-0">
+                  <RefreshCw className="text-light-textAccent animate-spin-slow" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-light-textAccent">Unsaved Progress Detected</h4>
+                  <p className="text-xs text-light-textMuted dark:text-dark-textMuted">We found a local backup from your last session. Would you like to restore your work?</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 w-full md:w-auto">
+                <button
+                  onClick={discardDraft}
+                  className="flex-1 md:flex-none px-6 py-2.5 rounded-xl border border-light-textAccent/20 text-xs font-bold text-light-textMuted hover:bg-red-500/10 hover:text-red-500 transition-all"
+                >
+                  Discard Draft
+                </button>
+                <button
+                  onClick={restoreDraft}
+                  className="flex-1 md:flex-none px-6 py-2.5 rounded-xl bg-light-textAccent text-white text-xs font-bold shadow-lg shadow-light-textAccent/20 hover:opacity-90 transition-all flex items-center justify-center gap-2"
+                >
+                  <CheckCircle size={14} />
+                  Restore Session
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr,1.5fr] gap-8">
+
+        {/* Left: Editor Panel */}
+        <div className="space-y-6">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-light-textAccent dark:bg-dark-textAccent animate-pulse"></div>
+              <h2 className="text-sm font-bold uppercase tracking-widest text-light-textMuted dark:text-dark-textMuted">Editing {type}</h2>
+            </div>
+            {changes.length > 0 && (
+              <button
+                onClick={() => resetDraft(originalData)}
+                className="text-[10px] uppercase font-bold text-light-textMuted hover:text-red-500 transition-colors flex items-center gap-1"
+              >
+                <RotateCcw size={10} /> Discard Edits
+              </button>
             )}
-            {isPublishing ? "Publishing..." : "Proceed to Publish"}
-          </button>
-          {changes.length === 0 && (
-            <p className="text-[10px] text-center mt-3 text-light-textMuted dark:text-dark-textMuted flex items-center justify-center gap-1">
-              <Save size={10} /> No changes detected in this session
-            </p>
-          )}
+          </div>
+
+          <ContentEditor
+            type={type}
+            data={draft}
+            originalData={originalData}
+            onChange={(newData, valid) => {
+              updateDraft(newData);
+              setIsValid(valid);
+            }}
+          />
+
+          <div className="pt-6 border-t border-light-border dark:border-dark-border">
+            <button
+              disabled={!isValid || changes.length === 0 || isPublishing}
+              onClick={() => setIsReviewOpen(true)}
+              className="w-full py-4 bg-light-textAccent dark:bg-dark-textAccent text-white rounded-2xl font-bold hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-3 group"
+            >
+              {isPublishing ? (
+                <RotateCcw size={20} className="animate-spin" />
+              ) : (
+                <Rocket size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              )}
+              {isPublishing ? "Publishing..." : "Proceed to Publish"}
+            </button>
+            {changes.length === 0 && (
+              <p className="text-[10px] text-center mt-3 text-light-textMuted dark:text-dark-textMuted flex items-center justify-center gap-1">
+                <Save size={10} /> No changes detected in this session
+              </p>
+            )}
+          </div>
         </div>
-      </div>
 
-      {/* Right: Live Preview Panel */}
-      <div className="sticky top-24 h-fit hidden lg:block">
-        <LivePreview type={type} draftData={previewData} allData={portfolioData} />
-      </div>
+        {/* Right: Live Preview Panel */}
+        <div className="sticky top-24 h-fit hidden lg:block">
+          <LivePreview type={type} draftData={previewData} allData={portfolioData} />
+        </div>
 
-      {/* Mobile/Tablet Preview Toggle (Overlay) */}
-      <div className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
-        {/* TBD: Mobile experience */}
-      </div>
+        {/* Mobile/Tablet Preview Toggle (Overlay) */}
+        <div className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
+          {/* TBD: Mobile experience */}
+        </div>
 
       <ChangeReviewModal
         isOpen={isReviewOpen}
@@ -191,5 +240,7 @@ export default function ContentWorkbench({ type, selectedId }: ContentWorkbenchP
         type={type}
       />
     </div>
+    </div>
   );
 }
+

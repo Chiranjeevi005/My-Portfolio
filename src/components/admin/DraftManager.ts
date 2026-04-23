@@ -5,34 +5,48 @@ import { useState, useEffect } from 'react';
  */
 export function useDraftManager<T>(key: string, initialState: T) {
   const [draft, setDraft] = useState<T>(initialState);
+  const [storedDraft, setStoredDraft] = useState<T | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Load from localStorage on mount
+  // 1. Initial Load from localStorage
   useEffect(() => {
     const saved = localStorage.getItem(`draft_${key}`);
     if (saved) {
       try {
-        setDraft(JSON.parse(saved));
+        const parsed = JSON.parse(saved);
+        setStoredDraft(parsed);
       } catch (e) {
         console.error("Failed to parse draft", e);
-        setDraft(initialState);
       }
-    } else {
-      setDraft(initialState);
     }
+    // We always start with the initialState (Server Data) to allow the UI to prompt for restoration
+    setDraft(initialState);
     setIsInitialized(true);
   }, [key, initialState]);
 
-  // Save to localStorage on change
+  // 2. Continuous Layer-2 Auto-Save (LocalStorage)
   useEffect(() => {
-    if (isInitialized) {
+    if (isInitialized && draft !== initialState) {
       localStorage.setItem(`draft_${key}`, JSON.stringify(draft));
     }
-  }, [draft, key, isInitialized]);
+  }, [draft, key, isInitialized, initialState]);
 
   const clearDraft = () => {
     localStorage.removeItem(`draft_${key}`);
+    setStoredDraft(null);
     setDraft(initialState);
+  };
+
+  const restoreDraft = () => {
+    if (storedDraft) {
+      setDraft(storedDraft);
+      setStoredDraft(null);
+    }
+  };
+
+  const discardDraft = () => {
+    localStorage.removeItem(`draft_${key}`);
+    setStoredDraft(null);
   };
 
   const updateDraft = (updates: Partial<T>) => {
@@ -48,6 +62,9 @@ export function useDraftManager<T>(key: string, initialState: T) {
     updateDraft,
     resetDraft,
     clearDraft,
-    isInitialized
+    restoreDraft,
+    discardDraft,
+    isInitialized,
+    hasStoredDraft: storedDraft !== null,
   };
 }

@@ -81,6 +81,36 @@ export class GitHubService {
 
     return data;
   }
+
+  /**
+   * Fetches latest commits from the repository
+   */
+  async getCommits(limit = 10) {
+    if (!this.token) {
+      throw new Error("GITHUB_NOT_CONFIGURED");
+    }
+
+    const url = `https://api.github.com/repos/${this.owner}/${this.repo}/commits?per_page=${limit}`;
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${this.token}`,
+        'Accept': 'application/vnd.github.v3+json',
+      },
+      next: { revalidate: 0 }
+    });
+
+    if (!response.ok) {
+      throw new Error(`GitHub Error: ${response.statusText}`);
+    }
+
+    return await response.json();
+  }
+
+  isConfigured() {
+    return !!this.token;
+  }
 }
+
+
 
 export const githubService = new GitHubService();

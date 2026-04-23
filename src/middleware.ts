@@ -18,7 +18,8 @@ export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname.toLowerCase();
 
   // Protect Admin dashboard and GitHub proxy backends
-  if (pathname.startsWith('/admin') || pathname.startsWith('/api/github-proxy') || pathname.startsWith('/api/content')) {
+  if (pathname.startsWith('/admin') || pathname.startsWith('/api/github-proxy') || pathname.startsWith('/api/content') || pathname.startsWith('/api/admin')) {
+
     const token = request.cookies.get('admin_session')?.value;
 
     if (!token) {
@@ -58,5 +59,6 @@ export async function middleware(request: NextRequest) {
 
 // Optimization strategy: Only run middleware locally on target paths
 export const config = {
-  matcher: ['/admin/:path*', '/api/github-proxy/:path*', '/api/content/:path*'],
+  matcher: ['/admin/:path*', '/api/github-proxy/:path*', '/api/content/:path*', '/api/admin/:path*'],
+
 };

@@ -157,14 +157,14 @@ export class AuthService {
     })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
-      .setExpirationTime('2m') // exp = now + 120s
+      .setExpirationTime('30s') // exp = now + 30s
       .sign(JWT_SECRET);
 
     // Short ID to map to JWT
     const shortId = crypto.randomUUID().replace(/-/g, '').substring(0, 16);
     globalStore.tokenIndex.set(shortId, {
       jwt,
-      expiresAt: Date.now() + 120 * 1000 // 2 min (matches JWT exp)
+      expiresAt: Date.now() + 30 * 1000 // 30s (matches JWT exp)
     });
 
     return shortId;
@@ -189,7 +189,7 @@ export class AuthService {
       // Freshness window (≤45s)
       const iat = payload.iat as number;
       const now = Math.floor(Date.now() / 1000);
-      if (now - iat > 45) {
+      if (now - iat > 30) {
         return { status: 'error', reason: 'expired_freshness' };
       }
 
@@ -220,7 +220,7 @@ export class AuthService {
       const sessionToken = await new SignJWT({ role: 'admin', auth: 'magic_link' })
         .setProtectedHeader({ alg: 'HS256' })
         .setIssuedAt()
-        .setExpirationTime('15m') // 10-20 min expiry
+        .setExpirationTime('30m') // exp = 30 min
         .sign(JWT_SECRET);
 
       return { status: 'success', token: sessionToken };
