@@ -94,6 +94,19 @@ export default function TopControlBar({ currentTab, onToggleSidebar }: TopContro
   return (
     <header className="sticky top-0 z-[60] h-16 w-full bg-light-bgSecondary/98 dark:bg-dark-bgSecondary/98 backdrop-blur-md border-b border-light-border dark:border-dark-border px-6 flex items-center justify-between">
       
+      {/* Global Scrim - NON-NEGOTIABLE */}
+      <AnimatePresence>
+        {(showNotifications || showUserDropdown) && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => { setShowNotifications(false); setShowUserDropdown(false); }}
+            className="fixed inset-0 z-40 bg-black/20 backdrop-blur-[3px]" 
+          />
+        )}
+      </AnimatePresence>
+      
       {/* 1. LEFT ZONE: PAGE CONTEXT */}
       <div className="flex items-center gap-4">
         <button
@@ -167,30 +180,28 @@ export default function TopControlBar({ currentTab, onToggleSidebar }: TopContro
           <AnimatePresence>
             {showNotifications && (
               <motion.div 
-                initial={{ opacity: 0, y: -6 }}
+                initial={{ opacity: 0, y: -8 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.18, ease: "easeOut" }}
-                className="absolute right-0 mt-2 w-[320px] max-w-[90vw] bg-light-bgSurface/98 dark:bg-dark-bgSurface/98 border border-light-border dark:border-dark-border rounded-xl shadow-[0_10px_30px_-10px_rgba(0,0,0,0.2)] backdrop-blur-md p-3 z-[100]"
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.15 }}
+                className="absolute right-0 mt-3 w-[300px] max-w-[90vw] bg-white dark:bg-dark-bgSurface border border-light-border dark:border-dark-border rounded-xl shadow-[0_30px_80px_-20px_rgba(0,0,0,0.4)] dark:shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] z-[100] isolate overflow-hidden divide-y divide-light-border dark:divide-dark-border"
               >
-                <div className="flex items-center justify-between px-2 mb-2">
-                  <h4 className="text-sm font-medium text-light-textPrimary dark:text-dark-textPrimary">SYSTEM ALERTS</h4>
-                  <button className="text-[10px] text-light-textMuted hover:text-light-textAccent font-bold transition-colors">Mark all read</button>
+                <div className="py-3 px-4 flex items-center justify-between">
+                  <h4 className="text-xs font-semibold tracking-widest text-light-textPrimary dark:text-dark-textPrimary uppercase">SYSTEM ALERTS</h4>
+                  <button className="text-[10px] text-light-textAccent hover:text-light-textAccent font-bold transition-colors">Mark all read</button>
                 </div>
                 
-                <div className="h-px bg-light-border dark:bg-dark-border my-2" />
-
-                <div className="max-h-[300px] overflow-y-auto no-scrollbar py-1">
+                <div className="py-3 px-4 space-y-2 max-h-[300px] overflow-y-auto no-scrollbar">
                    <NotificationItem title="Local draft synchronized" time="2m ago" unread />
                    <NotificationItem title="GitHub deployment successful" time="15m ago" />
                    <NotificationItem title="New skill entry detected" time="1h ago" />
                 </div>
 
-                <div className="h-px bg-light-border dark:bg-dark-border my-2" />
-
-                <button className="w-full py-1 text-[11px] text-light-textMuted hover:text-light-textAccent flex items-center justify-center gap-1.5 transition-colors font-medium">
-                  View all activity <ArrowRight size={12} />
-                </button>
+                <div className="py-3 px-4">
+                  <button className="w-full py-1 text-xs text-light-textSecondary hover:text-light-textAccent flex items-center justify-center gap-1.5 transition-colors font-medium">
+                    View all activity <ArrowRight size={12} />
+                  </button>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -212,39 +223,35 @@ export default function TopControlBar({ currentTab, onToggleSidebar }: TopContro
           <AnimatePresence>
             {showUserDropdown && (
               <motion.div 
-                initial={{ opacity: 0, y: -6 }}
+                initial={{ opacity: 0, y: -8 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.18, ease: "easeOut" }}
-                className="absolute right-0 mt-2 w-[320px] max-w-[90vw] bg-light-bgSurface/98 dark:bg-dark-bgSurface/98 border border-light-border dark:border-dark-border rounded-xl shadow-[0_10px_30px_-10px_rgba(0,0,0,0.2)] backdrop-blur-md p-3 z-[100]"
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.15 }}
+                className="absolute right-0 mt-3 w-[300px] max-w-[90vw] bg-white dark:bg-dark-bgSurface border border-light-border dark:border-dark-border rounded-xl shadow-[0_30px_80px_-20px_rgba(0,0,0,0.4)] dark:shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] z-[100] isolate overflow-hidden divide-y divide-light-border dark:divide-dark-border"
               >
 
                 {/* User Identity */}
-                <div className="flex items-center gap-3 px-2 py-2 mb-1">
+                <div className="py-3 px-4 flex items-center gap-3">
                    <div className="w-10 h-10 rounded-full bg-light-bgSecondary dark:bg-dark-bgSecondary flex items-center justify-center border border-light-border">
                      <User size={20} className="text-light-textMuted" />
                    </div>
-                   <div>
-                     <p className="text-sm font-medium text-light-textPrimary dark:text-dark-textPrimary">Admin User</p>
-                     <p className="text-[11px] text-light-textMuted">access@personal.dev</p>
+                   <div className="flex flex-col">
+                     <p className="text-sm font-semibold text-light-textPrimary dark:text-dark-textPrimary">Admin User</p>
+                     <p className="text-xs text-light-textSecondary dark:text-dark-textSecondary">access@personal.dev</p>
                    </div>
                 </div>
-
-                <div className="h-px bg-light-border dark:bg-dark-border my-2" />
 
                 {/* Session Info */}
-                <div className="px-2 py-2 space-y-1">
+                <div className="py-3 px-4 space-y-1">
                    <div className="flex items-center gap-2">
                      <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                     <span className="text-[11px] font-medium text-light-textPrimary">Active Session</span>
+                     <span className="text-xs font-semibold text-light-textPrimary dark:text-dark-textPrimary">Active Session</span>
                    </div>
-                   <p className="text-[10px] text-light-textMuted pl-3.5">Last Sync: {systemStatus?.lastSyncTime || "Real-time"}</p>
+                   <p className="text-xs text-light-textMuted dark:text-dark-textMuted pl-3.5">Last Sync: {systemStatus?.lastSyncTime || "Real-time"}</p>
                 </div>
 
-                <div className="h-px bg-light-border dark:bg-dark-border my-2" />
-
                 {/* Actions */}
-                <div className="flex flex-col gap-1 mt-1">
+                <div className="py-3 px-4 flex flex-col gap-2">
                    <DropdownButton icon={RefreshCw} label="Extend Session" onClick={extendSession} />
                    <DropdownButton icon={LogOut} label="Logout" onClick={() => logout(true)} variant="danger" />
                 </div>
@@ -275,28 +282,28 @@ function StatusDetail({ label, value, status }: { label: string; value: string; 
 
 function NotificationItem({ title, time, unread = false }: { title: string; time: string; unread?: boolean }) {
   return (
-    <div className="px-2 py-2 rounded-lg hover:bg-light-bgSecondary dark:hover:bg-dark-bgSecondary transition-all cursor-pointer flex flex-col gap-1">
+    <div className="py-2 rounded-lg hover:bg-light-bgSecondary dark:hover:bg-dark-bgSecondary transition-all cursor-pointer flex flex-col gap-1 group">
       <div className="flex items-center gap-2">
-        <div className={`w-1.5 h-1.5 rounded-full ${unread ? 'bg-light-textAccent' : 'bg-light-textMuted opacity-30'}`} />
-        <p className="text-sm text-light-textPrimary dark:text-dark-textPrimary">{title}</p>
+        <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${unread ? 'bg-light-textAccent' : 'bg-light-textMuted opacity-30'}`} />
+        <p className="text-sm font-medium text-light-textPrimary dark:text-dark-textPrimary line-clamp-1">{title}</p>
       </div>
-      <span className="text-xs text-light-textMuted pl-3.5">{time}</span>
+      <span className="text-xs text-light-textMuted dark:text-dark-textMuted pl-3.5">{time}</span>
     </div>
   );
 }
 
 function DropdownButton({ icon: Icon, label, onClick, variant = "default" }: any) {
   const colors = variant === "danger" 
-    ? "text-light-textMuted hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10" 
-    : "text-light-textPrimary dark:text-dark-textPrimary hover:bg-light-bgSecondary dark:hover:bg-dark-bgSecondary";
+    ? "text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20" 
+    : "text-light-textPrimary dark:text-dark-textPrimary bg-light-bgSecondary dark:bg-dark-bgSecondary hover:bg-light-bgSurface dark:hover:bg-dark-bgSurface border border-transparent hover:border-light-border";
     
   return (
     <button 
       onClick={onClick}
-      className={`w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg transition-all active:scale-[0.96] ${colors}`}
+      className={`w-full flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all active:scale-[0.98] ${colors}`}
     >
-      <Icon size={16} className={variant === "danger" ? "rotate-180" : ""} />
-      {label}
+      <Icon size={16} className="shrink-0" />
+      <span className="flex-1 text-left">{label}</span>
     </button>
   );
 }

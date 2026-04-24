@@ -252,8 +252,8 @@ export default function AdminOverviewSection() {
               </div>
             </div>
 
-            <div className="space-y-4 pt-4 border-t border-light-border/50">
-              <div className="flex justify-between items-center text-[10px]">
+            <div className="flex flex-wrap gap-2 pt-4 border-t border-light-border/50">
+              <div className="w-full flex justify-between items-center text-[10px] mb-2">
                 <span className="text-light-textMuted">Session Expiry</span>
                 <span className={`font-mono font-bold ${remainingTime < 120 ? 'text-red-500' : 'text-light-textAccent'}`}>
                   {formatTime(remainingTime)}
@@ -261,15 +261,15 @@ export default function AdminOverviewSection() {
               </div>
               <button 
                 onClick={extendSession}
-                className="w-full py-2 bg-light-bgSecondary hover:bg-light-border text-light-textPrimary border border-light-border rounded-lg text-[10px] font-bold transition-colors"
+                className="px-3 py-2 bg-light-bgSecondary hover:bg-light-bgSurface text-light-textPrimary border border-light-border/50 rounded-lg text-[10px] font-bold transition-all active:scale-95"
               >
                 Extend Session
               </button>
               <button 
                 onClick={() => logout(true)}
-                className="w-full py-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg text-[10px] font-bold transition-all"
+                className="px-3 py-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-[10px] font-bold transition-all active:scale-95"
               >
-                Terminate Access
+                Logout
               </button>
             </div>
           </div>
